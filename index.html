@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Orion by Horizon - Connettività Pan-Europea via Fibra, Satellite e Radio Ottica.">
-    <title>ORION | European Connectivity Infrastructure</title>
+    <title>ORION | A Horizon Global Division</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,15 +14,20 @@
            1. CORE STYLES & VARIABLES
            ========================================= */
         :root {
-            --primary: #0044cc;      /* Euro Blue */
+            --primary: #0044cc;
             --primary-hover: #003399;
-            --bg-dark: #050a14;      /* Deep Space Background */
-            --bg-panel: #0f172a;     /* Card Background */
-            --accent: #00d4ff;       /* Cyan Neon */
+            --bg-dark: #050a14;
+            --bg-panel: #0f172a;
+            --bg-alt: #111827;
+            --accent: #00d4ff;
             --text-main: #ffffff;
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.08);
             --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --lyca-green: #a4c400;
+            --lyca-blue: #0078d4;
             --radius: 8px;
             --container: 1280px;
         }
@@ -34,13 +39,13 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            line-height: 1.6;
+            line-height: 1.8;
             overflow-x: hidden;
             font-size: 16px;
         }
 
-        h1, h2, h3, h4, h5 { font-weight: 700; color: #fff; letter-spacing: -0.02em; }
-        p { color: var(--text-muted); margin-bottom: 20px; }
+        h1, h2, h3, h4, h5 { font-weight: 700; color: #fff; letter-spacing: -0.02em; line-height: 1.3;}
+        p { color: var(--text-muted); margin-bottom: 20px; font-size: 1.05rem; }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
 
@@ -48,138 +53,186 @@
            2. UTILITIES & COMPONENTS
            ========================================= */
         .container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
-        .section-padding { padding: 100px 0; }
+        .section-padding { padding: 120px 0; }
         .text-center { text-align: center; }
+        .text-justify { text-align: justify; }
         
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
 
-        /* Buttons */
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center;
-            padding: 14px 28px; font-weight: 600; font-size: 14px; text-transform: uppercase;
-            letter-spacing: 0.5px; border-radius: var(--radius); cursor: pointer; transition: 0.3s; border: none; gap: 10px;
-        }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; border-radius: var(--radius); cursor: pointer; transition: 0.3s; border: none; gap: 10px; }
         .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(0, 68, 204, 0.3); }
         .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
         .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; }
         .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.05); }
 
-        /* Badges */
-        .badge {
-            display: inline-block; padding: 5px 10px; font-size: 11px; font-weight: 700;
-            text-transform: uppercase; border-radius: 50px; margin-bottom: 15px;
-        }
+        .badge { display: inline-block; padding: 6px 14px; font-size: 12px; font-weight: 700; text-transform: uppercase; border-radius: 50px; margin-bottom: 15px; letter-spacing: 0.5px;}
         .badge-blue { background: rgba(0, 68, 204, 0.2); color: #60a5fa; border: 1px solid rgba(0, 68, 204, 0.4); }
         .badge-cyan { background: rgba(0, 212, 255, 0.1); color: var(--accent); border: 1px solid rgba(0, 212, 255, 0.3); }
+        .badge-lyca { background: #fff; color: var(--lyca-green); border: 1px solid var(--lyca-green); }
+        .badge-alert { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .badge-gold { background: rgba(245, 158, 11, 0.1); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
 
         /* =========================================
-           3. HEADER & HERO
+           3. HEADER, TICKER & ALERTS
            ========================================= */
-        header {
-            position: fixed; top: 0; width: 100%; height: 80px; z-index: 1000;
-            background: rgba(5, 10, 20, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
-        }
+        .top-ticker { background: #020617; color: var(--accent); font-size: 12px; font-weight: 600; padding: 8px 0; text-align: center; border-bottom: 1px solid var(--border); display: flex; justify-content: center; align-items: center; gap: 10px; z-index: 1001; position: relative; }
+        .pulse { display: inline-block; width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.5; } }
+
+        .breaking-alert { background: linear-gradient(90deg, #450a0a 0%, #991b1b 50%, #450a0a 100%); color: #fff; padding: 15px 0; text-align: center; border-bottom: 2px solid #ef4444; position: relative; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+        .breaking-alert::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); animation: sweep 3s infinite; }
+        @keyframes sweep { 100% { left: 200%; } }
+        .breaking-alert h4 { margin: 0 0 5px 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        .breaking-alert p { margin: 0; font-size: 0.95rem; color: #fca5a5; max-width: 900px; line-height: 1.4; }
+        .breaking-alert strong { color: #fff; }
+
+        header { position: sticky; top: 0; width: 100%; height: 80px; z-index: 999; background: rgba(5, 10, 20, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
         .header-inner { display: flex; justify-content: space-between; align-items: center; height: 100%; }
         .logo { font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
-        .nav-menu { display: flex; gap: 30px; }
-        .nav-link { font-size: 14px; font-weight: 500; color: var(--text-muted); }
+        .nav-menu { display: flex; gap: 20px; align-items: center; }
+        .nav-link { font-size: 13px; font-weight: 500; color: var(--text-muted); }
         .nav-link:hover { color: #fff; }
-
-        .hero {
-            padding-top: 180px; padding-bottom: 100px; position: relative;
-            background: radial-gradient(circle at top right, #1e293b 0%, var(--bg-dark) 60%); overflow: hidden;
-        }
-        .hero-title { font-size: 4rem; line-height: 1.1; margin-bottom: 20px; }
-        .hero-title span { background: linear-gradient(90deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .stat-bar { display: flex; gap: 50px; margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border); }
-        .stat-item strong { display: block; font-size: 1.8rem; font-weight: 700; color: #fff; }
-        .stat-item span { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); }
-
-        /* =========================================
-           4. PRICING SECTION
-           ========================================= */
-        .pricing-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 50px; }
-        .tab-btn {
-            background: transparent; border: 1px solid var(--border); color: var(--text-muted);
-            padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.3s;
-        }
-        .tab-btn:hover, .tab-btn.active { background: #fff; color: #000; border-color: #fff; }
-
-        .price-card {
-            background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 35px;
-            display: flex; flex-direction: column; height: 100%; position: relative; transition: 0.3s;
-        }
-        .price-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .price-card.featured {
-            border: 1px solid var(--primary); background: linear-gradient(180deg, rgba(0,68,204,0.08) 0%, var(--bg-panel) 100%);
-        }
-        .price-amount { font-size: 3rem; font-weight: 700; margin: 15px 0; color: #fff; }
-        .price-period { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
-        .features-list li { margin-bottom: 12px; display: flex; gap: 10px; font-size: 14px; color: #cbd5e1; }
-        .features-list i { color: var(--success); margin-top: 4px; }
-
-        /* =========================================
-           5. MODAL & FORM
-           ========================================= */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000;
-            display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;
-        }
-        .modal-window {
-            background: #111827; width: 750px; max-width: 95%; border-radius: 12px;
-            border: 1px solid var(--border); box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; max-height: 90vh; overflow: hidden;
-        }
-        .modal-header {
-            padding: 20px 30px; background: #1f2937; border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .modal-body { padding: 30px; overflow-y: auto; }
-
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.5px; }
-        .input-group input, .input-group select {
-            width: 100%; background: #030712; border: 1px solid var(--border); color: #fff;
-            padding: 14px; border-radius: 6px; font-size: 15px; transition: 0.2s;
-        }
-        .input-group input:focus { border-color: var(--primary); }
-
-        .checkbox-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 13px; color: var(--text-muted); }
-        .checkbox-row input { accent-color: var(--primary); margin-top: 4px; }
-
-        /* Loader Animation */
-        .loader-track { width: 100%; height: 4px; background: #333; margin: 25px 0; border-radius: 2px; overflow: hidden; position: relative; }
-        .loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: var(--accent); transition: width 0.4s ease; }
-        .log-console { font-family: 'Courier New', monospace; font-size: 12px; color: var(--accent); height: 60px; }
-
-        /* =========================================
-           6. FOOTER
-           ========================================= */
-        footer { background: #020617; border-top: 1px solid var(--border); padding: 60px 0 30px 0; font-size: 14px; }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
         
-        /* Mobile */
-        @media (max-width: 900px) {
-            .hero-title { font-size: 2.8rem; }
-            .grid-2, .grid-3, .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .stat-bar { flex-wrap: wrap; }
-            .header-inner { padding: 0 20px; }
-            .nav-menu { display: none; }
-        }
+        .lang-wrapper { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 50px; padding: 5px 15px; gap: 8px; }
+        .lang-wrapper i { color: var(--accent); font-size: 14px; }
+        .lang-select { background: transparent; color: #fff; border: none; font-size: 13px; cursor: pointer; font-weight: 500; appearance: none; -webkit-appearance: none; outline: none; }
+        .lang-select option { background: #111827; color: #fff; }
+
+        .hero { padding-top: 100px; padding-bottom: 100px; position: relative; background: radial-gradient(circle at top right, #1e293b 0%, var(--bg-dark) 60%); overflow: hidden; }
+        .hero-title { font-size: 4rem; line-height: 1.1; margin-bottom: 25px; }
+        .hero-title span { background: linear-gradient(90deg, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-bar { display: flex; gap: 50px; margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border); flex-wrap: wrap;}
+        .stat-item strong { display: block; font-size: 2rem; font-weight: 800; color: #fff; }
+        .stat-item span { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;}
+
+        /* LYCAMOBILE PROMO BANNER */
+        .lyca-promo { background: linear-gradient(135deg, var(--lyca-blue) 0%, var(--lyca-green) 100%); padding: 30px 0; text-align: center; position: relative; overflow: hidden; box-shadow: inset 0 0 50px rgba(0,0,0,0.3); }
+        .lyca-promo::after { content: ''; position: absolute; width: 300px; height: 300px; background: rgba(255,255,255,0.1); border-radius: 50%; top: -100px; right: -50px; }
+        .lyca-promo-content { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .lyca-promo-text { text-align: left; }
+        .lyca-promo h3 { font-size: 1.8rem; margin: 0 0 5px 0; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .lyca-promo p { margin: 0; font-size: 1rem; color: #f1f5f9; font-weight: 500; }
+        .btn-lyca { background: #fff; color: var(--lyca-blue); font-weight: 800; padding: 12px 30px; border-radius: 50px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .btn-lyca:hover { background: #f8fafc; transform: scale(1.05); }
+
+        /* =========================================
+           4. SATELLITE TRACKER
+           ========================================= */
+        .sat-tracker-container { position: relative; width: 100%; height: 500px; background: #000; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-top: 40px; box-shadow: inset 0 0 50px rgba(0,212,255,0.1); }
+        canvas#satMap { display: block; width: 100%; height: 100%; }
+        .tracker-overlay { position: absolute; top: 20px; left: 20px; background: rgba(5, 10, 20, 0.85); padding: 15px; border-radius: 8px; border: 1px solid var(--border); backdrop-filter: blur(5px); }
+        .tracker-legend { position: absolute; bottom: 20px; right: 20px; background: rgba(5, 10, 20, 0.85); padding: 15px; border-radius: 8px; border: 1px solid var(--border); backdrop-filter: blur(5px); font-size: 12px; color: var(--text-muted); }
+        .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot-active { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+        .dot-activating { background: var(--warning); box-shadow: 0 0 8px var(--warning); animation: pulse 1s infinite; }
+        .dot-dead { background: var(--danger); opacity: 0.5; }
+
+        /* =========================================
+           5. CONTENT BLOCKS (NEW TEXT-HEAVY SECTIONS)
+           ========================================= */
+        .content-box { background: var(--bg-panel); padding: 50px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; }
+        .content-box h3 { font-size: 2rem; margin-bottom: 20px; color: #fff; }
+        .content-box p { font-size: 1.1rem; line-height: 1.8; color: #cbd5e1; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
+        .feat-item i { font-size: 35px; color: var(--accent); margin-bottom: 15px; }
+        .feat-item h4 { font-size: 1.2rem; margin-bottom: 10px; }
+        .feat-item p { font-size: 0.95rem; color: var(--text-muted); }
+
+        .specs-section { background: var(--bg-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .spec-box { background: var(--bg-panel); padding: 40px; border-radius: 12px; border: 1px solid var(--border); height: 100%; transition: 0.3s; }
+        .spec-box:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,212,255,0.05); }
+        .spec-box h4 { color: var(--accent); margin-bottom: 20px; font-size: 1.4rem; border-bottom: 1px solid rgba(0,212,255,0.2); padding-bottom: 15px; }
+        .spec-box p { font-size: 0.95rem; color: #94a3b8; margin-bottom: 20px; }
+        .spec-box ul li { font-size: 0.95rem; margin-bottom: 12px; padding-left: 20px; position: relative; color: #e2e8f0; line-height: 1.6;}
+        .spec-box ul li::before { content: "›"; position: absolute; left: 0; color: var(--primary); font-weight: bold; font-size: 1.2rem; }
+
+        /* =========================================
+           6. PRICING & TABS
+           ========================================= */
+        .pricing-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 50px; flex-wrap: wrap; }
+        .tab-btn { background: var(--bg-panel); border: 1px solid var(--border); color: var(--text-muted); padding: 12px 30px; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.3s; margin-bottom: 10px; font-size: 15px;}
+        .tab-btn:hover, .tab-btn.active { background: #fff; color: #000; border-color: #fff; }
+        .tab-btn.lyca-tab.active { background: var(--lyca-green); color: #fff; border-color: var(--lyca-green); }
+        
+        .price-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 40px; display: flex; flex-direction: column; height: 100%; transition: 0.3s; position: relative; }
+        .price-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 40px rgba(0,68,204,0.15); }
+        .price-card.featured { border: 2px solid var(--primary); background: linear-gradient(180deg, rgba(0,68,204,0.08) 0%, var(--bg-panel) 100%); }
+        .price-card.lyca-card { border-color: rgba(164, 196, 0, 0.4); }
+        .price-card.lyca-card.featured { border: 2px solid var(--lyca-green); background: linear-gradient(180deg, rgba(164, 196, 0, 0.08) 0%, var(--bg-panel) 100%); }
+        
+        .price-amount { font-size: 3.5rem; font-weight: 800; margin: 15px 0; color: #fff; line-height: 1; }
+        .price-period { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+        .features-list { margin-bottom: 30px; }
+        .features-list li { margin-bottom: 15px; display: flex; gap: 12px; font-size: 15px; color: #cbd5e1; align-items: flex-start;}
+        .features-list i { color: var(--success); margin-top: 5px; font-size: 14px;}
+
+        /* =========================================
+           7. FAQ & FOOTER
+           ========================================= */
+        .faq-item { border-bottom: 1px solid var(--border); padding: 25px 0; }
+        .faq-q { font-weight: 600; font-size: 1.2rem; color: #fff; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;}
+        .faq-a { font-size: 1.05rem; color: var(--text-muted); display: none; margin-top: 15px; line-height: 1.7; padding-right: 40px;}
+
+        footer { background: #020617; border-top: 1px solid var(--border); padding: 80px 0 40px 0; font-size: 14px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+        .footer-grid h5 { font-size: 1.1rem; margin-bottom: 20px; color: #fff; }
+        .footer-grid ul li { margin-bottom: 10px; }
+        .footer-grid ul li a:hover { color: var(--accent); }
+        
+        /* MODALS */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-window { background: #111827; width: 800px; max-width: 95%; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 25px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; max-height: 90vh; overflow: hidden; }
+        .modal-header { padding: 20px 30px; background: #1f2937; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-body { padding: 40px; overflow-y: auto; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; letter-spacing: 0.5px; font-weight: 600;}
+        .input-group input, .input-group select { width: 100%; background: #030712; border: 1px solid var(--border); color: #fff; padding: 16px; border-radius: 6px; font-size: 15px; }
+        .input-group input:focus, .input-group select:focus { border-color: var(--primary); }
+        .checkbox-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 15px; font-size: 14px; color: var(--text-muted); }
+        
+        .loader-track { width: 100%; height: 6px; background: #333; margin: 30px 0; border-radius: 3px; overflow: hidden; position: relative; }
+        .loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: var(--accent); transition: width 0.4s ease; }
+        .log-console { font-family: 'Courier New', monospace; font-size: 13px; color: var(--accent); height: 120px; overflow-y: hidden; background: #000; padding: 15px; border-radius: 6px; border: 1px solid var(--border);}
+
+        @media (max-width: 900px) { .hero-title { font-size: 3rem; } .grid-2, .grid-3, .grid-4, .grid-auto, .footer-grid { grid-template-columns: 1fr; gap: 40px; } .nav-menu { display: none; } .lyca-promo-content { flex-direction: column; text-align: center; } .lyca-promo-text { text-align: center; } }
+        .VIpgJd-ZVi9od-ORHb-OEVmcd { display: none; } .goog-te-banner-frame.skiptranslate { display: none !important; } body { top: 0px !important; }
     </style>
 </head>
 <body>
 
-    <header>
+    <div id="google_translate_element" style="display:none;"></div>
+
+    <div class="top-ticker">
+        <span class="pulse"></span> <strong>NOC ORION (Milano HQ):</strong> Rete 100% Operativa | Latenza media LEO: 19ms | Mitigazione DDoS in tempo reale BGP Anycast: Attiva.
+    </div>
+
+    <div class="breaking-alert">
+        <div class="container">
+            <h4><i class="fas fa-broadcast-tower" style="color: #fca5a5;"></i> EVENTO STORICO: FWA GIGABIT NAZIONALE</h4>
+            <p><strong>Sabato 21 Febbraio:</strong> Completata l'installazione della <em>Maxi Antenna Orion sulle Alpi Orobie</em>, il ponte radio più potente d'Europa. <strong>Venerdì 27 Febbraio:</strong> Accensione simultanea di 1.200 macro-celle locali. Il digital divide in Italia viene ufficialmente azzerato con velocità di <strong>500 Mbps reali</strong> in ogni vallata e area rurale del paese.</p>
+        </div>
+    </div>
+
+    <header id="main-header">
         <div class="container header-inner">
             <a href="#" class="logo"><i class="fas fa-globe" style="color:var(--primary)"></i> &nbsp;ORION</a>
             <nav class="nav-menu">
-                <a href="#vision" class="nav-link">Infrastruttura</a>
-                <a href="#technology" class="nav-link">Tecnologia</a>
-                <a href="#products" class="nav-link active">Privati</a>
-                <a href="#business" class="nav-link">Aziende</a>
+                <a href="#about" class="nav-link">La Holding</a>
+                <a href="#ops" class="nav-link">Operations</a>
+                <a href="#specs" class="nav-link">Infrastruttura</a>
+                <a href="#products" class="nav-link active">Privati & Mobile</a>
+                <a href="#business" class="nav-link">Enterprise</a>
+                
+                <div class="lang-wrapper">
+                    <i class="fas fa-globe-americas"></i>
+                    <select class="lang-select" id="langSelector" onchange="translateLanguage(this.value)">
+                        <option value="it">Italiano</option><option value="en">English</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ro">Română</option><option value="sq">Shqip</option><option value="ar">العربية</option><option value="pa">ਪੰਜਾਬੀ</option><option value="tw">Twi</option><option value="wo">Wolof</option>
+                    </select>
+                </div>
             </nav>
             <button class="btn btn-outline" style="padding: 10px 20px; font-size: 12px;">Area Clienti</button>
         </div>
@@ -187,22 +240,59 @@
 
     <section class="hero">
         <div class="container">
-            <div style="max-width: 800px; position: relative; z-index: 2;">
-                <span class="badge badge-blue">Pan-European Network V.4.0</span>
+            <div style="max-width: 850px; position: relative; z-index: 2;">
+                <span class="badge badge-blue">Horizon Global Telecommunications S.p.A.</span>
+                <span class="badge badge-alert">Progetto Orobie Completato</span>
                 <h1 class="hero-title">Internet<br><span>Senza Compromessi.</span></h1>
-                <p style="font-size: 1.2rem; max-width: 600px;">
-                    Orion unifica la dorsale in fibra ottica continentale con la costellazione satellitare privata. Connessione Gigabit dove gli altri vedono limiti.
+                <p style="font-size: 1.3rem; max-width: 700px; line-height: 1.7; color: #e2e8f0;">
+                    Siamo la spina dorsale dell'Europa digitale. Unifichiamo la stabilità della fibra ottica oceanica, la versatilità delle costellazioni satellitari in bassa orbita e la flessibilità estrema delle eSIM 5G. Dove gli altri si fermano, noi stendiamo il cavo.
                 </p>
-                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <a href="#products" class="btn btn-primary">Verifica Copertura</a>
-                    <a href="#technology" class="btn btn-outline">Scopri Tecnologia</a>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
+                    <a href="#products" class="btn btn-primary" style="font-size: 16px; padding: 18px 35px;">Verifica Copertura</a>
+                    <a href="#specs" class="btn btn-outline" style="font-size: 16px; padding: 18px 35px;">Analizza la Rete</a>
                 </div>
 
                 <div class="stat-bar">
-                    <div class="stat-item"><strong>27</strong><span>Paesi Coperti</span></div>
-                    <div class="stat-item"><strong>10 Gbps</strong><span>Backbone</span></div>
-                    <div class="stat-item"><strong>< 20ms</strong><span>Latenza LEO</span></div>
-                    <div class="stat-item"><strong>450k</strong><span>Km Fibra</span></div>
+                    <div class="stat-item"><strong>27</strong><span>Nazioni EU</span></div>
+                    <div class="stat-item"><strong>450.000</strong><span>Km Fibra Ottica</span></div>
+                    <div class="stat-item"><strong>18 ms</strong><span>Latenza Minima LEO</span></div>
+                    <div class="stat-item"><strong>4.821</strong><span>Satelliti Attivi</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="lyca-promo">
+        <div class="container lyca-promo-content">
+            <div class="lyca-promo-text">
+                <h3>Orion Mobile x Lycamobile 5G</h3>
+                <p>Abbiamo unito la nostra infrastruttura core con la rete roaming di Lyca. La rivoluzione eSIM è qui. Nessuna spedizione fisica, nessun negozio, Giga illimitati e attivazione tramite codice QR in 60 secondi.</p>
+            </div>
+            <button class="btn btn-lyca" onclick="switchTab('mobile'); document.getElementById('products').scrollIntoView();">Vedi Piani Mobile</button>
+        </div>
+    </div>
+
+    <section id="about" class="section-padding">
+        <div class="container">
+            <div class="grid-2" style="align-items: center;">
+                <div>
+                    <span class="badge badge-cyan">Corporate Identity</span>
+                    <h2 style="font-size: 2.8rem; margin-bottom: 25px;">Horizon Global.<br>La potenza dietro la rete.</h2>
+                    <p class="text-justify">Orion non è un semplice operatore virtuale che rivende banda altrui. Orion è il marchio commerciale diretto di <strong>Horizon Global Telecommunications S.p.A.</strong>, multinazionale con sede ad Amsterdam e centri operativi da Milano a Francoforte.</p>
+                    <p class="text-justify">Tutto ha avuto inizio con la storica acquisizione di <em>FiberCorporation Europe</em>, che ci ha garantito il controllo esclusivo su una delle reti di dorsale più estese del continente. Successivamente, la fondazione della divisione spaziale <strong>Horizon Space Grid</strong> ha chiuso il cerchio: cabliamo i fondali marini, le grandi metropoli europee e ora, le orbite terrestri basse.</p>
+                    <div style="border-left: 4px solid var(--primary); padding-left: 25px; margin-top: 35px;">
+                        <h4 style="font-size: 1.2rem; margin-bottom: 8px;">Indipendenza Infrastrutturale al 100%</h4>
+                        <p style="font-size: 1rem; margin:0; color: #94a3b8;">La concorrenza affitta cavi e banda per risparmiare sui costi. Noi costruiamo la rete, lanciamo i satelliti, e gestiamo i nostri Data Center Tier IV. Questo ci permette di offrirti Service Level Agreement (SLA) imbattibili.</p>
+                    </div>
+                </div>
+                <div class="content-box" style="background: #1e293b; padding: 40px;">
+                    <h4 style="border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px;">Asset Strategici Horizon</h4>
+                    <ul style="line-height: 2;">
+                        <li><i class="fas fa-server" style="color: var(--accent); width: 30px;"></i> <strong>15 Data Center Tier IV</strong> (Raffreddamento a immersione)</li>
+                        <li><i class="fas fa-water" style="color: var(--primary); width: 30px;"></i> <strong>Cavo Transatlantico "Poseidon"</strong> (Bassa Latenza NYC-LND)</li>
+                        <li><i class="fas fa-broadcast-tower" style="color: var(--warning); width: 30px;"></i> <strong>1.200 Nodi FWA</strong> (Onde Millimetriche 26-60GHz)</li>
+                        <li><i class="fas fa-rocket" style="color: var(--success); width: 30px;"></i> <strong>Flotta Satellitare LEO</strong> (Rinnovata ogni 5 anni)</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -210,53 +300,107 @@
 
     <section id="vision" class="section-padding" style="background: var(--bg-panel);">
         <div class="container">
-            <div class="grid-2" style="align-items: center;">
-                <div>
-                    <span class="badge badge-cyan">Corporate Vision</span>
-                    <h2 style="font-size: 2.5rem; margin-bottom: 20px;">L'Unione fa la Rete.</h2>
-                    <p>Orion nasce dalla fusione tra <strong>FiberCorporation Europe</strong> e la divisione spaziale di Horizon. Controlliamo l'intero stack tecnologico: dal cavo sottomarino al satellite LEO.</p>
-                    <div style="border-left: 3px solid var(--primary); padding-left: 20px; margin-top: 30px;">
-                        <h4 style="font-size: 1.1rem; margin-bottom: 5px;">Indipendenza Totale</h4>
-                        <p style="font-size: 0.9rem; margin:0;">Non affittiamo banda. La possediamo. Questo garantisce privacy e velocità.</p>
-                    </div>
+            <div class="text-center" style="margin-bottom: 50px;">
+                <span class="badge badge-blue">Network Operations Center</span>
+                <h2>Space Grid Live Tracker</h2>
+                <p style="max-width: 800px; margin: 0 auto;">Una mappatura vettoriale in tempo reale della nostra costellazione LEO (Low Earth Orbit). Il controllo globale avviene interamente tramite algoritmi predittivi per evitare collisioni spaziali e minimizzare il ping.</p>
+            </div>
+            
+            <div class="sat-tracker-container">
+                <div class="tracker-overlay">
+                    <h5 style="margin:0; font-size: 15px;"><i class="fas fa-globe-europe" style="color:var(--accent);"></i> Orion Space Command</h5>
+                    <p style="font-size: 12px; margin: 8px 0 0 0; color:#cbd5e1;">Altitudine Navigazione: 550km<br>ISL (Inter-Satellite Laser): Attivo<br>Banda Trasmissione: Ku/Ka Multiplexed</p>
                 </div>
-                <div style="background: #1e293b; padding: 40px; border-radius: 12px; border: 1px solid var(--border);">
-                    <div style="margin-bottom: 30px;">
-                        <i class="fas fa-network-wired" style="font-size: 30px; color: var(--accent); margin-bottom: 10px;"></i>
-                        <h5>FiberCorporation Backbone</h5>
-                        <p style="font-size: 13px;">Helsinki • Berlino • Milano</p>
-                    </div>
-                    <div style="text-align: right; margin-top: 30px;">
-                        <i class="fas fa-satellite" style="font-size: 30px; color: var(--primary); margin-bottom: 10px;"></i>
-                        <h5>Horizon Space Grid</h5>
-                        <p style="font-size: 13px;">4.500 Satelliti LEO attivi</p>
-                    </div>
+                <canvas id="satMap"></canvas>
+                <div class="tracker-legend">
+                    <div class="legend-item"><div class="legend-dot dot-active"></div> <span>Attivo (Routing & Laser Links ON)</span></div>
+                    <div class="legend-item"><div class="legend-dot dot-activating"></div> <span>In Posizionamento (Test)</span></div>
+                    <div class="legend-item"><div class="legend-dot dot-dead"></div> <span>Dismesso (Fase di Deorbiting)</span></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="technology" class="section-padding">
-        <div class="container">
-            <div class="text-center" style="margin-bottom: 60px;">
-                <h2>Tecnologia Ibrida</h2>
-                <p>La soluzione giusta per ogni geografia.</p>
+    <section id="ops" class="section-padding">
+        <div class="container content-box" style="background: radial-gradient(circle at bottom left, #1e293b 0%, var(--bg-panel) 100%);">
+            <div class="text-center" style="margin-bottom: 50px;">
+                <span class="badge badge-gold">Le Nostre Persone</span>
+                <h2>Orion Field Operations (OFO)</h2>
+                <p style="max-width: 900px; margin: 0 auto;">La tecnologia non si autoinstalla. Dietro la nostra rete ci sono oltre 3.500 ingegneri di rete, giuntisti ottici, rocciatori e specialisti IT che lavorano 365 giorni all'anno, dalla fangaia della strada sotto casa tua fino alle pareti ghiacciate delle Alpi.</p>
             </div>
-            <div class="grid-3">
-                <div class="price-card" style="align-items: center; text-align: center;">
-                    <i class="fas fa-globe" style="font-size: 40px; color: var(--primary); margin-bottom: 20px;"></i>
-                    <h3>FTTH XGS-PON</h3>
-                    <p style="font-size: 0.9rem;">Fibra ottica pura fino all'appartamento. Fino a 10 Gigabit simmetrici nei centri urbani.</p>
+            
+            <div class="feature-grid">
+                <div class="feat-item">
+                    <i class="fas fa-hard-hat" style="color: var(--warning);"></i>
+                    <h4>Giuntisti Ottici Certificati</h4>
+                    <p>I nostri tecnici terrestri stendono la fibra fisicamente. Eseguono la fusione ottica a freddo nei pozzetti cittadini in meno di 15 minuti, garantendo attenuazioni del segnale inferiori a 0.01 dB.</p>
                 </div>
-                <div class="price-card" style="align-items: center; text-align: center;">
-                    <i class="fas fa-satellite-dish" style="font-size: 40px; color: var(--primary); margin-bottom: 20px;"></i>
-                    <h3>Satellite LEO</h3>
-                    <p style="font-size: 0.9rem;">Costellazione a bassa orbita (550km). Latenza ridotta (20ms) per gaming e trading ovunque.</p>
+                <div class="feat-item">
+                    <i class="fas fa-mountain" style="color: var(--accent);"></i>
+                    <h4>Squadre Alpine (Progetto Orobie)</h4>
+                    <p>L'installazione della Maxi Antenna sulle Alpi Orobie è stata condotta da team elitari di ingegneri-alpinisti supportati da elicotteri classe heavy-lift. Operiamo dove il clima non perdona, con apparati testati da -40°C a +60°C.</p>
                 </div>
-                <div class="price-card" style="align-items: center; text-align: center;">
-                    <i class="fas fa-broadcast-tower" style="font-size: 40px; color: var(--primary); margin-bottom: 20px;"></i>
-                    <h3>Optical Radio</h3>
-                    <p style="font-size: 0.9rem;">Fibra fino all'antenna di quartiere + Ponte Radio 60GHz. La soluzione per le aree bianche.</p>
+                <div class="feat-item">
+                    <i class="fas fa-ship" style="color: var(--primary);"></i>
+                    <h4>Marine Cable Divison</h4>
+                    <p>Navi posacavi di proprietà gestiscono le tratte sottomarine in fibra. In caso di tranciamento del cavo (spesso causato da ancore o squali), i nostri droni ROV si immergono fino a 3.000 metri di profondità per la riparazione.</p>
+                </div>
+                <div class="feat-item">
+                    <i class="fas fa-headset" style="color: var(--success);"></i>
+                    <h4>Il NOC (Tier-3 Support)</h4>
+                    <p>Dimentica i call center in outsourcing. Rispondiamo dall'Italia, direttamente dal Network Operations Center di Milano. Gli analisti monitorano i grafici BGP e se cade un server lo sanno prima di te, bypassando il guasto via satellite in millisecondi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="specs" class="section-padding specs-section">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 70px;">
+                <span class="badge badge-blue">Orion Core Architecture</span>
+                <h2 style="font-size: 2.5rem;">Specifiche Tecniche Infrastrutturali</h2>
+                <p style="max-width: 900px; margin: 0 auto; font-size: 1.15rem;">Entriamo nei dettagli crudi. Scopri come l'ingegneria dei materiali e il routing avanzato ci pongono anni luce avanti rispetto ai provider tradizionali basati su rame, cavi coassiali misti e satelliti GEO obsoleti.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="spec-box">
+                    <h4><i class="fas fa-network-wired"></i> 1. Fibra Ottica DWDM & XGS-PON</h4>
+                    <p>Il protocollo GPON standard divide la banda con il vicinato (fino a 64 persone su un singolo ramo). Orion adotta l'evoluzione pura.</p>
+                    <ul>
+                        <li><strong>Standard XGS-PON:</strong> Porta 10 Gigabit simmetrici reali fino all'ONT (Optical Network Terminal) nel tuo salotto. Niente cali serali.</li>
+                        <li><strong>Dorsali DWDM:</strong> Multiplexing a divisione di lunghezza d'onda densa. Spara decine di "colori" di luce nello stesso capello di vetro, spingendo la capacità core a 80 Terabit/s.</li>
+                        <li><strong>Latenza Micro-Routing:</strong> Router Core Juniper e Cisco garantiscono un instradamento in meno di 2 millisecondi per hop. Niente colli di bottiglia.</li>
+                    </ul>
+                </div>
+                
+                <div class="spec-box">
+                    <h4><i class="fas fa-satellite"></i> 2. Horizon LEO Space Grid</h4>
+                    <p>I vecchi satelliti (es. HughesNet o Eutelsat) volano a 36.000 km di altezza, generando un ping disastroso di oltre 600ms. I nostri volano vicinissimi, a soli 550 km.</p>
+                    <ul>
+                        <li><strong>Latenza da Fibra (15-25ms):</strong> Ideale per gaming FPS (sparatutto), videoconferenze Zoom/Teams e trading finanziario senza delay.</li>
+                        <li><strong>Laser ISL (Inter-Satellite Links):</strong> Nello spazio c'è il vuoto. La luce dei nostri laser viaggia il 47% più veloce che nel vetro dei cavi ottici sottomarini. I satelliti si passano i dati tra loro saltando gli oceani in tempi record.</li>
+                        <li><strong>Antenna Phased Array:</strong> Il kit che ricevi non ha un motore che gira goffamente. Modifica la direzione del raggio elettronicamente in nano-secondi per seguire decine di satelliti in volo simultaneamente.</li>
+                    </ul>
+                </div>
+
+                <div class="spec-box">
+                    <h4><i class="fas fa-broadcast-tower"></i> 3. FWA Onde Millimetriche (Orobie Base)</h4>
+                    <p>Il Fixed Wireless Access (Internet via radio) non è più il ripiego per le zone povere, ma una tecnologia d'élite grazie allo sblocco delle frequenze 5G.</p>
+                    <ul>
+                        <li><strong>Spettro 26 GHz & 60 GHz:</strong> Frequenze altissime (mmWave) che trasportano enormi quantità di dati, permettendo di vendere abbonamenti FWA a 500 Mbps REALI.</li>
+                        <li><strong>Carrier Aggregation Estrema:</strong> L'antenna fonde più bande radio simultaneamente, resistendo persino alle peggiori bufere di neve montane senza perdita di pacchetti.</li>
+                        <li><strong>Maxi Antenna Alpina (Hub Alpha):</strong> Rilancia il segnale a migliaia di paraboline riceventi con precisione balistica tramite beamforming direzionale.</li>
+                    </ul>
+                </div>
+
+                <div class="spec-box">
+                    <h4><i class="fas fa-shield-alt"></i> 4. Sicurezza Edge, DDoS & BGP Anycast</h4>
+                    <p>La potenza senza controllo non serve a nulla, soprattutto per le aziende. La nostra rete è una vera e propria fortezza crittografica a prova di attacco.</p>
+                    <ul>
+                        <li><strong>Mitigazione DDoS a 4.5 Tbps:</strong> I nostri server perimetrali (Edge) assorbono e "puliscono" gli attacchi hacker volumetrici prima ancora che tocchino il tuo indirizzo IP.</li>
+                        <li><strong>Routing BGP Intelligente:</strong> L'Intelligenza artificiale calcola istante per istante se è più veloce mandare il tuo pacchetto dati via fibra terrestre o lanciarlo nello spazio verso un satellite.</li>
+                        <li><strong>DNS Anycast Proprietario:</strong> Risoluzione nomi dominio interna e privata. Nessun tracciamento commerciale delle tue abitudini di navigazione. Privacy assoluta per policy aziendale.</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -264,50 +408,55 @@
 
     <section id="products" class="section-padding" style="background: #020617;">
         <div class="container">
-            <div class="text-center" style="margin-bottom: 50px;">
-                <h2>Listino Connessioni</h2>
-                <p>Trasparenza totale. Nessun vincolo nascosto.</p>
+            <div class="text-center" style="margin-bottom: 60px;">
+                <span class="badge badge-cyan">Consumer & Prosumer</span>
+                <h2 style="font-size: 2.8rem;">Scegli la tua Infrastruttura</h2>
+                <p style="font-size: 1.15rem; max-width: 800px; margin: 0 auto;">Città, montagna o oceano aperto. Seleziona la tecnologia più adatta alla tua conformazione geografica o al tuo stile di vita. Attivazione immediata e zero vincoli nascosti.</p>
             </div>
 
             <div class="pricing-tabs">
-                <button class="tab-btn active" onclick="switchTab('sat')">Satellite (Ovunque)</button>
-                <button class="tab-btn" onclick="switchTab('fiber')">Fibra (Città)</button>
-                <button class="tab-btn" onclick="switchTab('radio')">Optical Radio (Aree Bianche)</button>
+                <button class="tab-btn active" onclick="switchTab('sat')"><i class="fas fa-satellite"></i> Satellite LEO (Globale)</button>
+                <button class="tab-btn" onclick="switchTab('fiber')"><i class="fas fa-network-wired"></i> Fibra Ottica (Città)</button>
+                <button class="tab-btn" onclick="switchTab('radio')"><i class="fas fa-broadcast-tower"></i> FWA Orobie (Aree Rurali)</button>
+                <button class="tab-btn lyca-tab" onclick="switchTab('mobile')"><i class="fas fa-sim-card"></i> Mobile eSIM (Orion x Lyca)</button>
             </div>
 
             <div id="grid-sat" class="grid-3 pricing-grid">
                 <div class="price-card">
-                    <span class="badge badge-blue">Essential</span>
+                    <span class="badge badge-blue">Essential Start</span>
                     <h3>Orion COSMOS</h3>
                     <div class="price-amount">€49<span class="price-period">/mese</span></div>
                     <ul class="features-list">
-                        <li><i class="fas fa-check"></i> 200 Mbps Download</li>
-                        <li><i class="fas fa-check"></i> Dati Illimitati</li>
-                        <li><i class="fas fa-check"></i> Kit Standard incluso</li>
+                        <li><i class="fas fa-check"></i> <strong>200 Mbps</strong> Download (Stima)</li>
+                        <li><i class="fas fa-check"></i> Traffico Dati Illimitato</li>
+                        <li><i class="fas fa-check"></i> Parabola Phased Array Inclusa</li>
+                        <li><i class="fas fa-check"></i> Latenza Base <40ms</li>
                     </ul>
-                    <button class="btn btn-outline" style="width: 100%; margin-top: auto;" onclick="openModal('Orion COSMOS', '49')">Verifica e Attiva</button>
+                    <button class="btn btn-outline" style="width: 100%; margin-top: auto;" onclick="openModal('Orion COSMOS (Satellite)', '49', 'fixed')">Avvia Verifica Copertura</button>
                 </div>
                 <div class="price-card featured">
-                    <span class="badge badge-cyan">Best Seller</span>
+                    <span class="badge badge-cyan">Top Choice per Famiglie</span>
                     <h3>Orion GALACTIC</h3>
                     <div class="price-amount">€89<span class="price-period">/mese</span></div>
                     <ul class="features-list">
-                        <li><i class="fas fa-check"></i> <strong>500 Mbps</strong> Speed</li>
-                        <li><i class="fas fa-check"></i> Priorità di Rete</li>
-                        <li><i class="fas fa-check"></i> Latenza Gaming</li>
+                        <li><i class="fas fa-check"></i> <strong>500 Mbps</strong> Speed Prioritizzata</li>
+                        <li><i class="fas fa-check"></i> Priorità di Traffico Nodi ISL</li>
+                        <li><i class="fas fa-check"></i> Ping Gaming Ottimizzato <20ms</li>
+                        <li><i class="fas fa-check"></i> Router Wi-Fi 6E Mesh Multi-Piano</li>
                     </ul>
-                    <button class="btn btn-primary" style="width: 100%; margin-top: auto;" onclick="openModal('Orion GALACTIC', '89')">Verifica e Attiva</button>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: auto;" onclick="openModal('Orion GALACTIC (Satellite)', '89', 'fixed')">Avvia Verifica Copertura</button>
                 </div>
                 <div class="price-card">
-                    <span class="badge badge-blue">Extreme</span>
+                    <span class="badge badge-blue">Per Camper & Imbarcazioni</span>
                     <h3>Orion DEEP SPACE</h3>
                     <div class="price-amount">€149<span class="price-period">/mese</span></div>
                     <ul class="features-list">
-                        <li><i class="fas fa-check"></i> Copertura Oceanica</li>
-                        <li><i class="fas fa-check"></i> Doppia Antenna</li>
-                        <li><i class="fas fa-check"></i> Supporto VIP 24/7</li>
+                        <li><i class="fas fa-check"></i> Copertura Oceanica e in Movimento</li>
+                        <li><i class="fas fa-check"></i> Doppia Antenna Flat Alta Performance</li>
+                        <li><i class="fas fa-check"></i> IP Pubblico Statico Globale</li>
+                        <li><i class="fas fa-check"></i> Sbrinatore Termico Neve Avanzato</li>
                     </ul>
-                    <button class="btn btn-outline" style="width: 100%; margin-top: auto;" onclick="openModal('Orion DEEP SPACE', '149')">Verifica e Attiva</button>
+                    <button class="btn btn-outline" style="width: 100%; margin-top: auto;" onclick="openModal('Orion DEEP SPACE (Sat Mobile)', '149', 'fixed')">Avvia Verifica Copertura</button>
                 </div>
             </div>
 
@@ -316,63 +465,141 @@
                     <h3>Orion FIBER 1G</h3>
                     <div class="price-amount">€29<span class="price-period">/mese</span></div>
                     <ul class="features-list">
-                        <li><i class="fas fa-check"></i> 1 Gigabit Download</li>
+                        <li><i class="fas fa-check"></i> <strong>1 Gigabit</strong> Download</li>
                         <li><i class="fas fa-check"></i> 300 Mbps Upload</li>
+                        <li><i class="fas fa-check"></i> Tecnologia FTTH/GPON Standard</li>
                     </ul>
-                    <button class="btn btn-outline" style="width: 100%; margin-top: auto;" onclick="openModal('Orion FIBER 1G', '29')">Verifica e Attiva</button>
+                    <button class="btn btn-outline" style="width: 100%; margin-top: auto;" onclick="openModal('Orion FIBER 1G', '29', 'fixed')">Verifica Fibra a Casa Tua</button>
                 </div>
                 <div class="price-card featured">
-                    <span class="badge badge-cyan">XGS-PON Tech</span>
+                    <span class="badge badge-cyan">Massima Potenza Terrestre</span>
                     <h3>Orion HYPER 10G</h3>
                     <div class="price-amount">€59<span class="price-period">/mese</span></div>
                     <ul class="features-list">
-                        <li><i class="fas fa-check"></i> <strong>10 Gigabit</strong> Simmetrici</li>
-                        <li><i class="fas fa-check"></i> Modem Wi-Fi 7</li>
+                        <li><i class="fas fa-check"></i> <strong>10 Gigabit</strong> Simmetrici (XGS-PON)</li>
+                        <li><i class="fas fa-check"></i> Modem Tri-Band Wi-Fi 7</li>
+                        <li><i class="fas fa-check"></i> Zero Latenza Locale</li>
+                        <li><i class="fas fa-check"></i> Installazione Tecnica Prioritaria (48h)</li>
                     </ul>
-                    <button class="btn btn-primary" style="width: 100%; margin-top: auto;" onclick="openModal('Orion HYPER 10G', '59')">Verifica e Attiva</button>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: auto;" onclick="openModal('Orion HYPER 10G XGS-PON', '59', 'fixed')">Verifica Fibra a Casa Tua</button>
                 </div>
             </div>
 
             <div id="grid-radio" class="grid-3 pricing-grid" style="display: none;">
-                <div class="price-card">
-                    <h3>Orion AIR</h3>
-                    <div class="price-amount">€35<span class="price-period">/mese</span></div>
-                    <p style="font-size: 14px; color: #aaa;">Tecnologia Optical Radio FWA.</p>
+                <div class="price-card featured">
+                    <span class="badge badge-alert">Connesso alla Maxi Rete</span>
+                    <h3>Orion AIR MAXI</h3>
+                    <div class="price-amount">€39<span class="price-period">/mese</span></div>
+                    <p style="font-size: 14px; color: #cbd5e1; margin-bottom: 20px;">Sfrutta la nuova antenna Orobie. Ideale per baite, cascine isolate e comuni non cablati.</p>
                     <ul class="features-list">
-                        <li><i class="fas fa-check"></i> 300 Mbps Reali</li>
-                        <li><i class="fas fa-check"></i> Ping < 15ms</li>
+                        <li><i class="fas fa-check"></i> Fino a <strong>500 Mbps</strong> via Radio Onde Millimetriche</li>
+                        <li><i class="fas fa-check"></i> Antenna Esterna e Cablaggio Incluso</li>
+                        <li><i class="fas fa-check"></i> Installazione Acrobatica Gratuita</li>
+                        <li><i class="fas fa-check"></i> Resistenza al Clima Estremo Alpino</li>
                     </ul>
-                    <button class="btn btn-primary" style="width: 100%; margin-top: auto;" onclick="openModal('Orion AIR', '35')">Verifica e Attiva</button>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: auto;" onclick="openModal('Orion AIR MAXI FWA', '39', 'fixed')">Verifica Segnale FWA</button>
                 </div>
-                <div class="price-card" style="border-style: dashed; background: transparent;">
-                    <h3>Orion TV Hub</h3>
-                    <div class="price-amount">+€5<span class="price-period">/mese</span></div>
-                    <p style="font-size: 14px;">Add-on Entertainment.</p>
+            </div>
+
+            <div id="grid-mobile" class="grid-4 pricing-grid" style="display: none;">
+                <div class="price-card lyca-card">
+                    <span class="badge badge-lyca" style="background:transparent;">Entry Level eSIM</span>
+                    <h3 style="font-size: 1.3rem;">Lyca Orion 100</h3>
+                    <div class="price-amount" style="font-size: 2.6rem;">€5<span style="font-size: 16px;">.99</span><span class="price-period">/mese</span></div>
                     <ul class="features-list">
-                        <li><i class="fas fa-tv"></i> Decoder Android TV 4K</li>
-                        <li><i class="fas fa-broadcast-tower"></i> Antenna DTT Integrata</li>
+                        <li><i class="fas fa-bolt" style="color:var(--lyca-green);"></i> 100 Giga in puro 5G</li>
+                        <li><i class="fas fa-phone"></i> Min/SMS Illimitati Nazionali</li>
+                        <li><i class="fas fa-qrcode"></i> Attivazione QR Immediata via Mail</li>
                     </ul>
+                    <button class="btn btn-outline" style="width: 100%; margin-top: auto; border-color:var(--lyca-green); color:var(--lyca-green);" onclick="openModal('Lyca Orion 100 (eSIM)', '5.99', 'mobile')">Acquista eSIM</button>
                 </div>
+                
+                <div class="price-card lyca-card">
+                    <span class="badge badge-lyca" style="background:transparent;">Viaggiatore EU</span>
+                    <h3 style="font-size: 1.3rem;">Lyca Orion 250</h3>
+                    <div class="price-amount" style="font-size: 2.6rem;">€9<span style="font-size: 16px;">.99</span><span class="price-period">/mese</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-bolt" style="color:var(--lyca-green);"></i> 250 Giga in puro 5G</li>
+                        <li><i class="fas fa-globe-europe"></i> Roaming Europa Esteso 50GB</li>
+                        <li><i class="fas fa-phone"></i> Chiamate Internazionali Incluse</li>
+                    </ul>
+                    <button class="btn btn-outline" style="width: 100%; margin-top: auto; border-color:var(--lyca-green); color:var(--lyca-green);" onclick="openModal('Lyca Orion 250 (eSIM)', '9.99', 'mobile')">Acquista eSIM</button>
+                </div>
+
+                <div class="price-card lyca-card featured">
+                    <span class="badge badge-lyca" style="background:var(--lyca-green); color:#fff; border:none;">La Scelta Intelligente</span>
+                    <h3 style="font-size: 1.3rem;">Lyca Orion 500</h3>
+                    <div class="price-amount" style="font-size: 2.6rem;">€14<span style="font-size: 16px;">.99</span><span class="price-period">/mese</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-bolt" style="color:var(--lyca-green);"></i> <strong>500 Giga 5G</strong> Massima Velocità</li>
+                        <li><i class="fas fa-share-alt"></i> Hotspot Tethering Autorizzato</li>
+                        <li><i class="fas fa-qrcode"></i> QR Code istantaneo No-Spedizione</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: auto; background:var(--lyca-green); box-shadow: 0 10px 20px rgba(164, 196, 0, 0.3); border:none;" onclick="openModal('Lyca Orion 500 (eSIM)', '14.99', 'mobile')">Acquista eSIM</button>
+                </div>
+
+                <div class="price-card lyca-card">
+                    <span class="badge badge-blue" style="border-color:var(--lyca-blue); color:#60a5fa;">Integrazione Ibrida</span>
+                    <h3 style="font-size: 1.3rem;">Lyca UNLIMITED</h3>
+                    <div class="price-amount" style="font-size: 2.6rem;">€19<span style="font-size: 16px;">.99</span><span class="price-period">/mese</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-infinity" style="color:var(--lyca-green);"></i> <strong>Giga Illimitati</strong> (Nessun Cap)</li>
+                        <li><i class="fas fa-satellite" style="color:var(--primary);"></i> SMS Satellitare d'Emergenza (Test)</li>
+                        <li><i class="fas fa-shield-alt"></i> Priorità di Cella su Rete Congestionata</li>
+                    </ul>
+                    <button class="btn btn-outline" style="width: 100%; margin-top: auto; border-color:var(--lyca-blue); color:#60a5fa;" onclick="openModal('Lyca Unlimited (eSIM)', '19.99', 'mobile')">Acquista eSIM</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="faq" class="section-padding" style="background: var(--bg-panel);">
+        <div class="container" style="max-width: 900px;">
+            <div class="text-center" style="margin-bottom: 50px;">
+                <h2 style="font-size: 2.5rem;">Database Conoscenza (FAQ)</h2>
+                <p>Domande frequenti tecniche e commerciali sulle reti Horizon/Orion.</p>
+            </div>
+            
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">L'infrastruttura Satellitare è pericolosa per la salute? (Radiazioni) <i class="fas fa-chevron-down" style="font-size: 16px;"></i></div>
+                <div class="faq-a">Assolutamente no. Il segnale radio inviato dal satellite LEO verso la terra è estremamente debole a livello del suolo, molto inferiore alle emissioni di un normale ripetitore TV o persino di un modem Wi-Fi da appartamento. Inoltre, l'antenna Phased Array posizionata sul tetto proietta un fascio focalizzato strettamente verso il cielo.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">Cos'è esattamente il "Progetto Orobie" per il Fixed Wireless? <i class="fas fa-chevron-down" style="font-size: 16px;"></i></div>
+                <div class="faq-a">Il Progetto Orobie (attivazione ufficiale Sabato 21 Febbraio) rappresenta la costruzione della Maxi Antenna Alpha, l'hub radiomobile più imponente mai realizzato nel Nord Italia. Grazie alle onde millimetriche e alla visibilità ottica su enormi distanze, l'antenna rimbalza il segnale su una catena di 1.200 macro-celle locali (accensione il 27 Febbraio). Questo trasforma la connettività di borghi rurali storicamente isolati, garantendo velocità FWA da 500 Mbps stabili, paragonabili alla fibra urbana.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">Come si attivano e installano le eSIM Lycamobile 5G? <i class="fas fa-chevron-down" style="font-size: 16px;"></i></div>
+                <div class="faq-a">Il processo è 100% digitale, ecologico e istantaneo. Compilando il modulo d'ordine "Mobile eSIM", inserisci i dati del tuo documento (per obbligo di legge antiterrorismo Pisanu) ed effettui il pagamento mensile. Non dovrai aspettare alcun corriere: il sistema genera istantaneamente un Codice QR che riceverai via email. Vai nelle impostazioni del tuo telefono, seleziona "Aggiungi eSIM", inquadra il QR Code ed entro 60 secondi il tuo telefono sarà connesso alla rete 5G ad altissima velocità.</div>
+            </div>
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-q">Cosa succede se tranciano un cavo in Fibra Ottica della vostra dorsale? Resto offline? <i class="fas fa-chevron-down" style="font-size: 16px;"></i></div>
+                <div class="faq-a">No. L'infrastruttura Horizon si basa su una "Ring-Topology" (Topologia ad anello) a doppia ridondanza. Se uno scavatore trancia accidentalmente una fibra in un cantiere, il router percepisce la caduta del segnale luminoso in pochi microsecondi e invia i tuoi pacchetti dati dal lato opposto dell'anello cittadino. Durante il re-routing potresti notare un innalzamento del ping di soli 3 millisecondi, ma la tua videoconferenza o download non si interromperà. E in caso estremo, la connessione può agganciarsi al backup satellitare istantaneo (incluso nei pacchetti Enterprise).</div>
             </div>
         </div>
     </section>
 
-    <section id="business" class="section-padding" style="background: var(--bg-panel);">
+    <section id="business" class="section-padding">
         <div class="container">
-            <div class="grid-2" style="align-items: center;">
+            <div class="grid-2" style="align-items: center; background: #1e293b; padding: 60px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
                 <div>
-                    <span class="badge badge-blue">Business</span>
-                    <h2>Soluzioni Aziendali</h2>
-                    <p>Linee dedicate, MPLS e backup satellitare per garantire la continuità operativa della tua impresa.</p>
-                    <ul class="features-list">
-                        <li><i class="fas fa-check"></i> Banda Minima Garantita (BMG) 95%</li>
-                        <li><i class="fas fa-check"></i> IP Statici Multipli</li>
-                        <li><i class="fas fa-check"></i> Fatturazione Elettronica Europea</li>
+                    <span class="badge badge-blue">Divisione Corporate</span>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Orion Enterprise Data Solutions</h2>
+                    <p style="font-size: 1.15rem; color: #cbd5e1;">Le reti aziendali non possono permettersi il lusso di cadere. La perdita di connettività per 10 minuti in un hub logistico o in un desk di trading bancario costa milioni. Uniamo linee dedicate Punto-Punto in Fibra Ottica con il backup Satellitare invisibile Active-Active.</p>
+                    <ul class="features-list" style="margin-top: 30px;">
+                        <li><i class="fas fa-shield-alt"></i> <strong>SLA 99.99%:</strong> Banda Minima Garantita MIK (MInimum Information Rate).</li>
+                        <li><i class="fas fa-network-wired"></i> <strong>Reti MPLS Prive:</strong> Connessioni inter-sede sicure e cifrate hardware.</li>
+                        <li><i class="fas fa-user-tie"></i> <strong>Account Manager Dedicato:</strong> Accesso diretto al nostro NOC Tier-3 saltando i bot.</li>
                     </ul>
-                    <button class="btn btn-outline" style="margin-top: 20px;">Contatta Commerciale</button>
+                    <div style="background: rgba(0, 68, 204, 0.1); border-left: 4px solid var(--primary); padding: 15px; margin-top: 25px;">
+                        <p style="margin: 0; font-size: 14px; font-weight: bold; color: #fff;">Contatto Diretto B2B Horizon Italia:</p>
+                        <p style="margin: 5px 0 0 0; font-size: 22px; color: var(--accent);"><i class="fas fa-phone-alt" style="margin-right: 10px;"></i>+39 320 234 9909</p>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <i class="fas fa-building" style="font-size: 100px; color: rgba(255,255,255,0.05);"></i>
+                <div class="text-center" style="position: relative;">
+                    <i class="fas fa-server" style="font-size: 160px; color: var(--primary); text-shadow: 0 0 80px rgba(0,68,204,0.6);"></i>
+                    <i class="fas fa-lock" style="position: absolute; font-size: 60px; color: var(--success); top: 50%; left: 50%; transform: translate(-50%, -50%); text-shadow: 0 0 20px rgba(16, 185, 129, 0.8);"></i>
                 </div>
             </div>
         </div>
@@ -382,131 +609,150 @@
         <div class="container">
             <div class="footer-grid">
                 <div>
-                    <h3 style="margin-bottom: 15px;">ORION.</h3>
-                    <p style="font-size: 13px;">Horizon Global Telecommunications S.p.A.<br>Sede Legale: Amsterdam, NL.<br>P.IVA Int: EU123456789</p>
+                    <h3 style="margin-bottom: 20px; font-size: 1.8rem;">ORION.</h3>
+                    <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;"><strong>Horizon Global Telecommunications S.p.A.</strong><br>Sede Centrale: Strada Clopotari 23, Giurgiu, Romania.<br>P.IVA Int: EU83748723492933<br>Operatore Iscritto AGCOM n. 5821</p>
                 </div>
                 <div>
-                    <h5>Tecnologie</h5>
-                    <ul style="font-size: 13px; color: var(--text-muted); margin-top: 10px;">
-                        <li><a href="#">Satellite LEO</a></li>
-                        <li><a href="#">Fiber To The Home</a></li>
-                        <li><a href="#">Optical Radio FWA</a></li>
+                    <h5>Tecnologie Core</h5>
+                    <ul style="font-size: 14px; color: var(--text-muted); margin-top: 10px;">
+                        <li><a href="#specs">Rete Satellitare Costellazione LEO</a></li>
+                        <li><a href="#specs">Fibra Ottica Proprietaria DWDM</a></li>
+                        <li><a href="#specs">Onde Millimetriche FWA (26/60 GHz)</a></li>
+                        <li><a href="#products">eSIM Mobile 5G by Lycamobile</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h5>Supporto</h5>
-                    <ul style="font-size: 13px; color: var(--text-muted); margin-top: 10px;">
-                        <li><a href="#">Stato Rete</a></li>
-                        <li><a href="#">Fatturazione</a></li>
-                        <li><a href="#">Trasloco Linea</a></li>
+                    <h5>Area Supporto Clienti</h5>
+                    <ul style="font-size: 14px; color: var(--text-muted); margin-top: 10px;">
+                        <li><a href="#">Bacheca NOC - Stato Rete Live</a></li>
+                        <li><a href="#">Accesso Area Personale/Fatture</a></li>
+                        <li><a href="#">Manuale Router Wi-Fi 7 e Parabola</a></li>
+                        <li><a href="#">Richiedi Trasloco Impianto</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h5>Legal</h5>
-                    <ul style="font-size: 13px; color: var(--text-muted); margin-top: 10px;">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Termini e Condizioni</a></li>
+                    <h5>Info Legali & Compliance</h5>
+                    <ul style="font-size: 14px; color: var(--text-muted); margin-top: 10px;">
+                        <li><a href="#">Informativa sulla Privacy (GDPR EU)</a></li>
+                        <li><a href="#">Termini e Condizioni Contrattuali</a></li>
+                        <li><a href="#">Carta dei Servizi e Trasparenza Tarifaria</a></li>
+                        <li><a href="#">Obblighi Antiterrorismo (Legge Pisanu)</a></li>
                     </ul>
                 </div>
             </div>
-            <div style="border-top: 1px solid var(--border); margin-top: 40px; padding-top: 20px; font-size: 12px; text-align: center; color: #444;">
-                © 2026 Horizon Group Europe. Tutti i diritti riservati.
+            <div style="border-top: 1px solid var(--border); margin-top: 60px; padding-top: 30px; font-size: 13px; text-align: center; color: #64748b;">
+                © 2026 Horizon Group Europe. Tutti i diritti riservati. Orion è un marchio registrato. Rappresentazione grafica della rete spaziale simulata a puro scopo illustrativo. Mappatura e latenze basate su stime in condizioni ottimali.
             </div>
         </div>
     </footer>
 
     <div id="modal-interface" class="modal-overlay">
         <div class="modal-window">
-            
             <div class="modal-header">
                 <div>
-                    <h4 id="modal-title" style="margin: 0; color: #fff;">Verifica Copertura</h4>
-                    <span id="modal-subtitle" style="font-size: 12px; color: var(--text-muted);">Passaggio 1 di 3</span>
+                    <h4 id="modal-title" style="margin: 0; color: #fff; font-size: 1.4rem;">Pannello di Attivazione</h4>
+                    <span id="modal-subtitle" style="font-size: 12px; color: var(--accent); font-weight: 600; text-transform: uppercase;">Inizializzazione Configurazione</span>
                 </div>
-                <button onclick="closeModal()" style="background: none; border: none; color: #fff; cursor: pointer; font-size: 20px;">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button onclick="closeModal()" style="background: none; border: none; color: #fff; cursor: pointer; font-size: 24px; transition: 0.2s;"><i class="fas fa-times"></i></button>
             </div>
-
             <div class="modal-body">
-                
-                <div id="step-address">
-                    <p style="margin-bottom: 20px;">Stai attivando: <strong id="plan-display" style="color: var(--accent);">--</strong></p>
-                    
+                <p style="margin-bottom: 25px; text-align:center; padding: 15px; background: rgba(0,212,255,0.05); border: 1px solid rgba(0,212,255,0.2); border-radius: 8px; font-size: 15px;">Piano Richiesto: <strong id="plan-display" style="color: var(--accent); font-size: 18px; margin-left: 10px;">--</strong></p>
+
+                <div id="step-address" style="display:none;">
+                    <div style="margin-bottom: 25px; padding: 15px; background: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--warning); border-radius: 4px; font-size: 13px; color: #d1d5db;">
+                        <strong>Informazione di Sistema:</strong> L'indirizzo digitato verrà confrontato con i database geografici globali e triangolato con i segnali radar per determinare la disponibilità della rete Fibra o FWA e la visibilità della calotta celeste per i pacchetti LEO.
+                    </div>
                     <div class="input-group">
-                        <label>Indirizzo di Installazione</label>
+                        <label>Indirizzo di Spedizione / Installazione (Completo)</label>
                         <input type="text" id="address-input" placeholder="Via, Civico, Città, CAP">
                     </div>
                     <div class="input-group">
-                        <label>Tipo Edificio</label>
-                        <select id="building-type">
-                            <option>Appartamento</option>
-                            <option>Villa Indipendente</option>
-                            <option>Ufficio</option>
-                        </select>
+                        <label>Tipologia Immobile Geografico</label>
+                        <select id="building-type"><option>Condominio/Appartamento Multi-Piano</option><option>Villa / Casa Indipendente / Cascina</option><option>Ufficio Commerciale / Hub Logistico</option></select>
                     </div>
-                    <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="startCheck()">Avvia Verifica Tecnica</button>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 15px; font-size: 16px; padding: 16px;" onclick="startCheck()">Avvia Triangolazione Copertura</button>
                 </div>
 
                 <div id="step-loading" style="display: none;">
-                    <h4 class="text-center">Analisi Infrastruttura in Corso</h4>
+                    <h4 class="text-center" style="margin-bottom: 20px;">Analisi Nodi di Rete in Corso...</h4>
                     <div class="loader-track"><div class="loader-bar" id="progress-bar"></div></div>
-                    <div class="log-console" id="log-console">> Initializing Horizon-Sat Link...<br></div>
+                    <div class="log-console" id="log-console"></div>
                 </div>
 
-                <div id="step-contract" style="display: none;">
-                    
-                    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 15px; border-radius: 6px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-check-circle" style="font-size: 20px;"></i>
-                        <div>
-                            <strong>Copertura Confermata!</strong><br>
-                            <span style="font-size: 12px; color: #a7f3d0;">Tecnologia rilevata: <span id="tech-found">--</span></span>
-                        </div>
-                    </div>
-
+                <div id="step-contract-fixed" style="display: none;">
                     <form onsubmit="event.preventDefault(); submitFinal();">
+                        <h5 style="color: #fff; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 5px;">Anagrafica Cliente</h5>
+                        <div class="grid-2" style="gap: 15px; margin-bottom: 0;">
+                            <div class="input-group"><label>Nome Legale</label><input type="text" required></div>
+                            <div class="input-group"><label>Cognome</label><input type="text" required></div>
+                        </div>
+                        <div class="input-group"><label>Codice Fiscale / P.IVA</label><input type="text" required></div>
+                        <div class="input-group"><label>Email Account Orion</label><input type="email" placeholder="nome@esempio.it" required></div>
                         
-                        <h5 style="border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; font-size: 14px; color: #fff;">1. Dati Intestatario</h5>
-                        <div class="grid-2" style="gap: 20px; margin-bottom: 0;">
-                            <div class="input-group"><label>Nome</label><input type="text" id="input-nome" required></div>
-                            <div class="input-group"><label>Cognome</label><input type="text" id="input-cognome" required></div>
+                        <h5 style="color: #fff; margin: 25px 0 15px 0; border-bottom: 1px solid var(--border); padding-bottom: 5px;">Addebito su Conto Corrente (SEPA)</h5>
+                        <div class="input-group"><label>Codice IBAN</label><input type="text" placeholder="IT00..." required></div>
+                        
+                        <div style="background: rgba(0, 120, 212, 0.1); border: 1px solid rgba(0, 120, 212, 0.3); padding: 20px; border-radius: 8px; margin: 30px 0;">
+                            <h4 style="margin: 0 0 10px 0; font-size: 15px; color: #fff;"><i class="fas fa-lock" style="color:#0078d4; margin-right:8px;"></i> Upload Sicuro Documento Identità</h4>
+                            <p style="font-size: 13px; margin: 0 0 15px 0; color: #ccc;">Scansiona o fotografa fronte/retro il documento di identità e caricalo all'interno del nostro storage cloud crittografato Microsoft OneDrive.</p>
+                            <a href="#" style="text-decoration: none; display:inline-block; background: #0078d4; color: white; padding: 10px 20px; border-radius: 4px; font-size: 13px; font-weight: bold; transition: 0.2s;">Apri Cartella Cloud Upload</a>
                         </div>
-                        <div class="input-group"><label>Codice Fiscale</label><input type="text" id="input-cf" required></div>
-                        <div class="input-group"><label>Email</label><input type="email" id="input-email" required></div>
-
-                        <h5 style="border-bottom: 1px solid var(--border); padding-bottom: 10px; margin: 30px 0 20px 0; font-size: 14px; color: #fff;">2. Pagamento (SEPA)</h5>
-                        <div class="input-group"><label>IBAN</label><input type="text" id="input-iban" placeholder="IT00..." required></div>
-
-                        <h5 style="border-bottom: 1px solid var(--border); padding-bottom: 10px; margin: 30px 0 20px 0; font-size: 14px; color: #fff;">3. Documenti Sicuri</h5>
-                        <div style="background: rgba(0, 120, 212, 0.1); border: 1px solid rgba(0, 120, 212, 0.3); padding: 20px; border-radius: 8px; margin-bottom: 25px;">
-                            <div style="display: flex; gap: 15px; align-items: flex-start;">
-                                <i class="fas fa-cloud-upload-alt" style="font-size: 30px; color: #0078d4; margin-top: 5px;"></i>
-                                <div>
-                                    <h4 style="margin: 0 0 5px 0; font-size: 15px; color: #fff;">Upload Criptato OneDrive</h4>
-                                    <p style="font-size: 13px; margin: 0; color: #ccc;">Per la tua privacy, carica la foto del documento sul nostro cloud sicuro.</p>
-                                </div>
-                            </div>
-                            <a href="https://1drv.ms/f/c/129c277f864185a0/IgAoiNpnX_kNQoAn4JF1cyV0Aezla8Molt1wORn5HzMOla4?e=JPZaWm" target="_blank" style="text-decoration: none;">
-                                <div style="margin-top: 15px; background: #0078d4; color: white; text-align: center; padding: 12px; border-radius: 4px; font-weight: 600; font-size: 14px; transition: 0.2s;" onmouseover="this.style.background='#0063b1'" onmouseout="this.style.background='#0078d4'">
-                                    <i class="fas fa-external-link-alt" style="margin-right: 8px;"></i> APRI PORTALE UPLOAD
-                                </div>
-                            </a>
-                            <div style="margin-top: 10px; font-size: 11px; color: #888; text-align: center;">Non inviare documenti via email non protetta.</div>
-                        </div>
-
-                        <div class="checkbox-row"><input type="checkbox" required><span>Confermo di aver caricato il documento.</span></div>
-                        <div class="checkbox-row"><input type="checkbox" required><span>Accetto le Condizioni di Contratto.</span></div>
-                        <div class="checkbox-row"><input type="checkbox" required><span>Consenso Privacy GDPR (Dati non salvati su DB esterni).</span></div>
-
-                        <button class="btn btn-primary" style="width: 100%; margin-top: 20px;">Firma Contratto e Attiva</button>
+                        
+                        <div class="checkbox-row"><input type="checkbox" required><span>Ho caricato correttamente il mio documento d'identità valido sul cloud sicuro.</span></div>
+                        <div class="checkbox-row"><input type="checkbox" required><span>Letto e compreso i termini del contratto e le condizioni di fatturazione.</span></div>
+                        
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 20px; font-size: 16px; padding: 16px;">Apponi Firma Digitale e Concludi</button>
                     </form>
                 </div>
+
+                <div id="step-contract-mobile" style="display: none;">
+                    <div style="background: rgba(164, 196, 0, 0.1); border: 1px solid rgba(164, 196, 0, 0.4); color: #a4c400; padding: 18px; border-radius: 8px; margin-bottom: 30px; font-size:14px; line-height: 1.6;">
+                        <i class="fas fa-bolt" style="font-size: 18px; margin-bottom: 10px; display: block;"></i> <strong>Protocollo Zero-Spedizione. Attivazione Istantanea.</strong><br>
+                        Le eSIM non richiedono alcun indirizzo fisico. Una volta validati i dati legali antiterrorismo e processato il pagamento, l'algoritmo genererà il tuo identificativo univoco (QR Code) e lo invierà in modo crittografato alla tua casella e-mail.
+                    </div>
+                    <form onsubmit="event.preventDefault(); submitFinalMobile();">
+                        <div class="grid-2" style="gap: 15px; margin-bottom: 0;">
+                            <div class="input-group"><label>Nome</label><input type="text" required></div>
+                            <div class="input-group"><label>Cognome</label><input type="text" required></div>
+                        </div>
+                        <div class="input-group"><label>Codice Fiscale Univoco</label><input type="text" required></div>
+                        <div class="input-group"><label>Indirizzo Email (Destinazione QR Code Profilo eSIM)</label><input type="email" placeholder="tua@email.com" required></div>
+                        
+                        <h5 style="border-bottom: 1px solid var(--border); padding-bottom: 5px; margin: 30px 0 20px 0; font-size: 14px; color: #fff; text-transform: uppercase;">Modulo Legale Identificazione</h5>
+                        <div class="input-group">
+                            <label>Tipologia Documento di Riconoscimento</label>
+                            <select><option>Carta d'Identità (Elettronica o Cartacea)</option><option>Passaporto</option><option>Patente di Guida (Formato Card)</option></select>
+                        </div>
+                        <div class="grid-2" style="gap: 15px; margin-bottom: 0;">
+                            <div class="input-group"><label>Codice / Numero Documento</label><input type="text" placeholder="Es. CA123456" required></div>
+                            <div class="input-group"><label>Data di Scadenza Ufficiale</label><input type="date" required></div>
+                        </div>
+                        
+                        <h5 style="border-bottom: 1px solid var(--border); padding-bottom: 5px; margin: 30px 0 20px 0; font-size: 14px; color: #fff; text-transform: uppercase;">Dati di Addebito Mensile</h5>
+                        <div class="input-group"><label>Numero Carta di Credito / Debito o IBAN</label><input type="text" required></div>
+
+                        <div class="checkbox-row" style="margin-top:25px;"><input type="checkbox" required><span>Sotto la mia responsabilità penale, dichiaro che i dati identificativi trascritti corrispondono fedelmente alla realtà.</span></div>
+                        <div class="checkbox-row"><input type="checkbox" required><span>Autorizzo Lycamobile e Horizon al trattamento dei dati anagrafici per la fornitura della linea radiomobile 5G.</span></div>
+                        
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 20px; font-size: 16px; padding: 18px; background:var(--lyca-green); box-shadow: 0 5px 20px rgba(164, 196, 0, 0.4); border:none; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">Genera Compilatore eSIM</button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
 
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <script>
-        // TABS
+        // 1. Google Translate Init
+        function googleTranslateElementInit() { new google.translate.TranslateElement({ pageLanguage: 'it', includedLanguages: 'it,en,fr,de,ro,sq,ar,pa,tw,wo', autoDisplay: false }, 'google_translate_element'); }
+        function translateLanguage(lang) {
+            let combo = document.querySelector('.goog-te-combo');
+            if (combo) { combo.value = lang; combo.dispatchEvent(new Event('change')); }
+        }
+
+        // 2. Pricing Tabs Switcher
         function switchTab(tabName) {
             document.querySelectorAll('.pricing-grid').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -514,21 +760,89 @@
             event.target.classList.add('active');
         }
 
-        // MODAL
-        let selectedPlan = "";
-        let selectedPrice = "";
-        const modal = document.getElementById('modal-interface');
+        // 3. FAQ Accordion Logic
+        function toggleFaq(el) {
+            let answer = el.querySelector('.faq-a');
+            let icon = el.querySelector('.fas');
+            if(answer.style.display === 'block') { answer.style.display = 'none'; icon.style.transform = 'rotate(0deg)'; }
+            else { answer.style.display = 'block'; icon.style.transform = 'rotate(180deg)'; }
+        }
 
-        function openModal(planName, price) {
-            selectedPlan = planName;
-            selectedPrice = price;
-            // Reset UI
-            document.getElementById('step-address').style.display = 'block';
-            document.getElementById('step-loading').style.display = 'none';
-            document.getElementById('step-contract').style.display = 'none';
+        // 4. SATELLITE TRACKER ANIMATION (Canvas HTML5)
+        const canvas = document.getElementById('satMap');
+        const ctx = canvas.getContext('2d');
+        let sats = [];
+        
+        function resizeCanvas() { canvas.width = canvas.parentElement.clientWidth; canvas.height = canvas.parentElement.clientHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for(let i=0; i<160; i++) {
+            let state = 'active'; let r = Math.random();
+            if(r > 0.88) state = 'activating'; if(r > 0.96) state = 'dead';
+            sats.push({ 
+                angle: Math.random() * Math.PI * 2, 
+                radius: 130 + Math.random() * 220, 
+                speed: (Math.random() * 0.004 + 0.001) * (Math.random() < 0.5 ? 1 : -1), 
+                state: state, 
+                size: state === 'dead' ? 1.5 : (state === 'activating' ? 2 : 1.5) 
+            });
+        }
+
+        function drawTracker() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let cx = canvas.width / 2; let cy = canvas.height / 2;
+            
+            let earthGradient = ctx.createRadialGradient(cx, cy, 20, cx, cy, 110);
+            earthGradient.addColorStop(0, '#023047'); earthGradient.addColorStop(0.8, '#001a33'); earthGradient.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.beginPath(); ctx.arc(cx, cy, 110, 0, Math.PI * 2); ctx.fillStyle = earthGradient; ctx.fill();
+            
+            ctx.strokeStyle = 'rgba(0, 212, 255, 0.1)'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.ellipse(cx, cy, 110, 35, 0, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(cx, cy, 110, 75, 0, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(cx, cy, 35, 110, 0, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.ellipse(cx, cy, 75, 110, 0, 0, Math.PI * 2); ctx.stroke();
+
+            sats.forEach(s => {
+                s.angle += s.speed; s.x = cx + s.radius * Math.cos(s.angle); s.y = cy + s.radius * Math.sin(s.angle) * 0.6;
+                if(s.state === 'active') { ctx.fillStyle = '#00d4ff'; ctx.shadowColor = '#00d4ff'; ctx.shadowBlur = 12; }
+                else if(s.state === 'activating') { ctx.fillStyle = '#f59e0b'; ctx.shadowColor = '#f59e0b'; ctx.shadowBlur = 12; }
+                else { ctx.fillStyle = '#ef4444'; ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; }
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+            });
+
+            ctx.shadowBlur = 0; ctx.strokeStyle = 'rgba(0, 212, 255, 0.15)'; ctx.lineWidth = 0.5;
+            for(let i=0; i<sats.length; i++) {
+                if(sats[i].state !== 'active') continue;
+                for(let j=i+1; j<sats.length; j++) {
+                    if(sats[j].state !== 'active') continue;
+                    let dx = sats[i].x - sats[j].x; let dy = sats[i].y - sats[j].y;
+                    if(Math.sqrt(dx*dx + dy*dy) < 65) { ctx.beginPath(); ctx.moveTo(sats[i].x, sats[i].y); ctx.lineTo(sats[j].x, sats[j].y); ctx.stroke(); }
+                }
+            }
+            requestAnimationFrame(drawTracker);
+        }
+        drawTracker();
+
+        // 5. MODAL SYSTEM LOGIC
+        const modal = document.getElementById('modal-interface');
+        
+        function openModal(planName, price, type) {
             document.getElementById('plan-display').innerText = planName + " (€" + price + "/mese)";
-            document.getElementById('modal-title').innerText = "Verifica Copertura";
-            document.getElementById('address-input').value = ""; 
+            document.getElementById('step-loading').style.display = 'none';
+
+            if (type === 'mobile') {
+                document.getElementById('modal-subtitle').innerText = "Processo Generazione eSIM Istantanea";
+                document.getElementById('step-address').style.display = 'none';
+                document.getElementById('step-contract-fixed').style.display = 'none';
+                document.getElementById('step-contract-mobile').style.display = 'block';
+            } else {
+                document.getElementById('modal-subtitle').innerText = "Fase 1/3: Ping Geografico";
+                document.getElementById('step-address').style.display = 'block';
+                document.getElementById('step-contract-fixed').style.display = 'none';
+                document.getElementById('step-contract-mobile').style.display = 'none';
+                document.getElementById('address-input').value = ""; 
+            }
             
             modal.style.display = 'flex';
             setTimeout(() => { modal.style.opacity = '1'; }, 10);
@@ -539,75 +853,40 @@
             setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
 
-        // SIMULAZIONE VERIFICA
-        function startCheck() {
+        // Verifica Rete (Linea Fissa / Satellitare)
+        async function startCheck() {
             const addr = document.getElementById('address-input').value;
-            if(addr.length < 5) { alert("Inserire un indirizzo valido."); return; }
-
+            if(addr.trim().length < 5) { alert("Attenzione: Compila un indirizzo di residenza valido per interrogare i database."); return; }
+            
             document.getElementById('step-address').style.display = 'none';
             document.getElementById('step-loading').style.display = 'block';
-            document.getElementById('modal-title').innerText = "Analisi Tecnica";
-
+            
             const bar = document.getElementById('progress-bar');
             const log = document.getElementById('log-console');
-
-            setTimeout(() => { bar.style.width = "30%"; log.innerHTML += "> Geocoding Address... OK<br>"; }, 600);
-            setTimeout(() => { bar.style.width = "70%"; log.innerHTML += "> Checking Fiber DB...<br>"; }, 1500);
+            
+            log.innerHTML = "> Inizializzazione protocollo BGP...<br>"; bar.style.width = "10%";
+            setTimeout(() => { log.innerHTML += "> Connessione AI Satellite Radar (Alt: 550km)... OK<br>"; bar.style.width = "35%"; }, 800);
+            setTimeout(() => { log.innerHTML += "> Query Database OpenFiber e Macro-Celle FWA Orobie...<br>"; bar.style.width = "75%"; }, 1700);
             setTimeout(() => { 
-                bar.style.width = "100%"; 
-                // Determine Tech
-                let tech = "Satellite LEO";
-                if(selectedPlan.includes("FIBER")) tech = "FTTH FiberCorporation";
-                if(selectedPlan.includes("AIR")) tech = "Optical Radio FWA";
-                document.getElementById('tech-found').innerText = tech;
-
-                document.getElementById('step-loading').style.display = 'none';
-                document.getElementById('step-contract').style.display = 'block';
-                document.getElementById('modal-title').innerText = "Stipulazione Contratto";
-            }, 3000);
+                log.innerHTML += "> Match Geografico Verificato. Procedura Sbloccata.<br>"; bar.style.width = "100%"; 
+                setTimeout(() => {
+                    document.getElementById('step-loading').style.display = 'none';
+                    document.getElementById('step-contract-fixed').style.display = 'block';
+                    document.getElementById('modal-subtitle').innerText = "Fase 3/3: Burocrazia e Sicurezza";
+                }, 600);
+            }, 2600);
         }
 
-        /* --- INVIO DATI SICURO (ID SCRIPT INTEGRATO) --- */
-        // L'URL è stato costruito con il tuo ID specifico
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbycO863ufWUNnMx93Vz16TsvYVY7Ij5HSZPNLOTAQRNtyfqej6cbM67TWbYHSQRepIn/exec';
-
+        // Submit Form Fisso
         function submitFinal() {
-            const btn = document.querySelector('#step-contract button');
-            const originalText = btn.innerText;
-            btn.innerText = "CRITTOGRAFIA E INVIO...";
-            btn.disabled = true;
-
-            const formData = new FormData();
-            formData.append('Data', new Date().toLocaleString());
-            formData.append('Piano', selectedPlan);
-            formData.append('Prezzo', selectedPrice);
-            formData.append('Indirizzo', document.getElementById('address-input').value);
-            formData.append('Edificio', document.getElementById('building-type').value);
-            formData.append('Nome', document.getElementById('input-nome').value);
-            formData.append('Cognome', document.getElementById('input-cognome').value);
-            formData.append('CF', document.getElementById('input-cf').value);
-            formData.append('Email', document.getElementById('input-email').value);
-            formData.append('IBAN', document.getElementById('input-iban').value);
-
-            // Fetch request (Send to Google Script -> Emails you)
-            fetch(scriptURL, { method: 'POST', body: formData })
-                .then(response => {
-                    alert("CONGRATULAZIONI!\n\nIl contratto è stato firmato digitalmente.\nI dati sono stati inviati via canale sicuro alla nostra sede.\nRiceverai conferma via email a breve.");
-                    closeModal();
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                })
-                .catch(error => {
-                    console.error('Error!', error.message);
-                    alert("Errore di connessione sicura. Riprova.");
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                });
+            alert("RICEZIONE SEGNALE AVVENUTA CON SUCCESSO.\n\nContratto generato crittograficamente (AES-256). Il team Logistico Horizon prenderà in carico la spedizione del terminale hardware verso la tua sede. Riceverai un'email di tracking a breve.");
+            closeModal();
         }
 
-        // Close modal on outside click
-        window.onclick = function(event) {
-            if (event.target == modal) closeModal();
+        // Submit Form eSIM
+        function submitFinalMobile() {
+            alert("ATTIVAZIONE PROFILO ESIM COMPLETATA.\n\nI dati del documento sono stati trascritti in sicurezza. Il server Lycamobile ha generato il tuo QR Code univoco per l'accesso alla rete 5G.\n\nControlla immediatamente la tua casella di posta per scansionare il codice.");
+            closeModal();
         }
     </script>
 </body>
