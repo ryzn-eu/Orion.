@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Orion by Horizon - Connettività Pan-Europea via Fibra, Satellite e Radio Ottica.">
-    <title>ORION | A Horizon Global Division</title>
+    <title>ORION | European Connectivity Infrastructure</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -96,7 +96,9 @@
         .nav-link { font-size: 13px; font-weight: 500; color: var(--text-muted); }
         .nav-link:hover { color: #fff; }
         
-        .lang-wrapper { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 50px; padding: 5px 15px; gap: 8px; }
+        /* MODIFIED: Header actions container */
+        .header-actions { display: flex; align-items: center; gap: 15px; }
+        .lang-wrapper { display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 50px; padding: 5px 15px; gap: 8px; height: 38px; }
         .lang-wrapper i { color: var(--accent); font-size: 14px; }
         .lang-select { background: transparent; color: #fff; border: none; font-size: 13px; cursor: pointer; font-weight: 500; appearance: none; -webkit-appearance: none; outline: none; }
         .lang-select option { background: #111827; color: #fff; }
@@ -132,7 +134,7 @@
         .dot-dead { background: var(--danger); opacity: 0.5; }
 
         /* =========================================
-           5. CONTENT BLOCKS (NEW TEXT-HEAVY SECTIONS)
+           5. CONTENT BLOCKS
            ========================================= */
         .content-box { background: var(--bg-panel); padding: 50px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 30px; }
         .content-box h3 { font-size: 2rem; margin-bottom: 20px; color: #fff; }
@@ -198,13 +200,20 @@
         .loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: var(--accent); transition: width 0.4s ease; }
         .log-console { font-family: 'Courier New', monospace; font-size: 13px; color: var(--accent); height: 120px; overflow-y: hidden; background: #000; padding: 15px; border-radius: 6px; border: 1px solid var(--border);}
 
-        @media (max-width: 900px) { .hero-title { font-size: 3rem; } .grid-2, .grid-3, .grid-4, .grid-auto, .footer-grid { grid-template-columns: 1fr; gap: 40px; } .nav-menu { display: none; } .lyca-promo-content { flex-direction: column; text-align: center; } .lyca-promo-text { text-align: center; } }
+        @media (max-width: 900px) { 
+            .hero-title { font-size: 3rem; } 
+            .grid-2, .grid-3, .grid-4, .grid-auto, .footer-grid { grid-template-columns: 1fr; gap: 40px; } 
+            .nav-menu { display: none; } 
+            .lyca-promo-content { flex-direction: column; text-align: center; } 
+            .lyca-promo-text { text-align: center; } 
+            .header-actions { flex-direction: column; align-items: flex-end; gap: 10px; }
+        }
         .VIpgJd-ZVi9od-ORHb-OEVmcd { display: none; } .goog-te-banner-frame.skiptranslate { display: none !important; } body { top: 0px !important; }
     </style>
 </head>
 <body>
 
-    <div id="google_translate_element" style="display:none;"></div>
+<div id="google_translate_element" style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;"></div>
 
     <div class="top-ticker">
         <span class="pulse"></span> <strong>NOC ORION (Milano HQ):</strong> Rete 100% Operativa | Latenza media LEO: 19ms | Mitigazione DDoS in tempo reale BGP Anycast: Attiva.
@@ -226,15 +235,18 @@
                 <a href="#specs" class="nav-link">Infrastruttura</a>
                 <a href="#products" class="nav-link active">Privati & Mobile</a>
                 <a href="#business" class="nav-link">Enterprise</a>
-                
+            </nav>
+            
+            <div class="header-actions">
                 <div class="lang-wrapper">
                     <i class="fas fa-globe-americas"></i>
                     <select class="lang-select" id="langSelector" onchange="translateLanguage(this.value)">
                         <option value="it">Italiano</option><option value="en">English</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ro">Română</option><option value="sq">Shqip</option><option value="ar">العربية</option><option value="pa">ਪੰਜਾਬੀ</option><option value="tw">Twi</option><option value="wo">Wolof</option>
                     </select>
                 </div>
-            </nav>
-            <button class="btn btn-outline" style="padding: 10px 20px; font-size: 12px;">Area Clienti</button>
+                <button class="btn btn-outline" style="padding: 10px 20px; font-size: 12px; height: 38px;">Area Clienti</button>
+            </div>
+            
         </div>
     </header>
 
@@ -610,7 +622,7 @@
             <div class="footer-grid">
                 <div>
                     <h3 style="margin-bottom: 20px; font-size: 1.8rem;">ORION.</h3>
-                    <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;"><strong>Horizon Global Telecommunications S.p.A.</strong><br>Sede Centrale: Strada Clopotari 23, Giurgiu, Romania.<br>P.IVA Int: EU83748723492933<br>Operatore Iscritto AGCOM n. 5821</p>
+                    <p style="font-size: 14px; color: #94a3b8; line-height: 1.6;"><strong>Horizon Global Telecommunications S.p.A.</strong><br>Sede Centrale: De Ruijterkade 5, 1013 AA Amsterdam, NL.<br>P.IVA Int: EU123456789<br>Operatore Iscritto AGCOM n. 5821</p>
                 </div>
                 <div>
                     <h5>Tecnologie Core</h5>
@@ -745,11 +757,36 @@
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
-        // 1. Google Translate Init
-        function googleTranslateElementInit() { new google.translate.TranslateElement({ pageLanguage: 'it', includedLanguages: 'it,en,fr,de,ro,sq,ar,pa,tw,wo', autoDisplay: false }, 'google_translate_element'); }
+       
+      // 1. Google Translate Init
+        function googleTranslateElementInit() { 
+            new google.translate.TranslateElement({ 
+                pageLanguage: 'it', 
+                includedLanguages: 'it,en,fr,de,ro,sq,ar,pa,tw,wo', 
+                autoDisplay: false 
+            }, 'google_translate_element'); 
+        }
+
         function translateLanguage(lang) {
+            // Cerca il menu a tendina nativo di Google
             let combo = document.querySelector('.goog-te-combo');
-            if (combo) { combo.value = lang; combo.dispatchEvent(new Event('change')); }
+            
+            if (combo) {
+                // Imposta il valore e forza l'aggiornamento
+                combo.value = lang;
+                combo.dispatchEvent(new Event('change', { bubbles: true }));
+            } else {
+                // Metodo di backup infallibile tramite i Cookie di Google se la tendina non è pronta
+                if(lang === 'it') {
+                    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=" + location.hostname + "; path=/;";
+                } else {
+                    document.cookie = "googtrans=/it/" + lang + "; path=/";
+                    document.cookie = "googtrans=/it/" + lang + "; domain=" + location.hostname + "; path=/";
+                }
+                location.reload();
+            }
+        }
         }
 
         // 2. Pricing Tabs Switcher
