@@ -82,12 +82,19 @@
         .pulse { display: inline-block; width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.5; } }
 
-        .breaking-alert { background: linear-gradient(90deg, #450a0a 0%, #991b1b 50%, #450a0a 100%); color: #fff; padding: 15px 0; text-align: center; border-bottom: 2px solid #ef4444; position: relative; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+        /* MODIFIED: Banner Arancione */
+        .breaking-alert { background: linear-gradient(90deg, #7c2d12 0%, #d97706 50%, #7c2d12 100%); color: #fff; padding: 15px 0; text-align: center; border-bottom: 2px solid #f59e0b; position: relative; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
         .breaking-alert::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); animation: sweep 3s infinite; }
         @keyframes sweep { 100% { left: 200%; } }
         .breaking-alert h4 { margin: 0 0 5px 0; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
-        .breaking-alert p { margin: 0; font-size: 0.95rem; color: #fca5a5; max-width: 900px; line-height: 1.4; }
+        .breaking-alert p { margin: 0; font-size: 0.95rem; color: #fef3c7; max-width: 900px; line-height: 1.4; }
         .breaking-alert strong { color: #fff; }
+
+        /* NEW: Barra di progresso */
+        .alert-progress-container { width: 100%; max-width: 600px; margin: 15px auto 5px auto; text-align: left; }
+        .alert-progress-labels { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
+        .alert-progress-track { width: 100%; height: 8px; background: rgba(0,0,0,0.4); border-radius: 4px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5); }
+        .alert-progress-bar { width: 60%; height: 100%; background: var(--success); box-shadow: 0 0 10px var(--success); transition: width 1s ease; }
 
         header { position: sticky; top: 0; width: 100%; height: 80px; z-index: 999; background: rgba(5, 10, 20, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
         .header-inner { display: flex; justify-content: space-between; align-items: center; height: 100%; }
@@ -221,8 +228,18 @@
 
     <div class="breaking-alert">
         <div class="container">
-            <h4><i class="fas fa-broadcast-tower" style="color: #fca5a5;"></i> EVENTO STORICO: FWA GIGABIT NAZIONALE</h4>
-            <p><strong>Sabato 21 Febbraio:</strong> Completata l'installazione della <em>Maxi Antenna Orion sulle Alpi Orobie</em>, il ponte radio più potente d'Europa. <strong>Venerdì 27 Febbraio:</strong> Accensione simultanea di 1.200 macro-celle locali. Il digital divide in Italia viene ufficialmente azzerato con velocità di <strong>500 Mbps reali</strong> in ogni vallata e area rurale del paese.</p>
+            <h4><i class="fas fa-broadcast-tower" style="color: #fde047;"></i> EVENTO STORICO: FWA GIGABIT NAZIONALE</h4>
+            <p>La <em>Maxi Antenna Orion sulle Alpi Orobie</em> è ufficialmente <strong style="color: #4ade80; font-size: 1.05rem;">OPERATIVA</strong>. Il ponte radio principale è attivo. <strong>Venerdì 27 Febbraio:</strong> Prevista l'operativizzazione di 1.200 micro-antenne locali per azzerare il digital divide con velocità di <strong>500 Mbps reali</strong> in ogni vallata e area rurale del paese.</p>
+            
+            <div class="alert-progress-container">
+                <div class="alert-progress-labels">
+                    <span>Avanzamento Operativizzazione Micro-Antenne Locali</span>
+                    <span>60%</span>
+                </div>
+                <div class="alert-progress-track">
+                    <div class="alert-progress-bar"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -786,7 +803,6 @@
                 }
                 location.reload();
             }
-        }
         }
 
         // 2. Pricing Tabs Switcher
