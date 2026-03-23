@@ -1,39 +1,404 @@
 <!DOCTYPE html>
-<html lang="it-EU">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Orion by Horizon - Connettività Pan-Europea via Fibra, Satellite e Radio Ottica.">
-    <title>ORION | European Connectivity Infrastructure</title>
-    
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <title>Dossier Spedizione & Ordine - Hamburg MG</title>
     <style>
-        /* =========================================
-           1. CORE STYLES & VARIABLES
-           ========================================= */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap');
+
         :root {
-            --primary: #0044cc;
-            --primary-hover: #003399;
-            --bg-dark: #050a14;
-            --bg-panel: #0f172a;
-            --bg-alt: #111827;
-            --accent: #00d4ff;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.08);
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --lyca-green: #a4c400;
-            --lyca-blue: #0078d4;
-            --radius: 8px;
-            --container: 1280px;
+            --primary: #1d3557;
+            --accent: #e63946;
+            --success: #2a9d8f;
+            --bg: #f0f2f5;
+            --text: #333;
+            --card-bg: #ffffff;
+            --border: #e0e0e0;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            width: 100%;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header {
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+
+        /* --- Sezione Annuncio e Dettagli Ordine --- */
+        .order-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .order-layout { grid-template-columns: 1fr; }
+        }
+
+        /* Galleria Immagini */
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .gallery-main {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .gallery-thumbs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .gallery-thumbs img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: border 0.2s;
+        }
+
+        .gallery-thumbs img:hover {
+            border: 2px solid var(--accent);
+        }
+
+        /* Dati Finanziari e Documentali */
+        .specs-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .specs-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--border);
+            font-size: 0.95rem;
+        }
+
+        .specs-list li:last-child { border-bottom: none; }
+        .spec-label { color: #666; }
+        .spec-val { font-weight: 600; color: var(--primary); text-align: right; }
+
+        .total-row {
+            font-size: 1.1rem !important;
+            color: var(--accent) !important;
+            border-top: 2px solid var(--accent) !important;
+            padding-top: 15px !important;
+            margin-top: 5px;
+        }
+
+        .security-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+
+        .code-highlight {
+            font-family: monospace;
+            font-size: 1.1rem;
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: var(--primary);
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .stamp-paid {
+            position: absolute;
+            top: 30px;
+            right: -20px;
+            color: var(--success);
+            border: 4px solid var(--success);
+            padding: 5px 30px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            transform: rotate(35deg);
+            opacity: 0.9;
+            letter-spacing: 2px;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        /* --- Sezione Tracking --- */
+        .tracking-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .tracking-layout { grid-template-columns: 1fr; }
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-top: 20px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 5px;
+            bottom: 5px;
+            width: 2px;
+            background: #e0e0e0;
+        }
+
+        .step {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .step:last-child { margin-bottom: 0; }
+
+        .step::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 1px #e0e0e0;
+            z-index: 1;
+        }
+
+        .step.completed::before {
+            background: var(--success);
+            box-shadow: 0 0 0 1px var(--success);
+        }
+
+        .step.current::before {
+            background: #ff9800;
+            box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 152, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+        }
+
+        .step-title { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
+        .step-desc { font-size: 0.9rem; color: #555; line-height: 1.4; }
+        .step-date { font-size: 0.8rem; color: #999; margin-top: 4px; display: block; font-weight: 500;}
+
+        /* Recipient Info */
+        .recipient-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <svg viewBox="0 0 250 60" width="250" height="60" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(10, 10)">
+                <path d="M0,40 L15,0 L25,0 L10,40 Z" fill="#e63946"/>
+                <path d="M20,40 L35,0 L45,0 L30,40 Z" fill="#1d3557"/>
+                <path d="M40,20 L55,20 L50,40 L35,40 Z" fill="#e63946" opacity="0.8"/>
+                <text x="65" y="28" font-family="Inter, sans-serif" font-weight="800" font-size="24" fill="#1d3557">HAMBURG <tspan fill="#e63946">MG</tspan></text>
+                <text x="66" y="42" font-family="Inter, sans-serif" font-weight="600" font-size="9" fill="#888" letter-spacing="3.5">LOGISTICS & MOTORS</text>
+            </g>
+        </svg>
+    </header>
+
+    <div class="container">
+        
+        <div class="card">
+            <div class="stamp-paid">GIÀ PAGATO</div>
+            <div class="card-header">
+                <h2>Dossier Ordine: Aprilia SR400 GT</h2>
+                <span style="color: #666; font-size: 0.9rem;">Rif. Ordine: #HMG-88921A</span>
+            </div>
+
+            <div class="order-layout">
+                <div class="gallery">
+                    <img id="mainImage" class="gallery-main" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Aprilia_SR_GT_200.jpg/800px-Aprilia_SR_GT_200.jpg" alt="Aprilia SR400 GT Frontale">
+                    <div class="gallery-thumbs">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Aprilia_SR_GT_200.jpg/800px-Aprilia_SR_GT_200.jpg" onclick="document.getElementById('mainImage').src=this.src" alt="Vista 1">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Aprilia_SR_GT_200_Rear.jpg/800px-Aprilia_SR_GT_200_Rear.jpg" onclick="document.getElementById('mainImage').src=this.src" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Aprilia_SR_GT_200.jpg/800px-Aprilia_SR_GT_200.jpg'; this.style.filter='brightness(0.8)'" alt="Vista 2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Aprilia_SR_GT_Dashboard.jpg/800px-Aprilia_SR_GT_Dashboard.jpg" onclick="document.getElementById('mainImage').src=this.src" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Aprilia_SR_GT_200.jpg/800px-Aprilia_SR_GT_200.jpg'; this.style.filter='grayscale(1)'" alt="Vista 3">
+                    </div>
+                    <p style="font-size: 0.85rem; color: #666; text-align: center; margin-top: 5px;">Veicolo Nuovo - Pronta Consegna - Full Optional</p>
+                </div>
+
+                <div>
+                    <ul class="specs-list">
+                        <li><span class="spec-label">Prezzo Veicolo (Base)</span> <span class="spec-val">€ 5.300,00</span></li>
+                        <li><span class="spec-label">Spese di Immatricolazione</span> <span class="spec-val">€ 400,00</span></li>
+                        <li><span class="spec-label">Costi Intestazione (Pra/Motorizzazione)</span> <span class="spec-val">€ 600,00</span></li>
+                        <li class="total-row"><span class="spec-label" style="color: var(--primary); font-weight:800;">Totale Corrisposto</span> <span class="spec-val">€ 6.300,00</span></li>
+                    </ul>
+
+                    <ul class="specs-list" style="margin-top: 20px;">
+                        <li><span class="spec-label">Metodo di Pagamento</span> <span class="spec-val">Bonifico Bancario (SEPA)</span></li>
+                        <li><span class="spec-label">Stato Transazione</span> <span class="spec-val" style="color: var(--success);">Completata / Contabilizzata</span></li>
+                    </ul>
+
+                    <div class="security-box">
+                        <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                            <span class="spec-label">Codice Sicurezza Ritiro (PIN):</span>
+                            <span class="code-highlight">AUTH-88X2-901A</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="spec-label">Documento Transito Schengen:</span>
+                            <span class="code-highlight" style="font-size: 0.9rem;">SCH-TRANSIT-2026-DE-CH-IT</span>
+                        </div>
+                        <p style="font-size: 0.8rem; color: #666; margin: 10px 0 0 0;">
+                            <em>* Il codice di ritiro e un documento d'identità valido sono obbligatori per la consegna presso l'Aprilia Store. Il documento Schengen attesta il regolare sdoganamento in Svizzera.</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Stato della Spedizione & Logistica</h2>
+                <span style="color: #666; font-size: 0.9rem;">Corriere: Hamburg MG Freight Line</span>
+            </div>
+
+            <div class="tracking-layout">
+                <div>
+                    <div class="timeline">
+                        <div class="step completed">
+                            <div class="step-title">Presa in carico merce e verifica documenti</div>
+                            <div class="step-desc">Magazzino Centrale Hamburg MG. Controllo VIN e documentazione doganale completato.</div>
+                            <span class="step-date">21 Mar 2026 - 08:30</span>
+                        </div>
+
+                        <div class="step completed">
+                            <div class="step-title">Partita dalla filiale di partenza</div>
+                            <div class="step-desc">Friesische Straße 60, Bezirk Altona, Hamburg (DE)</div>
+                            <span class="step-date">21 Mar 2026 - 14:45</span>
+                        </div>
+
+                        <div class="step current">
+                            <div class="step-title">In transito (Stato Attuale)</div>
+                            <div class="step-desc">Centro di carico ferroviario (Güterverkehrszentrum), Zürich (CH). Operazioni di transito extra-UE completate con pass Schengen.</div>
+                            <span class="step-date">23 Mar 2026 - 09:15</span>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-title">In consegna</div>
+                            <div class="step-desc">Verso Hub di smistamento Nord Italia e successiva sede di destinazione finale.</div>
+                            <span class="step-date">Previsto per il 28 Mar 2026</span>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-title">Consegnato e pronto al ritiro</div>
+                            <div class="step-desc">Aprilia Store - Filippini & Figli SRL, Via Pusterla 9, 25128 Brescia (IT)</div>
+                            <span class="step-date">Data Consegna Stimata: Lunedì 30 Marzo 2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="recipient-box">
+                        <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 10px;">Dati Intestatario</h3>
+                        
+                        <ul class="specs-list">
+                            <li style="flex-direction: column; align-items: flex-start; gap: 5px;">
+                                <span class="spec-label">Nome e Cognome:</span>
+                                <span class="spec-val" style="text-align: left;">Brotto Sebastian</span>
+                            </li>
+                            <li style="flex-direction: column; align-items: flex-start; gap: 5px;">
+                                <span class="spec-label">Codice Fiscale:</span>
+                                <span class="spec-val" style="text-align: left;">BRTSST02M11L682L</span>
+                            </li>
+                            <li style="flex-direction: column; align-items: flex-start; gap: 5px;">
+                                <span class="spec-label">Punto di Ritiro Designato:</span>
+                                <span class="spec-val" style="text-align: left; line-height: 1.4;">
+                                    Aprilia Store (Filippini & Figli SRL)<br>
+                                    Via Pusterla 9<br>
+                                    25128 Brescia (BS), Italia
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
         
         body {
             background-color: var(--bg-dark);
