@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hamburg MG | Tracking Dashboard RS 457</title>
+    <title>Hamburg MG | Tracking Aprilia RS 457</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
@@ -23,12 +23,13 @@
             background-color: var(--bg);
             color: var(--text-main);
             margin: 0; padding: 0;
-            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        /* Header con Logo Originale */
+        /* Header Full-Width */
         header {
             background: var(--white);
+            width: 100%; /* Estensione totale */
             padding: 15px 0;
             border-bottom: 1px solid var(--border);
             display: flex;
@@ -37,318 +38,231 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
-        .container {
+        .header-inner {
+            width: 100%;
             max-width: 1200px;
-            margin: 40px auto;
+            display: flex;
+            justify-content: center;
             padding: 0 20px;
         }
 
-        /* Grid Principale */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
         .dashboard-grid {
             display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 25px;
         }
 
         .card {
             background: var(--white);
             border-radius: 20px;
-            padding: 30px;
+            padding: 25px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.02);
             border: 1px solid var(--border);
             position: relative;
         }
 
-        /* Galleria Immagini GitHub */
-        .gallery-container {
-            margin-bottom: 25px;
-        }
-
+        /* Gestione Immagini Intere */
         .main-view {
             width: 100%;
-            height: 450px;
+            background: #f8fafc; /* Sfondo neutro per foto contain */
             border-radius: 15px;
-            overflow: hidden;
-            background: #f1f1f1;
             margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            aspect-ratio: 4 / 3; /* Proporzione ideale per mobile/desktop */
         }
 
         .main-view img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* FOTO INTERA, MAI TAGLIATA */
+            transition: opacity 0.3s ease;
         }
 
         .thumbs-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
 
         .thumbs-grid img {
             width: 100%;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 8px;
+            aspect-ratio: 1;
+            object-fit: cover; /* Qui il cover va bene per le icone quadrate */
+            border-radius: 10px;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: 0.3s;
+            transition: 0.2s;
         }
 
-        .thumbs-grid img:hover { transform: scale(1.05); }
         .thumbs-grid img.active { border-color: var(--accent); }
 
-        /* Dettagli Tecnici Moto */
+        /* Specs e Info */
         .specs-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 1px solid var(--border);
+            gap: 12px;
+            margin-top: 20px;
         }
 
         .spec-box {
             background: #f8fafc;
-            padding: 15px;
+            padding: 12px;
             border-radius: 12px;
             text-align: center;
         }
 
-        .spec-box label { display: block; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
-        .spec-box span { display: block; font-size: 1rem; font-weight: 700; color: var(--primary); }
+        .spec-box label { display: block; font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+        .spec-box span { font-size: 0.9rem; font-weight: 700; color: var(--primary); }
 
-        /* Tracking Timeline */
-        .tracking-status {
-            padding-left: 20px;
-            border-left: 2px solid var(--border);
-            margin-left: 10px;
-        }
-
-        .step {
-            position: relative;
-            padding-bottom: 35px;
-            padding-left: 25px;
-        }
-
+        /* Tracking */
+        .tracking-status { padding-left: 15px; border-left: 2px solid var(--border); margin-left: 10px; }
+        .step { position: relative; padding-bottom: 30px; padding-left: 20px; }
         .step::before {
-            content: '';
-            position: absolute; left: -32px; top: 5px;
-            width: 12px; height: 12px;
-            border-radius: 50%; background: #cbd5e1;
-            border: 4px solid var(--white);
-            box-shadow: 0 0 0 1px #cbd5e1;
-            z-index: 2;
+            content: ''; position: absolute; left: -22px; top: 5px;
+            width: 10px; height: 10px; border-radius: 50%; background: #cbd5e1;
+            border: 3px solid var(--white); box-shadow: 0 0 0 1px #cbd5e1;
         }
-
         .step.done::before { background: var(--success); box-shadow: 0 0 0 1px var(--success); }
-        .step.current::before { 
-            background: var(--accent); 
-            box-shadow: 0 0 0 5px rgba(230, 57, 70, 0.2);
-            animation: pulse 2s infinite;
-        }
+        .step.current::before { background: var(--accent); box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.2); }
 
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-
-        .step-info h4 { margin: 0; font-size: 1rem; font-weight: 700; }
-        .step-info p { margin: 5px 0 0; font-size: 0.85rem; color: var(--text-muted); }
-        .step-date { font-size: 0.75rem; font-weight: 600; color: #94a3b8; }
-
-        /* Floating Invoice Button */
         .invoice-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: 0.3s;
+            background: var(--primary); color: white; border: none; width: 100%;
+            padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer;
+            margin-top: 15px; transition: 0.3s;
         }
-
-        .invoice-btn:hover { background: var(--accent); transform: translateY(-2px); }
+        .invoice-btn:hover { background: var(--accent); }
 
         /* Modal Fattura */
         .modal {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center;
-            z-index: 2000;
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 2000;
         }
-
         .invoice-paper {
-            background: white;
-            width: 90%; max-width: 550px;
-            border-radius: 15px;
-            padding: 40px;
-            position: relative;
+            background: white; width: 95%; max-width: 500px; border-radius: 20px;
+            padding: 30px; position: relative; box-sizing: border-box;
         }
 
         .paid-stamp {
-            position: absolute; top: 40px; right: 40px;
-            border: 4px solid var(--success);
-            color: var(--success);
-            padding: 8px 20px;
-            font-weight: 900;
-            font-size: 1.5rem;
-            transform: rotate(15deg);
-            border-radius: 8px;
-            opacity: 0.8;
+            position: absolute; top: 30px; right: 20px; border: 4px solid var(--success);
+            color: var(--success); padding: 5px 15px; font-weight: 900; transform: rotate(15deg); border-radius: 8px;
         }
 
-        .line-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
-        .total-line { font-size: 1.4rem; font-weight: 800; color: var(--primary); border-top: 2px solid var(--primary); margin-top: 15px; }
-
-        @media (max-width: 992px) { .dashboard-grid { grid-template-columns: 1fr; } }
+        /* Responsive */
+        @media (max-width: 850px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .main-view { aspect-ratio: 16 / 9; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <svg viewBox="0 0 250 60" width="220" height="50" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(10, 10)">
-            <path d="M0,40 L15,0 L25,0 L10,40 Z" fill="#e63946"/>
-            <path d="M20,40 L35,0 L45,0 L30,40 Z" fill="#1d3557"/>
-            <path d="M40,20 L55,20 L50,40 L35,40 Z" fill="#e63946" opacity="0.8"/>
-            <text x="65" y="28" font-family="Inter, sans-serif" font-weight="800" font-size="24" fill="#1d3557">HAMBURG <tspan fill="#e63946">MG</tspan></text>
-            <text x="66" y="42" font-family="Inter, sans-serif" font-weight="600" font-size="9" fill="#888" letter-spacing="3.5">LOGISTICS & MOTORS</text>
-        </g>
-    </svg>
+    <div class="header-inner">
+        <svg viewBox="0 0 250 60" width="220" height="50" xmlns="http://www.w3.org/2000/svg">
+            <g transform="translate(10, 10)">
+                <path d="M0,40 L15,0 L25,0 L10,40 Z" fill="#e63946"/>
+                <path d="M20,40 L35,0 L45,0 L30,40 Z" fill="#1d3557"/>
+                <path d="M40,20 L55,20 L50,40 L35,40 Z" fill="#e63946" opacity="0.8"/>
+                <text x="65" y="28" font-family="Inter, sans-serif" font-weight="800" font-size="24" fill="#1d3557">HAMBURG <tspan fill="#e63946">MG</tspan></text>
+                <text x="66" y="42" font-family="Inter, sans-serif" font-weight="600" font-size="9" fill="#888" letter-spacing="3.5">LOGISTICS & MOTORS</text>
+            </g>
+        </svg>
+    </div>
 </header>
 
 <div class="container">
     <div class="dashboard-grid">
         
         <div class="card">
-            <div class="gallery-container">
-                <div class="main-view">
-                    <img id="mainImg" src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/0.png" alt="Aprilia RS 457">
-                </div>
-                <div class="thumbs-grid">
-                    <img src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/0.png" class="active" onclick="updateGallery(this)">
-                    <img src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/1.png" onclick="updateGallery(this)">
-                    <img src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/2.png" onclick="updateGallery(this)">
-                    <img src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/3.png" onclick="updateGallery(this)">
-                    <img src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/4.png" onclick="updateGallery(this)">
-                </div>
+            <div class="main-view">
+                <img id="mainImg" src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/0.png" alt="Aprilia RS 457">
+            </div>
+            <div class="thumbs-grid">
+                <img src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/0.png" class="active" onclick="setGallery(this)">
+                <img src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/1.png" onclick="setGallery(this)">
+                <img src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/2.png" onclick="setGallery(this)">
+                <img src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/3.png" onclick="setGallery(this)">
+                <img src="https://raw.githubusercontent.com/ryzn-eu/Orion./main/foto/4.png" onclick="setGallery(this)">
             </div>
 
-            <div class="moto-header">
-                <h2 style="margin:0; font-size: 1.8rem;">Aprilia RS 457 <span style="color: var(--accent); font-weight: 300;">| 2026 Model</span></h2>
-                <p style="color: var(--text-muted); margin-top: 5px;">Bicilindrico frontemarcia, Ride-by-Wire, Traction Control regolabile e fari full LED.</p>
-            </div>
-
-            <div class="specs-grid">
-                <div class="spec-box"><label>Potenza</label><span>35 kW (47.6 CV)</span></div>
-                <div class="spec-box"><label>Peso</label><span>175 kg (wet)</span></div>
-                <div class="spec-box"><label>Cilindrata</label><span>457 cc</span></div>
-                <div class="spec-box"><label>Elettronica</label><span>3 Riding Modes</span></div>
-                <div class="spec-box"><label>Cambio</label><span>6 Rapporti</span></div>
-                <div class="spec-box"><label>Colore</label><span>Racing Stripes</span></div>
+            <div style="margin-top: 25px;">
+                <h2 style="margin:0; font-size: 1.6rem;">Aprilia RS 457</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin: 5px 0 20px;">Racing DNA, motore bicilindrico 457cc, 47.6 CV. Telaio in alluminio.</p>
+                
+                <div class="specs-grid">
+                    <div class="spec-box"><label>Potenza</label><span>35 kW</span></div>
+                    <div class="spec-box"><label>Peso</label><span>175 kg</span></div>
+                    <div class="spec-box"><label>ABS</label><span>Dual Ch.</span></div>
+                </div>
             </div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 30px;">
-            
+        <div style="display: flex; flex-direction: column; gap: 25px;">
             <div class="card">
-                <h3 style="margin-top: 0;">Stato Spedizione</h3>
+                <h3 style="margin-top:0">Tracking Spedizione</h3>
                 <div class="tracking-status">
                     <div class="step done">
-                        <span class="step-date">21 Mar 2026 - 14:45</span>
-                        <div class="step-info">
-                            <h4>Partita da Amburgo</h4>
-                            <p>Friesische Straße 60, Bezirk Altona (DE)</p>
-                        </div>
+                        <span class="step-date">21 Mar 2026</span>
+                        <div class="step-info"><strong>Hamburg MG (DE)</strong><p>Partenza da Friesische Straße 60</p></div>
                     </div>
                     <div class="step current">
-                        <span class="step-date">23 Mar 2026 - 09:15</span>
-                        <div class="step-info">
-                            <h4>Transito Zurigo (CH)</h4>
-                            <p>Güterverkehrszentrum (Centro Carico Ferroviario)</p>
-                        </div>
+                        <span class="step-date">23 Mar 2026</span>
+                        <div class="step-info"><strong>Zurich Terminal (CH)</strong><p>In transito ferroviario - Pass Schengen OK</p></div>
                     </div>
                     <div class="step">
-                        <span class="step-date">Stima: 28 Mar</span>
-                        <div class="step-info">
-                            <h4>In arrivo in Italia</h4>
-                            <p>Dogana di Chiasso / Hub Milano</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <span class="step-date" style="color: var(--accent);">Lunedì 30 Mar 2026</span>
-                        <div class="step-info">
-                            <h4>Consegna a Brescia</h4>
-                            <p>Filippini & Figli S.r.l. - Via Pusterla 9</p>
-                        </div>
+                        <span class="step-date">30 Mar 2026</span>
+                        <div class="step-info"><strong>Brescia (IT)</strong><p>Consegna: Filippini & Figli S.r.l.</p></div>
                     </div>
                 </div>
             </div>
 
             <div class="card">
-                <h3 style="margin-top: 0;">Dettagli Consegna</h3>
-                <div style="font-size: 0.9rem;">
-                    <p><strong>Destinatario:</strong> Brotto Sebastian</p>
-                    <p><strong>Codice Fiscale:</strong> BRTSST02M11L682L</p>
-                    <p><strong>Punto Ritiro:</strong> <br>
-                       <span style="color: var(--accent); font-weight: 700;">Filippini & Figli S.r.l. (Aprilia Store)</span><br>
-                       Via Pusterla 9, 25128 Brescia (BS)</p>
-                </div>
-                
-                <button class="invoice-btn" onclick="openInvoice()">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    Visualizza Fattura Saldata
-                </button>
+                <h3 style="margin-top:0">Dati Consegna</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 20px;">
+                    <strong>Destinatario:</strong> Brotto Sebastian<br>
+                    <strong>C.F.:</strong> BRTSST02M11L682L<br>
+                    <strong>Sede Ritiro:</strong> Via Pusterla 9, Brescia
+                </p>
+                <button class="invoice-btn" onclick="openInv()">Vedi Fattura & PIN Ritiro</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal" id="invoiceModal" onclick="closeInvoice()">
+<div class="modal" id="invModal" onclick="closeInv()">
     <div class="invoice-paper" onclick="event.stopPropagation()">
         <div class="paid-stamp">PAGATO</div>
-        <h2 style="margin-top: 0; color: var(--primary);">Hamburg MG Motors</h2>
-        <p style="color: var(--text-muted); font-size: 0.8rem;">Dossier Spedizione #HMG-88921A-2026</p>
-        <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+        <h3 style="margin-top:0">Riepilogo Pagamenti</h3>
+        <hr style="border:0; border-top:1px solid #eee; margin:15px 0">
+        <div style="display:flex; justify-content:space-between; margin: 10px 0;"><span>Aprilia RS 457</span><strong>€ 5.300,00</strong></div>
+        <div style="display:flex; justify-content:space-between; margin: 10px 0;"><span>Immatricolazione</span><strong>€ 400,00</strong></div>
+        <div style="display:flex; justify-content:space-between; margin: 10px 0;"><span>Oneri Pratiche</span><strong>€ 600,00</strong></div>
+        <div style="display:flex; justify-content:space-between; margin: 15px 0; font-size: 1.3rem; color: var(--primary);"><strong>Totale</strong><strong>€ 6.300,00</strong></div>
         
-        <div class="line-item"><span>Aprilia RS 457 (Nuova)</span><strong>€ 5.300,00</strong></div>
-        <div class="line-item"><span>Immatricolazione Nazionale</span><strong>€ 400,00</strong></div>
-        <div class="line-item"><span>Pratiche Intestazione & Documenti</span><strong>€ 600,00</strong></div>
-        
-        <div class="line-item total-line">
-            <span>Totale Complessivo</span>
-            <span>€ 6.300,00</span>
-        </div>
-
-        <div style="margin-top: 30px; background: #f8fafc; padding: 20px; border-radius: 10px; font-size: 0.85rem;">
-            <strong>Codice di Sicurezza per il Ritiro:</strong><br>
-            <span style="font-family: monospace; font-size: 1.2rem; color: var(--accent); font-weight: 800;">AUTH-88X2-901A</span>
-            <p style="margin-top: 10px; color: var(--text-muted);">Da presentare unitamente al Documento d'Identità presso la sede Filippini & Figli di Brescia.</p>
+        <div style="background:#f1f5f9; padding:15px; border-radius:10px; margin-top:20px; text-align:center;">
+            <label style="font-size: 0.7rem; font-weight:700; color:var(--text-muted); display:block; text-transform:uppercase;">Codice PIN per il Ritiro</label>
+            <span style="font-family:monospace; font-size:1.4rem; color:var(--accent); font-weight:800;">AUTH-88X2-901A</span>
         </div>
     </div>
 </div>
 
 <script>
-    function updateGallery(el) {
+    function setGallery(el) {
         document.getElementById('mainImg').src = el.src;
-        document.querySelectorAll('.thumbs-grid img').forEach(img => img.classList.remove('active'));
+        document.querySelectorAll('.thumbs-grid img').forEach(i => i.classList.remove('active'));
         el.classList.add('active');
     }
-
-    function openInvoice() {
-        document.getElementById('invoiceModal').style.display = 'flex';
-    }
-
-    function closeInvoice() {
-        document.getElementById('invoiceModal').style.display = 'none';
-    }
+    function openInv() { document.getElementById('invModal').style.display = 'flex'; }
+    function closeInv() { document.getElementById('invModal').style.display = 'none'; }
 </script>
 
 </body>
