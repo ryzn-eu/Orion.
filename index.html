@@ -4,6 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ORION LABS x NASA | Portale Operativo di Ingegneria Aerospaziale e Quantistica</title>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+
+        // Configurazione recuperata dal server di Horizon Servizi
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJjhL9-d-2QMKDYviV7KfYhUOHWDAoasU",
+            authDomain: "horizongls.firebaseapp.com",
+            databaseURL: "https://horizongls-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "horizongls",
+            storageBucket: "horizongls.firebasestorage.app",
+            messagingSenderId: "611544552805",
+            appId: "1:611544552805:web:88fb0e35e59fb5bf543d8c"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Esponi le funzioni globalmente per utilizzarle nei form inline dell'interfaccia
+        window.checkVeo3Coverage = function() {
+            const addr = document.getElementById('veo3-address').value.trim();
+            if(!addr) {
+                alert("Inserisci un indirizzo valido per eseguire il check di copertura satellitare.");
+                return;
+            }
+            document.getElementById('veo3-final-address').value = addr;
+            const resDiv = document.getElementById('veo3-results');
+            resDiv.style.display = 'block';
+            resDiv.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.submitVeo3Request = async function(event) {
+            event.preventDefault();
+            const btn = document.getElementById('veo3-submit-btn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = "ELABORAZIONE E INVIO IN CORSO...";
+
+            const reqId = 'ORION-VEO3-' + Math.floor(100000 + Math.random() * 900000);
+            const data = {
+                id: reqId,
+                origine: 'Orion Labs Portal',
+                tipoImpianto: document.getElementById('veo3-tipo').value,
+                nome: document.getElementById('veo3-nome').value,
+                telefono: document.getElementById('veo3-tel').value,
+                email: document.getElementById('veo3-email').value,
+                indirizzo: document.getElementById('veo3-final-address').value,
+                downloadSimulato: '300 Mbps',
+                uploadSimulato: '230 Mbps',
+                stato: 'Nuovo Ordine Orion',
+                dataRichiesta: new Date().toISOString()
+            };
+
+            try {
+                await set(ref(db, 'richieste_servizi/' + reqId), data);
+                alert("Richiesta inviata con successo! La pratica per l'allacciamento satellitare Veo3 è stata inserita nei sistemi centrali di Horizon Servizi.");
+                document.getElementById('veo3-form').reset();
+                document.getElementById('veo3-results').style.display = 'none';
+                document.getElementById('veo3-address').value = '';
+            } catch (error) {
+                alert("Si è verificato un errore durante l'invio della richiesta: " + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        };
+    </script>
+
     <style>
         /* === ROOT & RESET === */
         :root {
@@ -70,6 +139,13 @@
         .nav-links a { color: var(--text-main); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; transition: color 0.2s; letter-spacing: 0.5px; }
         .nav-links a:hover { color: var(--accent-cyan); }
 
+        /* Mobile Menu Toggle Button */
+        .menu-toggle {
+            display: none; cursor: pointer; border: 1px solid var(--border-color);
+            padding: 6px 12px; border-radius: 4px; font-family: var(--font-mono);
+            font-size: 12px; color: #fff; background: var(--bg-panel-light); user-select: none;
+        }
+
         /* === HERO STATUS BOARD === */
         .hero {
             padding: 80px 5vw; border-bottom: 1px solid var(--border-color);
@@ -110,7 +186,7 @@
 
         /* === TECHNICAL SPECS TABLES === */
         .table-container { overflow-x: auto; margin-top: 25px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-panel); }
-        table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 13px; }
+        table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 13px; min-width: 600px; }
         th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border-color); }
         th { background: var(--bg-panel-light); color: #fff; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; font-size: 12px; }
         tr:last-child td { border-bottom: none; }
@@ -137,8 +213,6 @@
         .img-engine { background-image: url('https://images.unsplash.com/photo-1580661869408-55ab23f2ca87?q=80&w=1000&auto=format&fit=crop'); }
         .img-artemis { background-image: url('https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=1500&auto=format&fit=crop'); }
         .img-mars { background-image: url('https://images.unsplash.com/photo-1612892483236-42d68a57623d?q=80&w=1500&auto=format&fit=crop'); }
-        .img-jwst { background-image: url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?q=80&w=1500&auto=format&fit=crop'); }
-        .img-iss { background-image: url('https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?q=80&w=1500&auto=format&fit=crop'); }
 
         /* === LOGS AND MONITORING PANELS === */
         .log-terminal { background: #04080f; border: 1px solid var(--border-color); border-radius: 6px; padding: 20px; font-family: var(--font-mono); font-size: 12px; color: #39ff14; height: 250px; overflow-y: auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
@@ -157,9 +231,24 @@
         .partners { display: flex; align-items: center; gap: 15px; margin-top: 25px; font-weight: bold; font-family: var(--font-mono); flex-wrap: wrap; }
         .partner-logo { font-size: 18px; color: #fff; border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 4px; background: var(--bg-panel); display: inline-flex; justify-content: center; align-items: center; letter-spacing: 2px; text-transform: uppercase; }
 
-        @media (max-width: 1100px) {
-            .grid-2, .grid-3, .grid-1-3, .footer-grid { grid-template-columns: 1fr; }
+        /* === MEDIA QUERIES RESPONSIVE (FIX MOBILE) === */
+        @media (max-width: 950px) {
+            .menu-toggle { display: block !important; }
+            .nav-menu-wrapper { flex-wrap: wrap; }
+            .nav-links {
+                display: none; width: 100%; flex-direction: column; margin-top: 15px;
+                gap: 12px; background: var(--bg-panel-light); padding: 15px;
+                border-radius: 6px; border: 1px solid var(--border-color);
+            }
+            .nav-links.active { display: flex !important; }
+            .grid-2, .grid-3, .grid-1-3, .footer-grid { grid-template-columns: 1fr !important; gap: 25px; }
             .tech-image { height: 200px; }
+            .hero h1 { font-size: 34px !important; }
+            section { padding: 50px 4vw !important; }
+            .section-header h2 { font-size: 24px !important; }
+            .math-text { font-size: 18px !important; }
+            .math-vars { grid-template-columns: 1fr !important; }
+            .panel { padding: 20px; }
         }
     </style>
 </head>
@@ -167,8 +256,8 @@
 
     <div class="topbar">
         <span>DATA STREAM: COGNITIVE DEEP SYNCHRONIZATION // OPEN NASA LINK</span>
-        <span>HUB CENTRAL: ORION LABS (EUROPE) // DATA SOURCE: NASA JPL & KENNEDY SPACE CENTER</span>
-        <span id="clock" class="text-cyan">SYS TIME: 2026-06-01 19:35:12 UTC</span>
+        <span>HUB CENTRAL: ORION LABS (EUROPE) // DATA SOURCE: NASA JPL</span>
+        <span id="clock" class="text-cyan">SYS TIME: 2026-06-04 15:26:00 UTC</span>
     </div>
 
     <nav>
@@ -186,14 +275,15 @@
                         <span class="brand-sub">NASA & HORIZON JOINT PLATFORM</span>
                     </div>
                 </a>
+                
+                <div class="menu-toggle" onclick="toggleMobileMenu()">MENU ☰</div>
+                
                 <ul class="nav-links">
                     <li><a href="#core-theory">Fisica TFSA</a></li>
                     <li><a href="#propulsion">Propulsione Arcania</a></li>
+                    <li><a href="#veo3-satellite" class="text-gold">Rete Satellitare Veo3</a></li>
                     <li><a href="#artemis">Programma Artemis</a></li>
                     <li><a href="#mars">Marte Exploration</a></li>
-                    <li><a href="#deep-space">Cosmologia Webb</a></li>
-                    <li><a href="#iss-node">Stazione ISS</a></li>
-                    <li><a href="#academy">Academy Archive</a></li>
                 </ul>
             </div>
         </div>
@@ -206,327 +296,160 @@
                 <span class="badge nasa">Accordo Inter-Agenzia 2024-2035</span>
                 <span class="badge success">Stato: Operativo</span>
             </div>
-            <h1 style="font-size: 52px; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1.5px;">ARCHITETTURA COSMICA ED<br><span class="text-cyan">ESPLORAZIONE DI FRONTIERA</span></h1>
-            <p style="font-size: 19px; color: var(--text-muted); max-width: 850px; margin-bottom: 20px;">
-                Il Framework Unificato tra la <strong>Teoria del Fluido Spaziale Assoluto (TFSA)</strong> di Horizon e l'infrastruttura di lancio della <strong>NASA</strong> ridefinisce il destino dell'umanità. Dalla mappatura lunare ad alta risoluzione alle rotte interstellari a frazioni relativistiche di <em>c</em>: i moduli Orion Labs sono ora integrati nei vettori SLS e nei sistemi di transito marziano deep-space.
-            </p>
-        </div>
-
-        <div class="status-grid">
-            <div class="status-box">
-                <div class="label">Sincronizzazione NASA Telemetry</div>
-                <div class="value text-green">ONLINE (100%)</div>
-            </div>
-            <div class="status-box">
-                <div class="label">Vettore SLS Block 2 Progress</div>
-                <div class="value">CONFIGURATO</div>
-            </div>
-            <div class="status-box">
-                <div class="label">Rendimento Propulsore Arcania</div>
-                <div class="value text-cyan">98.42% NOMINALE</div>
-            </div>
-            <div class="status-box">
-                <div class="label">Pressione Vuoto Confinato JPL</div>
-                <div class="value">1.4 × 10⁻¹¹ Pa</div>
-            </div>
-            <div class="status-box">
-                <div class="label">Finestra di Lancio Marte Orion-V</div>
-                <div class="value text-gold">T-214 GIORNI</div>
+            <h1 style="font-size: 52px; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1.5px;">ARCHITETTURA QUANTISTICA UNIFICATA</h1>
+            <p style="font-size: 18px; color: var(--text-muted); max-width: 750px;">Monitoraggio dei sistemi di calcolo avanzati e sincronizzazione delle dorsali a banda ultralarga planetaria.</p>
+            
+            <div class="status-grid">
+                <div class="status-box">
+                    <div class="label">Rete Sincronizzazione Dati</div>
+                    <div class="value text-green">ONLINE</div>
+                </div>
+                <div class="status-box">
+                    <div class="label">Canale Satellitare Principale</div>
+                    <div class="value text-cyan">VEO3 DISTRIBUTED</div>
+                </div>
+                <div class="status-box">
+                    <div class="label">Latenza Uplink Centrale</div>
+                    <div class="value font-mono">14.2 ms</div>
+                </div>
             </div>
         </div>
     </header>
 
     <section id="core-theory">
         <div class="section-header">
-            <p>01. FONDAMENTI FISICI E UNIFICAZIONE DI EINSTEIN</p>
-            <h2>Teoria del Fluido Spaziale Assoluto (TFSA)</h2>
+            <h2>01 / Teoria del Campo Gravitazionale Unificato</h2>
+            <p>SPECIFICHE DI RICERCA ACCADEMICA DECLASSIFICATA // TRATTATO DI COOPERAZIONE</p>
+        </div>
+        <div class="grid-2">
+            <div class="panel">
+                <div class="tech-image img-arcania"></div>
+                <h3 style="margin-bottom: 15px;">Fisica TFSA e Campi Torsionali</h3>
+                <p style="color: var(--text-muted); font-size: 15px; text-align: justify;">
+                    Il framework matematico sviluppato congiuntamente permette la stabilizzazione delle metriche spaziali locali attraverso l'interazione controllata di campi magnetici rotanti iper-veloci, superando la curvatura standard di Einstein.
+                </p>
+            </div>
+            <div class="panel" style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="formula-container">
+                    <div class="math-text">
+                        G<sub>&mu;&nu;</sub> + &Lambda;g<sub>&mu;&nu;</sub> = &chi; ( T<sub>&mu;&nu;</sub> + &Psi;<sub>&mu;&nu;</sub><sup>TFSA</sup> )
+                    </div>
+                    <div class="math-vars">
+                        <div><strong>G<sub>&mu;&nu;</sub></strong>: Tensore di Einstein</div>
+                        <div><strong>&Psi;<sub>&mu;&nu;</sub><sup>TFSA</sup></strong>: Tensore Energetico Quantico</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="veo3-satellite" style="background: rgba(210, 153, 34, 0.02);">
+        <div class="section-header" style="border-left-color: var(--accent-gold);">
+            <h2>02 / Connettività Satellitare Globale Veo3</h2>
+            <p>PIATTAFORMA RADIALE INTERFACCIATA CON L'INFRASTRUTTURA HORIZON SERVIZI</p>
         </div>
         
         <div class="grid-2">
-            <div>
-                <h3 style="margin-bottom: 15px; font-size: 24px;">Superamento della Relatività ed Equilibrio di Bernoulli Gravitazionale</h3>
-                <p style="margin-bottom: 15px; text-align: justify;">
-                    La Teoria del Fluido Spaziale Assoluto rappresenta l'evoluzione definitiva dei modelli spaziotemporali del ventesimo secolo. Mentre la Relatività Generale di Albert Einstein descriveva la gravità come l'effetto geometrico e passivo di una curvatura dello spaziotempo immateriale, i laboratori congiunti Horizon e NASA hanno dimostrato l'esistenza di un substrato dinamico: l'<strong>ultra-fluido quantistico di fondo</strong>.
-                </p>
-                <p style="margin-bottom: 15px; text-align: justify;">
-                    Questo fluido permea ogni angolo del cosmo osservabile. Gli ammassi stellari, i buchi neri e le concentrazioni di materia oscura non deformano una griglia vuota, ma agiscono come giganteschi drenaggi idrodinamici o vortici quantistici ad altissima densità. La gravità macroscopica non è altro che il vettore di trascinamento esercitato da questo flusso fluido sulla materia ordinaria.
-                </p>
-                <p style="text-align: justify;">
-                    Grazie all'azzeramento termo-quantistico delle fluttuazioni di Bohm su scale cosmologiche ottenuto nei laboratori JPL, l'equazione tensoriale di Einstein viene convertita in un modello idrodinamico perfetto. Questo permette di mappare le rotte delle sonde spaziali non più come traiettorie orbitali soggette a frizione inerziale, ma come linee di flusso all'interno di una corrente a spinta idrodinamica cosmica controllata.
-                </p>
-            </div>
-            
             <div class="panel">
-                <h4 style="border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px; font-family: var(--font-mono); font-size: 13px;">MATHEMATICAL ADVANCED UNIFICATION ENGINE</h4>
-                <div class="formula-container">
-                    <div class="math-text">
-                        ∂(ρu^μ)/∂x^μ + ∇·(ρvv) = -∇P + (ħ²/2m)ρ∇(∇²√ρ/√ρ) + ρF_g
+                <h3 style="margin-bottom: 15px;" class="text-cyan">Verifica Copertura Radiale</h3>
+                <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;">
+                    Inserisci la posizione geografica o l'indirizzo della sede operativa per calcolare il vettore d'intercettazione del modulo parabolico con la costellazione Veo3.
+                </p>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                    <input type="text" id="veo3-address" placeholder="Es. Via dell'Aeroporto 45, Roma" style="flex: 1; min-width: 200px; padding: 12px; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; color: #fff;">
+                    <button onclick="checkVeo3Coverage()" style="background: var(--accent-cyan); color: #fff; border: none; padding: 12px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">Test Connessione</button>
+                </div>
+                
+                <div id="veo3-results" style="display: none;" class="panel-light">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span class="badge success">Aggancio Satellitare Ottimale</span>
                     </div>
-                    <div class="math-vars">
-                        <div><strong>ρ (Rho)</strong>: Densità super-fluida locale del vuoto</div>
-                        <div><strong>P (Pressione)</strong>: Gradiente termodinamico interno</div>
-                        <div><strong>v (Vettore)</strong>: Campo di velocità del flusso spaziale</div>
-                        <div><strong>ħ (Planck)</strong>: Termine della pressione quantistica</div>
-                        <div><strong>F_g (Forza)</strong>: Forza gravitazionale emergente</div>
-                        <div><strong>u^μ (Quadrivelocità)</strong>: Tensore di co-movimento relativistico</div>
+                    <div class="log-terminal" style="height: 130px; background: #02040a;">
+                        <div class="log-line"><span class="log-time">[STATUS]</span> <span class="log-tag">RETICOLO GEOSTAZIONARIO:</span> Copertura 100% Disponibile</div>
+                        <div class="log-line"><span class="log-time">[TEST]</span> <span class="log-tag">DOWNLOAD NOMINALE STABILE:</span> <span class="text-cyan">300 Mbps</span></div>
+                        <div class="log-line"><span class="log-time">[TEST]</span> <span class="log-tag">UPLOAD NOMINALE STABILE:</span> <span class="text-gold">230 Mbps</span></div>
                     </div>
                 </div>
-                <p style="font-size: 13px; color: var(--text-muted); text-align: justify; padding: 10px; border-top: 1px solid var(--border-color);">
-                    <strong>Nota Analitica:</strong> Portando la costante quantistica al limite classico (ħ → 0), il potenziale quantistico di Bohm decade e l'equazione collassa istantaneamente nel limite di Navier-Stokes e nelle classiche leggi del moto Newtoniano e della Relatività ristretta.
-                </p>
+            </div>
+
+            <div class="panel">
+                <h3 style="margin-bottom: 15px;">Richiesta Configurazione Hardware Parabola</h3>
+                <form id="veo3-form" onsubmit="submitVeo3Request(event)">
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; color: var(--text-muted);">CATEGORIA INFRASTRUTTURALE</label>
+                        <select id="veo3-tipo" style="width: 100%; padding: 11px; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; color: #fff;">
+                            <option value="Civile">Impianto Civile (Residenziale Autonomo)</option>
+                            <option value="Industriale">Impianto Industriale (Aziende e Server Network)</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div>
+                            <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; color: var(--text-muted);">INTESTATARIO / NOMINATIVO</label>
+                            <input type="text" id="veo3-nome" required style="width: 100%; padding: 10px; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; color: #fff;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; color: var(--text-muted);">RECAPITO TELEFONICO</label>
+                            <input type="tel" id="veo3-tel" required style="width: 100%; padding: 10px; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; color: #fff;">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; color: var(--text-muted);">EMAIL DI RIFERIMENTO</label>
+                        <input type="email" id="veo3-email" required style="width: 100%; padding: 10px; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; color: #fff;">
+                    </div>
+                    
+                    <div style="margin-bottom: 18px;">
+                        <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; color: var(--text-muted);">INDIRIZZO DI ALLACCIAMENTO VALIDATO</label>
+                        <input type="text" id="veo3-final-address" readonly placeholder="Esegui prima la verifica copertura a sinistra" required style="width: 100%; padding: 10px; background: var(--bg-panel-light); border: 1px solid var(--border-color); border-radius: 6px; color: var(--accent-gold); font-weight: bold;">
+                    </div>
+                    
+                    <button type="submit" id="veo3-submit-btn" style="width: 100%; background: var(--accent-green); color: #fff; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">
+                        Apri Pratica Su Database Horizon
+                    </button>
+                </form>
             </div>
         </div>
     </section>
 
     <section id="propulsion">
-        <div class="section-header">
-            <p>02. INGEGNERIA DEL CONFINAMENTO NUCLEARE</p>
-            <h2>Termomotori Nucleari a Sonoridondanza (Arcania Mk IV)</h2>
+        <div class="section-header nasa-style">
+            <h2>03 / Sistemi di Propulsione Deep Space</h2>
+            <p>SPECIFICHE DEGLI APPARATI DI VOLO CONGIUNTI // ARCHIVIO TECNICO</p>
         </div>
-
-        <div class="grid-2">
+        <div class="panel">
             <div class="tech-image img-engine"></div>
-            <div>
-                <h3 style="margin-bottom: 15px; font-size: 24px;">Principio dell'Attrito Spaziale Indotto</h3>
-                <p style="margin-bottom: 15px; text-align: justify;">
-                    La propulsione a razzo convenzionale ha raggiunto il suo limite teorico basandosi sul terzo principio della dinamica (azione e reazione) tramite l'espulsione di massa ad alta temperatura. Il sistema **Arcania Mk IV**, sviluppato in collaborazione con la divisione *Glenn Research Center* della NASA, spezza questo paradigma attraverso l'interfaccia quantistica diretta con il mezzo TFSA.
-                </p>
-                <p style="margin-bottom: 15px; text-align: justify;">
-                    Il termomotore non espelle materiale di consumo accumulato nei serbatoi. Esso utilizza un nucleo di fusione a confinamento magnetico estremo per generare un plasma ad altissima densità energetica, eccitato da emettitori acustici sintonizzati sulla frequenza di risonanza armonica dell'ultra-fluido spaziale. Generando "radio fasci densi sintonizzati", il motore induce un accoppiamento (o grip meccanico) direttamente contro la struttura del vuoto quantistico.
-                </p>
-                <p style="text-align: justify;">
-                    In termini macroscopici, l'astronave non viene spinta dall'espulsione di gas, ma "nuota" attivamente all'interno del tessuto cosmico. Questo previene l'accumulo di stress inerziale distruttivo per l'equipaggio, isolando la cabina interna di pilotaggio dalle accelerazioni ad alto fattore G.
-                </p>
-            </div>
-        </div>
-
-        <h4 style="margin-top: 40px; margin-bottom: 15px; font-family: var(--font-mono); color: var(--accent-cyan); font-size: 14px;">SPECIFICHE TECNICHE SISTEMI PROPULSIVI - SPECIFICHE UNIFICATE NASA/ORION BLOCK IV</h4>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Modulo Hardware</th>
-                        <th>Parametro di Soglia</th>
-                        <th>Valore Operativo Standard</th>
-                        <th>Composizione Strutturale e Note di Laboratorio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Core a Fusione D-He3</td>
-                        <td>Temperatura di Plasma</td>
-                        <td class="spec-value">1.45 × 10⁸ K</td>
-                        <td>Matrice in Carburo di Afnio e Tungsteno con Nanotubi di Carbonio induriti</td>
-                    </tr>
-                    <tr>
-                        <td>Toroide Magnetico Primario</td>
-                        <td>Intensità di Campo</td>
-                        <td class="spec-value">480 Tesla</td>
-                        <td>Superconduttori REBCO a film sottile raffreddati criogenicamente ad Elio Superfluido (1.8 K)</td>
-                    </tr>
-                    <tr>
-                        <td>Cristalli di Sonoridondanza</td>
-                        <td>Frequenza di Eccitazione</td>
-                        <td class="spec-value">Exahertz Range (1.2 EHz)</td>
-                        <td>Niobato di Litio cristallino con drogaggio a punti quantici di Grafene strutturato</td>
-                    </tr>
-                    <tr>
-                        <td>Unità di Spinta Idrodinamica</td>
-                        <td>Velocità Nominale di Crociera</td>
-                        <td class="spec-value">0.65 c (194.871 km/s)</td>
-                        <td>Consumo di propellente interno pari a zero; trazione dinamica sul campo quantistico TFSA</td>
-                    </tr>
-                    <tr>
-                        <td>Scudo di Intrinsecazione</td>
-                        <td>Efficienza di Deflessione Radiazioni</td>
-                        <td class="spec-value">99.9997%</td>
-                        <td>Generazione di un campo geodetico acustico protettivo contro raggi cosmici HZE</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <section id="artemis" style="background-color: var(--bg-panel);">
-        <div class="section-header nasa-style">
-            <p>03. INTEGRAZIONE PROGRAMMA LUNARE EXTRA-ATMOFERICO</p>
-            <h2>Infrastruttura Artemis & Orion Spacecraft</h2>
-        </div>
-
-        <div class="grid-2">
-            <div>
-                <span class="badge nasa" style="margin-bottom: 15px;">NASA Space Launch System (SLS) Integration</span>
-                <h3 style="font-size: 24px; margin-bottom: 15px;">Il Ritorno sulla Luna e l'Infrastruttura di Attracco Gateway</h3>
-                <p style="margin-bottom: 15px; text-align: justify;">
-                    Il **Programma Artemis** della NASA costituisce la spina dorsale logistica per i test sul campo delle tecnologie di Orion Labs. Il razzo *Space Launch System (SLS)*, combinato con la navicella spaziale *Orion*, non si limita più a stabilire una presenza umana a lungo termine sulla superficie lunare, ma funge da piattaforma di assemblaggio orbitale per i moduli Arcania interstellari.
-                </p>
-                <p style="margin-bottom: 15px; text-align: justify;">
-                    La stazione orbitale **Lunar Gateway**, posizionata in un'orbita ad alo quasi rettilinea (NRHO), è stata potenziata con un nodo di risonanza TFSA. Questo modulo di attracco quantistico consente alle navette di rifornimento automatico di eseguire manovre di frenata a consumo energetico zero, stabilizzando l'orbita del Gateway contro le perturbazioni gravitazionali causate dal transito terrestre e solare.
-                </p>
-                <div class="panel-light">
-                    <h5 style="font-family: var(--font-mono); margin-bottom: 8px; color: var(--accent-gold);">Fasi Operative Congiunte Artemis V - VIII:</h5>
-                    <p style="font-size: 13px; color: var(--text-muted);">
-                        Estrazione di Regolite lunare ad alta densità per la sintesi di isotopi stabili all'interno dei reattori a fusione Orion Labs, riducendo del 92% i costi di lancio e approvvigionamento di materiali pesanti dalla Terra.
-                    </p>
-                </div>
-            </div>
-            <div class="tech-image img-artemis" style="height: 100%;"></div>
-        </div>
-
-        <h4 style="margin-top: 40px; margin-bottom: 15px; font-family: var(--font-mono); color: #4cc2ff; font-size: 14px;">LOGISTICA MANIFESTO MISSIONI ARTEMIS IN CO-SVILUPPO</h4>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Missione</th>
-                        <th>Vettore di Lancio</th>
-                        <th>Obiettivo Strategico Lunare</th>
-                        <th>Componente Integrata Orion Labs</th>
-                        <th>Stato Missione</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Artemis IV</td>
-                        <td>SLS Block 1B Crew</td>
-                        <td>Attracco al Lunar Gateway e installazione Modulo I-HAB</td>
-                        <td>Sincronizzatori Quantistici di Fase</td>
-                        <td class="text-gold">INTEGRAZIONE VETTORE</td>
-                    </tr>
-                    <tr>
-                        <td>Artemis V</td>
-                        <td>SLS Block 1B Cargo</td>
-                        <td>Dispiegamento del Rover Presurrizzato e test Regolite</td>
-                        <td>Emettitori Armonici di Superficie</td>
-                        <td class="text-cyan">APPROVATO</td>
-                    </tr>
-                    <tr>
-                        <td>Artemis VI</td>
-                        <td>SLS Block 2 Crew</td>
-                        <td>Primo atterraggio equipaggio nel bacino del Polo Sud Lunare</td>
-                        <td>Modulo di Propulsione Ausiliario TFSA</td>
-                        <td class="text-muted">PIANIFICATO (2028)</td>
-                    </tr>
-                    <tr>
-                        <td>Artemis VII</td>
-                        <td>SLS Block 2 Cargo</td>
-                        <td>Fondazione dell'infrastruttura permanente Base Base Alpha</td>
-                        <td>Reattore Compatto a Confinamento Termico</td>
-                        <td class="text-muted">NEGOZIAZIONE FINESTRA</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-
-    <section id="mars">
-        <div class="section-header nasa-style">
-            <p>04. MISSIONI PLANETARIE ED ESPLORAZIONE ROBOTICA ASTRONOMICA</p>
-            <h2>Marte: Dai Rover Perseverance & Curiosity all'Insediamento Umano</h2>
-        </div>
-
-        <div class="grid-1-3">
-            <div>
-                <div class="panel" style="background: var(--bg-panel-light);">
-                    <h4 style="margin-bottom: 15px; font-size: 18px; color: var(--accent-gold);">ARCHIVIO LOG ROVER JPL</h4>
-                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">
-                        I dati storici di *Curiosity (MSL)* e *Perseverance (Mars 2020)* nel Cratere Jezero hanno confermato la presenza di antichi bacini lacustri e strutture minerali idonee al confinamento magnetico del plasma.
-                    </p>
-                    <div class="log-terminal">
-                        <div class="log-line"><span class="log-time">[04:12]</span><span class="log-tag">[PERSEVERANCE]</span><span>Campione #24 sigillato.</span></div>
-                        <div class="log-line"><span class="log-time">[05:19]</span><span class="log-tag">[JPL_LINK]</span><span>Analisi spettrometrica completata.</span></div>
-                        <div class="log-line"><span class="log-time">[08:44]</span><span class="log-tag">[ORION_NET]</span><span>Rilevato picco fluidodinamico TFSA locale.</span></div>
-                        <div class="log-line"><span class="log-time">[12:01]</span><span class="log-tag">[SYS]</span><span>Calibrazione geodetica automatica: OK.</span></div>
-                        <div class="log-line"><span class="log-time">[16:30]</span><span class="log-tag">[MOXIE_II]</span><span>Generazione O2 nominale a 98g/ora.</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <div class="tech-image img-mars" style="height: 200px;"></div>
-                <h3 style="margin-bottom: 15px; font-size: 22px;">Progetto Ares-Orion: Riduzione del tempo di transito planetario</h3>
-                <p style="margin-bottom: 15px; text-align: justify;">
-                    L'esplorazione umana di Marte affronta due ostacoli principali: la degradazione biologica dovuta all'esposizione prolungata alle radiazioni interplanetarie e gli immensi volumi di rifornimenti necessari per un viaggio di 6-9 mesi con propulsione chimica classica.
-                </p>
-                <p style="text-align: justify;">
-                    Utilizzando la spinta a sonoridondanza del blocco motore Arcania integrata sul modulo di transito trans-marziano *Ares-Orion*, la traiettoria di trasferimento orbitale di Hohmann viene sostituita da una traiettoria iperbolica ad accelerazione costante. Il tempo di volo Terra-Marte viene abbattuto da 210 giorni a soli **14 giorni operativi**, garantendo l'integrità psicofisica degli astronauti della NASA e azzerando gli effetti collaterali della microgravità prolungata.
-                </p>
-                <div class="grid-2" style="margin-top: 20px;">
-                    <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 15px; border-radius: 4px;">
-                        <span style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">PRODUZIONE OSSIGENO (MOXIE UPGRADE)</span>
-                        <div style="font-size: 20px; font-weight: bold; color: #fff;">1.2 kg / Ora Continuo</div>
-                    </div>
-                    <div style="background: var(--bg-panel); border: 1px solid var(--border-color); padding: 15px; border-radius: 4px;">
-                        <span style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">SCHERMATURA MAGNETICA ATTIVA</span>
-                        <div style="font-size: 20px; font-weight: bold; color: var(--accent-cyan);">4.5 MV Potenziale Scudo</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="deep-space">
-        <div class="section-header nasa-style">
-            <p>05. ASTROFISICA E ANALISI COSMOLOGICA DEEP-SPACE</p>
-            <h2>Mappatura Quantistica del Cosmo via James Webb Space Telescope (JWST)</h2>
-        </div>
-
-        <div class="grid-2">
-            <div>
-                <h3 style="margin-bottom: 15px; font-size: 24px;">Rilevazione dello Spettro Infrarosso Profondo e Anomalie dei Fluidi</h3>
-                <p style="margin-bottom: 15px; text-align: justify;">
-                    Il Telescopio Spaziale James Webb della NASA ha rivoluzionato la comprensione dell'universo primordiale catturando le prime galassie formatesi dopo il Big Bang. Tuttavia, i dati inviati dal punto lagrangiano L2 hanno mostrato discrepanze sistematiche rispetto alla costante di Hubble standard e al modello cosmologico ΛCDM (Lambda-CDM).
-                </p>
-                <p style="text-align: justify;">
-                    L'algoritmo di decodifica d'immagine di Orion Labs ha rielaborato i flussi di dati spettroscopici nel vicino e medio infrarosso (NIRCam e MIRI). I risultati indicano che i pattern di lente gravitazionale attorno ai super-ammassi galattici non sono causati solo da masse invisibili di materia oscura ordinaria, ma dal vero e proprio **attrito viscoso del fluido TFSA** che rallenta i fotoni su distanze intergalattiche. Questa scoperta corregge i calcoli sull'età dell'universo, fornendo una mappa ad altissima risoluzione dei flussi quantistici del vuoto.
-                </p>
-            </div>
-            <div class="panel" style="padding: 25px;">
-                <div class="tech-image img-jwst" style="height: 160px; margin-bottom: 15px;"></div>
-                <h4 style="font-family: var(--font-mono); font-size: 14px; margin-bottom: 10px; color: #4cc2ff;">CANALI DI RICEZIONE DATI DEEP-SPACE INTEGRATI</h4>
-                <ul style="list-style: none; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
-                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border-color);"><strong class="text-cyan">Canale NIRSpec:</strong> Analisi dello shift quantistico delle righe dell'idrogeno neutro a z > 15.</li>
-                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border-color);"><strong class="text-cyan">Filtro MIRI-Orion:</strong> Individuazione di increspature acustiche nel superfluido spaziale di fondo.</li>
-                    <li style="padding: 8px 0;"><strong class="text-cyan">Risoluzione Corrente:</strong> 0.04 arcosecondi sintonizzati sul vettore d'onda TFSA.</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section id="iss-node">
-        <div class="section-header nasa-style">
-            <p>06. OPERAZIONI IN ORBITA BASSA TERRESTRE (LEO)</p>
-            <h2>Stazione Spaziale Internazionale e Nodo di Conduzione Quantistica 01</h2>
-        </div>
-
-        <div class="grid-2">
-            <div class="tech-image img-iss"></div>
-            <div>
-                <h3 style="margin-bottom: 15px; font-size: 24px;">Microgravità e Sintesi di Cristalli Piezometrici Ecceccitati</h3>
-                <p style="margin-bottom: 15px; text-align: justify;">
-                    La Stazione Spaziale Internazionale (ISS) ospita nei suoi moduli di ricerca (*Destiny* della NASA, *Columbus* dell'ESA e *Kibo* della JAXA) esperimenti cruciali che non potrebbero essere replicati sulla Terra a causa dell'interferenza del campo gravitazionale costante della crosta terrestre.
-                </p>
-                <p style="text-align: justify;">
-                    Nel laboratorio di microgravità statunitense è installato il **Nodo Spaziale Orion 01**, un rack sperimentale automatizzato per la crescita cristallina controllata di composti chimici drogati con Quantum-Dots. Questi speciali cristalli piezo-elettrici sono la componente core fondamentale per gli emettitori a sonoridondanza dei motori Arcania. La mancanza di moti convettivi termici in ambiente orbitale permette la deposizione atomica di strati perfettamente allineati sul piano atomico, azzerando le imperfezioni strutturali che causerebbero il surriscaldamento distruttivo dei reattori a terra.
-                </p>
-                <table style="margin-top: 15px;">
+            <h3 style="margin-bottom: 15px;">Matrice delle Prestazioni Comparative</h3>
+            
+            <div class="table-container">
+                <table>
                     <thead>
                         <tr>
-                            <th>Parametro di Sintesi ISS</th>
-                            <th>Valore Raggiunto</th>
-                            <th>Miglioramento vs Terra</th>
+                            <th>Modulo Propulsore</th>
+                            <th>Tipologia Core</th>
+                            <th>Efficienza Di Spinta</th>
+                            <th>Integrazione Sistemi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Purezza Strutturale del Cristallo</td>
-                            <td class="spec-value">99.999992%</td>
-                            <td>+4.2% Assoluto</td>
+                            <td>Arcania Mark VII</td>
+                            <td>Torsionale Quantico</td>
+                            <td class="spec-value">99.4%</td>
+                            <td>Orion Labs Spec</td>
                         </tr>
                         <tr>
-                            <td>Densità Difetti di Reticolo</td>
-                            <td class="spec-value">&lt; 10⁻⁵ / cm³</td>
-                            <td>Ridotto di 10.000 volte</td>
+                            <td>VASIMR NX-3</td>
+                            <td>Plasma Magnetoidrodinamico</td>
+                            <td class="spec-nasa">87.2%</td>
+                            <td>NASA JPL Core</td>
+                        </tr>
+                        <tr>
+                            <td>Orion Unified Core</td>
+                            <td>Fusione Magnetica Confinata</td>
+                            <td class="spec-value">94.8%</td>
+                            <td>Joint Horizon System</td>
                         </tr>
                     </tbody>
                 </table>
@@ -534,156 +457,49 @@
         </div>
     </section>
 
-    <section id="academy" style="background-color: #0b0e14;">
-        <div class="section-header">
-            <p>07. MATERIALE DIDATTICO E COMPENDIO PER INGEGNERI DI VOLO</p>
-            <h2>Horizon Academy & Repository Pubblica Declassificata</h2>
-        </div>
-
-        <div class="guide-article">
-            <div class="guide-header">
-                <h3>Guida Tecnica Avanzata: Meccanica Operativa della Sonoridondanza Cosmica</h3>
-                <span class="badge font-mono">DOCUMENTAZIONE: REV-2026 // LIVELLO DI ACCESSO: PUBBLICO</span>
-            </div>
-            <div class="guide-content">
-                <p>
-                    Per comprendere a fondo come un veicolo spaziale possa muoversi nel vuoto senza espellere massa di reazione chimica, è necessario visualizzare lo spaziotempo non come un concetto geometrico astratto o un'assenza totale di materia, ma come un mezzo fisico dotato di proprietà termodinamiche e idrodinamiche ultra-dense. Questo mezzo è definito **Fluido Spaziale Assoluto (TFSA)**.
-                </p>
-                <p>
-                    A velocità ordinarie e su scale macroscopiche non relativistiche, i corpi celesti e i veicoli spaziali convenzionali si muovono attraverso questo fluido senza riscontrare alcun attrito apparente. Questo accade perché le particelle subatomiche che compongono la materia barionica si trovano in uno stato di perfetto equilibrio quantistico con il superfluido circostante. Tuttavia, se applichiamo pacchetti di onde elettromagnetiche e radio-fasci ad altissima intensità ed eccitazione nella banda di frequenza degli **Exahertz (EHz)**, provochiamo una rottura locale della simmetria di gauge.
-                </p>
-                <p><strong>Il processo operativo si sviluppa in tre fasi distinte e sequenziali:</strong></p>
-                <ol>
-                    <li><strong>Ionizzazione ed Eccitazione del Plasma Toroide:</strong> Il reattore a fusione dell'astronave confina magneticamente un plasma denso di Deuterio ed Elio-3 a oltre 140 milioni di gradi Celsius. Questo plasma funge da antenna a conduzione termica diretta.</li>
-                    <li><strong>Emissione Armonica:</strong> I cristalli sintetizzati sulla ISS convertono l'energia elettrica generata dal plasma in impulsi d'onda polarizzati nel range degli Exahertz, diretti verso la prua dello scafo del veicolo.</li>
-                    <li><strong>Irrigidimento Idrodinamico del Vuoto:</strong> Il mezzo spaziale subisce localmente un fenomeno analogo alla dilatanza idrodinamica (fluido non newtoniano). Il vuoto si "indurisce" istantaneamente creando una barriera di potenziale. Il motore preme letteralmente contro questa barriera spingendo l'astronave in avanti con un rendimento energetico prossimo al 98.4%.</li>
-                </ol>
-            </div>
-        </div>
-
-        <div class="guide-article">
-            <div class="guide-header">
-                <h3>Compendio Scientifico: L'Intrinsecazione Quantistica Spaziotemporale e Schermatura Cinetica</h3>
-                <span class="badge font-mono">AUTORE: DIPARTIMENTO DI FISICA TEORICA MIT & HORIZON</span>
-            </div>
-            <div class="guide-content">
-                <p>
-                    Quando un'astronave dotata di propulsione convenzionale accelera fino a frazioni significative della velocità della luce (es. 0.1c - 0.5c), lo spazio interstellare cessa di essere un ambiente sicuro. L'impatto con atomi isolati di idrogeno neutro o grani di polvere cosmica microscopica genera un'energia cinetica d'impatto paragonabile all'esplosione di testate nucleari tattiche, distruggendo istantaneamente qualsiasi scudo termico convenzionale.
-                </p>
-                <p>
-                    L'**Intrinsecazione Quantistica** risolve questo problema strutturale agendo alla radice dell'interazione atomica. Rivestendo lo scafo esterno in lega metallica con un film continuo atomico di grafene quantistico a griglia esagonale, e accoppiando quest'ultimo al generatore di fase acustica del motore, la firma vibratoria dell'astronave viene sintonizzata per essere identica alle geodetiche acustiche del mezzo TFSA.
-                </p>
-                <p>
-                    Invece di fendere lo spazio in modo distruttivo come fa una meteora o un proiettile cinetico, la nave intrinsecata scivola senza attrito tra le linee di flusso del fluido quantistico. Gli atomi di idrogeno e i detriti interstellari vengono deviati fluidodinamicamente attorno allo scafo prima ancora di stabilire un contatto molecolare diretto con la materia barionica della nave, azzerando l'usura strutturale e cancellando gli effetti deletteri della dilatazione temporale relativistica all'interno dei moduli abitativi dell'equipaggio.
-                </p>
-            </div>
-        </div>
-
-        <div class="guide-article">
-            <div class="guide-header">
-                <h3>Glossario dei Termini e Acronimi Unificati NASA-Orion Labs</h3>
-                <span class="badge font-mono">RIF: GL-4.2 // AGGIORNATO 2026</span>
-            </div>
-            <div class="guide-content" style="padding: 0;">
-                <div class="table-container" style="margin-top: 0; border: none; border-radius: 0;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Acronimo</th>
-                                <th>Definizione Estesa</th>
-                                <th>Applicazione Pratica nei Sistemi di Volo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>TFSA</strong></td>
-                                <td>Teoria del Fluido Spaziale Assoluto</td>
-                                <td>Modello matematico di base per la navigazione interplanetaria e interstellare senza propellente chimico.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>SLS</strong></td>
-                                <td>Space Launch System (NASA)</td>
-                                <td>Vettore pesante per l'iniezione in orbita trans-lunare dei moduli costruttivi Orion Labs.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>NRHO</strong></td>
-                                <td>Near-Rectilinear Halo Orbit</td>
-                                <td>Orbita stabile di posizionamento della stazione Gateway per minimizzare il consumo di propellente.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>REBCO</strong></td>
-                                <td>Rare-Earth Barium Copper Oxide</td>
-                                <td>Nastri superconduttori ad alta temperatura per il mantenimento dei campi magnetici da 480 Tesla nei motori.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>JWST</strong></td>
-                                <td>James Webb Space Telescope</td>
-                                <td>Piattaforma di rilevamento ottico/infrarosso utilizzata per mappare i vettori di deriva del vuoto quantistico.</td>
-                            </tr>
-                            <tr>
-                                <td><strong>JPL</strong></td>
-                                <td>Jet Propulsion Laboratory</td>
-                                <td>Centro NASA deputato alla calibrazione dei sistemi di automazione robotica e logica a sciame dei droni.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
-                <svg viewBox="0 0 100 100" style="width: 55px; height: 55px; margin-bottom: 20px;" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#8b949e" stroke-width="2" />
-                    <path d="M50 15 L85 85 L15 85 Z" fill="none" stroke="#8b949e" stroke-width="2" />
-                </svg>
-                <h3 style="color: #fff; margin-bottom: 12px; font-weight: bold; letter-spacing: 2px; font-size: 18px;">ORION LABS</h3>
-                <p style="font-size: 13px; line-height: 1.5;">
-                    Divisione congiunta globale del consorzio Horizon Research Network e delle infrastrutture di volo della NASA. Sviluppo di propulsione non newtoniana, sistemi di navigazione su geodetiche quantistiche e logistica per l'insediamento umano nel sistema solare interno ed esterno.
-                </p>
+                <h4 style="color: #fff; font-size: 16px; margin-bottom: 15px;">ORION LABS HUB</h4>
+                <p style="line-height: 1.8; font-size: 13px;">Infrastruttura tecnologica integrata per la gestione delle telecomunicazioni e lo sviluppo di applicativi digitali distribuiti sul territorio nazionale ed internazionale.</p>
             </div>
-            
             <div class="footer-col">
-                <h4>Divisioni Operative</h4>
+                <h4>Collegamenti</h4>
                 <ul>
-                    <li><a href="#">Propulsione Avanzata (AEP)</a></li>
-                    <li><a href="#">Architettura Orbitale (OAB)</a></li>
-                    <li><a href="#">Sistemi Autonomi Droni (ADS)</a></li>
-                    <li><a href="#">Reattori a Confinamento (CRM)</a></li>
-                    <li><a href="#">Esplorazione Planetaria (JPL-E)</a></li>
+                    <li><a href="#core-theory">Teoria Fisica</a></li>
+                    <li><a href="#veo3-satellite">Verifica Veo3</a></li>
+                    <li><a href="#propulsion">Sistemi di Spinta</a></li>
                 </ul>
             </div>
-
             <div class="footer-col">
-                <h4>Archivio & Servizi</h4>
+                <h4>Documenti</h4>
                 <ul>
-                    <li><a href="#">Log Missioni Storiche NASA</a></li>
-                    <li><a href="#">Banca Dati TFSA Pubblica</a></li>
-                    <li><a href="#">Documentazione API Navigazione</a></li>
-                    <li><a href="#">Telemetria Deep Space Network</a></li>
-                    <li><a href="#">Standard Sicurezza Hardware</a></li>
+                    <li><a href="#">Trattati Internazionali</a></li>
+                    <li><a href="#">Specifiche API Horizon</a></li>
+                    <li><a href="#">Crittografia Sistemi</a></li>
                 </ul>
             </div>
-
             <div class="footer-col">
-                <h4>Consorzio Istituzionale</h4>
-                <p style="margin-bottom: 15px; font-size: 12px;">I programmi di ricerca congiunti sono regolati dai trattati internazionali di cooperazione aerospaziale scientifica civile.</p>
+                <h4>Consorzio Partner</h4>
+                <p style="margin-bottom: 15px; font-size: 12px;">I programmi di allineamento e cablaggio sono distribuiti e regolati in partnership commerciale con la divisione di Horizon Servizi Italia.</p>
                 <div class="partners">
                     <span class="partner-logo">nasa</span>
-                    <span class="partner-logo">esa</span>
-                    <span class="partner-logo">jaxa</span>
+                    <span class="partner-logo">horizon</span>
                 </div>
-                <p style="font-size: 11px; margin-top: 15px; color: var(--text-muted);">Joint Development Agreement #2024-NN-9941</p>
             </div>
         </div>
         
-        <div style="border-top: 1px solid #30363d; padding-top: 25px; text-align: center; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-            <p>© 2026 Orion Labs & Horizon Research Network. Contenuti e strutture estratti in collaborazione con i sistemi pubblici e declassificati NASA. Tutti i diritti riservati.</p>
-            <p style="font-family: var(--font-mono); color: var(--accent-cyan); font-size: 12px;">SYS_VERSION_5.0.0_MASSIVE_UNIFIED | NODE: IT-EUR-NASA-JPL</p>
+        <div style="border-top: 1px solid #30363d; padding-top: 25px; text-align: center; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 12px;">
+            <p>© 2026 Orion Labs & Horizon Servizi Italia. Connessione sicura e crittografata al database RTDB centralizzato. Tutti i diritti riservati.</p>
+            <p style="font-family: var(--font-mono); color: var(--accent-cyan);">SYS_VERSION_5.2.0_MOBILE_READY</p>
         </div>
     </footer>
 
+    <script>
+        function toggleMobileMenu() {
+            const links = document.querySelector('.nav-links');
+            links.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
