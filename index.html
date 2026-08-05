@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORION LABS x NASA | Portale Operativo di Ingegneria Aerospaziale e Quantistica</title>
+    <title>ORION LABS | Enterprise Aerospace & Quantum Infrastructure Portal</title>
     
+    <!-- Firebase SDK Modular -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
 
-        // Configurazione recuperata dal server di Horizon Servizi
+        // Configurazione RTDB collegata direttamente ad Horizon ID
         const firebaseConfig = {
             apiKey: "AIzaSyBJjhL9-d-2QMKDYviV7KfYhUOHWDAoasU",
-            authDomain: "horizongls.firebaseapp.com",
-            databaseURL: "https://horizongls-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "horizongls",
-            storageBucket: "horizongls.firebasestorage.app",
+            authDomain: "horizonid.firebaseapp.com",
+            databaseURL: "https://horizonid-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "horizonid",
+            storageBucket: "horizonid.firebasestorage.app",
             messagingSenderId: "611544552805",
             appId: "1:611544552805:web:88fb0e35e59fb5bf543d8c"
         };
@@ -23,49 +24,67 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Esponi le funzioni globalmente per utilizzarle nei form inline dell'interfaccia
+        // Funzione di verifica Copertura Satellitare Veo3
         window.checkVeo3Coverage = function() {
             const addr = document.getElementById('veo3-address').value.trim();
             if(!addr) {
-                alert("Inserisci un indirizzo valido per eseguire il check di copertura satellitare.");
+                alert("Inserisci un indirizzo o coordinate valide per l'analisi dello spettro satellitare.");
                 return;
             }
+
             document.getElementById('veo3-final-address').value = addr;
+            
+            // Simula calcoli spettrali
+            const simulatedPing = (11 + Math.random() * 5).toFixed(1);
+            const simulatedSnr = (18 + Math.random() * 6).toFixed(1);
+            const simulatedElevation = (42 + Math.random() * 12).toFixed(1);
+
+            document.getElementById('res-ping').innerText = `${simulatedPing} ms`;
+            document.getElementById('res-snr').innerText = `${simulatedSnr} dB`;
+            document.getElementById('res-elevation').innerText = `${simulatedElevation}°`;
+
             const resDiv = document.getElementById('veo3-results');
             resDiv.style.display = 'block';
             resDiv.scrollIntoView({ behavior: 'smooth' });
+            
+            window.appendLog(`[TEST COPERTURA] Analisi completata per: ${addr} | SNR: ${simulatedSnr}dB | Ping: ${simulatedPing}ms`);
         };
 
+        // Funzione Invio Ordine su Firebase RTDB
         window.submitVeo3Request = async function(event) {
             event.preventDefault();
             const btn = document.getElementById('veo3-submit-btn');
             const originalText = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = "ELABORAZIONE E INVIO IN CORSO...";
+            btn.innerHTML = `<span class="spinner"></span> TRASMISSIONE AD HORIZON ID...`;
 
             const reqId = 'ORION-VEO3-' + Math.floor(100000 + Math.random() * 900000);
+            const planType = document.getElementById('veo3-piano').value;
             const data = {
                 id: reqId,
-                origine: 'Orion Labs Portal',
+                origine: 'Orion Labs Enterprise Portal',
+                pianoSelezionato: planType,
                 tipoImpianto: document.getElementById('veo3-tipo').value,
                 nome: document.getElementById('veo3-nome').value,
                 telefono: document.getElementById('veo3-tel').value,
                 email: document.getElementById('veo3-email').value,
                 indirizzo: document.getElementById('veo3-final-address').value,
-                downloadSimulato: '300 Mbps',
-                uploadSimulato: '230 Mbps',
-                stato: 'Nuovo Ordine Orion',
-                dataRichiesta: new Date().toISOString()
+                downloadSimulato: planType.includes('Enterprise') ? '1000 Mbps' : '300 Mbps',
+                uploadSimulato: planType.includes('Enterprise') ? '500 Mbps' : '230 Mbps',
+                stato: 'In Attesa Attivazione Horizon Staff',
+                timestamp: new Date().toISOString()
             };
 
             try {
                 await set(ref(db, 'richieste_servizi/' + reqId), data);
-                alert("Richiesta inviata con successo! La pratica per l'allacciamento satellitare Veo3 è stata inserita nei sistemi centrali di Horizon Servizi.");
+                alert(`PRATICA REGISTRATA SU HORIZON ID!\nID Tracciamento: ${reqId}\nUn operatore dello staff prenderà in carico la richiesta.`);
                 document.getElementById('veo3-form').reset();
                 document.getElementById('veo3-results').style.display = 'none';
                 document.getElementById('veo3-address').value = '';
+                window.appendLog(`[FIREBASE RTDB] Nuova richiesta registrata: ${reqId} (${planType})`);
             } catch (error) {
-                alert("Si è verificato un errore durante l'invio della richiesta: " + error.message);
+                alert("Errore nell'invio a Horizon Database: " + error.message);
+                window.appendLog(`[FIREBASE ERROR] ERRORE SCRITTURA: ${error.message}`);
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = originalText;
@@ -74,431 +93,1133 @@
     </script>
 
     <style>
-        /* === ROOT & RESET === */
+        /* === SYSTEM DESIGN SYSTEM: APPLE WHITE ULTRA === */
         :root {
-            --bg-deep: #02040a;
-            --bg-panel: #0d1117;
-            --bg-panel-light: #161b22;
-            --text-main: #c9d1d9;
-            --text-muted: #8b949e;
-            --accent-cyan: #2f81f7;
-            --accent-blue: #0052cc;
-            --accent-red: #f85149;
-            --accent-gold: #d29922;
-            --accent-green: #238636;
-            --border-color: #30363d;
-            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            --bg-deep: #f5f5f7;
+            --bg-panel: #ffffff;
+            --bg-panel-secondary: #fbfbfd;
+            --bg-panel-translucent: rgba(255, 255, 255, 0.85);
+            --text-main: #1d1d1f;
+            --text-muted: #86868b;
+            --text-subtle: #6e6e73;
+            --accent-blue: #0071e3;
+            --accent-blue-hover: #0077ed;
+            --accent-cyan: #30b0c7;
+            --accent-green: #34c759;
+            --accent-orange: #ff9500;
+            --accent-purple: #af52de;
+            --accent-red: #ff3b30;
+            --border-color: #d2d2d7;
+            --border-light: #e5e5ea;
+            --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: "SF Mono", "Menlo", "Consolas", monospace;
+            --shadow-subtle: 0 2px 10px rgba(0,0,0,0.03);
+            --shadow-card: 0 4px 24px rgba(0,0,0,0.04);
+            --shadow-hover: 0 16px 48px rgba(0,0,0,0.08);
+            --radius-large: 24px;
+            --radius-medium: 16px;
+            --radius-small: 10px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; font-size: 16px; }
         body {
             background-color: var(--bg-deep); color: var(--text-main);
-            font-family: var(--font-main); line-height: 1.6; overflow-x: hidden;
+            font-family: var(--font-main); line-height: 1.5;
+            -webkit-font-smoothing: antialiased; overflow-x: hidden;
         }
 
-        /* === TYPOGRAPHY & UTILS === */
-        h1, h2, h3, h4, h5 { color: #ffffff; font-weight: 600; }
-        .text-cyan { color: var(--accent-cyan); }
-        .text-gold { color: var(--accent-gold); }
-        .text-red { color: var(--accent-red); }
-        .text-green { color: var(--accent-green); }
+        /* === TYPOGRAPHY & BADGES === */
+        h1, h2, h3, h4, h5 { color: #1d1d1f; font-weight: 600; letter-spacing: -0.025em; }
         .font-mono { font-family: var(--font-mono); }
-        
-        .badge {
-            display: inline-block; padding: 4px 10px; border-radius: 12px;
-            font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
-            background: rgba(47, 129, 247, 0.2); color: var(--accent-cyan); border: 1px solid var(--accent-cyan);
-        }
-        .badge.alert { background: rgba(248, 81, 73, 0.2); color: var(--accent-red); border-color: var(--accent-red); }
-        .badge.success { background: rgba(35, 134, 54, 0.2); color: var(--accent-green); border-color: var(--accent-green); }
-        .badge.nasa { background: rgba(0, 82, 204, 0.2); color: #4cc2ff; border-color: var(--accent-blue); }
+        .text-blue { color: var(--accent-blue); }
+        .text-green { color: var(--accent-green); }
+        .text-orange { color: var(--accent-orange); }
+        .text-purple { color: var(--accent-purple); }
 
-        /* === TOPBAR & NAV === */
-        .topbar {
-            background: #010409; border-bottom: 1px solid var(--border-color);
-            padding: 8px 5vw; display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);
-            flex-wrap: wrap; gap: 10px;
+        .badge-pill {
+            display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 99px;
+            font-size: 12px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase;
+            background: rgba(0, 113, 227, 0.08); color: var(--accent-blue); border: 1px solid rgba(0, 113, 227, 0.15);
         }
+        .badge-pill.green { background: rgba(52, 199, 89, 0.08); color: var(--accent-green); border-color: rgba(52, 199, 89, 0.18); }
+        .badge-pill.purple { background: rgba(175, 82, 222, 0.08); color: var(--accent-purple); border-color: rgba(175, 82, 222, 0.18); }
+        .badge-pill.orange { background: rgba(255, 149, 0, 0.08); color: var(--accent-orange); border-color: rgba(255, 149, 0, 0.18); }
+
+        /* === TOPBAR INFOBAR === */
+        .topbar {
+            background: #ffffff; border-bottom: 1px solid var(--border-light);
+            padding: 8px 6vw; display: flex; justify-content: space-between; align-items: center;
+            font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); flex-wrap: wrap; gap: 10px;
+        }
+        .topbar-ticker { display: flex; align-items: center; gap: 20px; }
+        .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); display: inline-block; box-shadow: 0 0 8px var(--accent-green); animation: blink 1.8s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* === NAVIGATION === */
         nav {
             position: sticky; top: 0; z-index: 1000;
-            background: rgba(13, 17, 23, 0.95); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color); padding: 15px 5vw;
-            display: flex; justify-content: space-between; align-items: center;
+            background: var(--bg-panel-translucent); backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06); padding: 16px 6vw;
+            display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;
         }
-        .brand-logo { display: flex; align-items: center; gap: 15px; text-decoration: none; }
-        .brand-logo svg { width: 45px; height: 45px; filter: drop-shadow(0 0 5px var(--accent-cyan)); }
-        .brand-text { display: flex; flex-direction: column; }
-        .brand-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 3px; }
-        .brand-sub { font-size: 10px; color: var(--accent-gold); letter-spacing: 1.5px; text-transform: uppercase; }
-        
-        .nav-container { display: flex; flex-direction: column; width: 100%; }
-        .nav-menu-wrapper { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .nav-links { display: flex; gap: 20px; list-style: none; flex-wrap: wrap; }
-        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; transition: color 0.2s; letter-spacing: 0.5px; }
-        .nav-links a:hover { color: var(--accent-cyan); }
-
-        /* Mobile Menu Toggle Button */
-        .menu-toggle {
-            display: none; cursor: pointer; border: 1px solid var(--border-color);
-            padding: 6px 12px; border-radius: 4px; font-family: var(--font-mono);
-            font-size: 12px; color: #fff; background: var(--bg-panel-light); user-select: none;
+        .brand-container { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .brand-icon-wrapper {
+            width: 44px; height: 44px; border-radius: 12px; background: #ffffff;
+            border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-subtle);
         }
+        .brand-titles { display: flex; flex-direction: column; }
+        .brand-title { font-size: 18px; font-weight: 700; color: #1d1d1f; letter-spacing: -0.4px; line-height: 1.1; }
+        .brand-sub { font-size: 10px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; margin-top: 2px; }
 
-        /* === HERO STATUS BOARD === */
+        .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent-blue); }
+        .nav-btn {
+            background: var(--accent-blue); color: #ffffff !important; padding: 8px 18px; border-radius: 99px;
+            font-size: 13px !important; font-weight: 600 !important; transition: background 0.2s, transform 0.1s !important;
+            box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
+        }
+        .nav-btn:hover { background: var(--accent-blue-hover); transform: translateY(-1px); }
+
+        .menu-toggle { display: none; cursor: pointer; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: #fff; font-size: 13px; font-weight: 600; }
+
+        /* === HERO DASHBOARD === */
         .hero {
-            padding: 80px 5vw; border-bottom: 1px solid var(--border-color);
-            background: linear-gradient(180deg, rgba(47,129,247,0.07) 0%, rgba(0,82,204,0.03) 50%, var(--bg-deep) 100%);
+            padding: 90px 6vw 70px 6vw; background: linear-gradient(180deg, #ffffff 0%, var(--bg-deep) 100%);
+            border-bottom: 1px solid var(--border-light); text-align: center; position: relative;
         }
-        .hero-meta { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
-        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 50px; }
-        .status-box { background: var(--bg-panel); border: 1px solid var(--border-color); padding: 22px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .status-box .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono); margin-bottom: 8px; letter-spacing: 1px; }
-        .status-box .value { font-size: 22px; font-weight: bold; color: #fff; }
+        .hero-title { font-size: 58px; font-weight: 700; line-height: 1.05; letter-spacing: -1.5px; max-width: 950px; margin: 25px auto 20px auto; }
+        .hero-subtitle { font-size: 21px; color: var(--text-subtle); max-width: 780px; margin: 0 auto 40px auto; font-weight: 400; line-height: 1.45; }
 
-        /* === SECTIONS === */
-        section { padding: 90px 5vw; border-bottom: 1px solid var(--border-color); }
-        .section-header { margin-bottom: 50px; border-left: 4px solid var(--accent-cyan); padding-left: 20px; }
-        .section-header.nasa-style { border-left-color: var(--accent-blue); }
-        .section-header h2 { font-size: 32px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .section-header p { color: var(--text-muted); font-family: var(--font-mono); font-size: 13px; letter-spacing: 1px; }
-
-        /* === GRIDS & PANELS === */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .grid-1-3 { display: grid; grid-template-columns: 1fr 2fr; gap: 40px; }
-        .panel { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 8px; padding: 35px; height: 100%; }
-        .panel-light { background: var(--bg-panel-light); border: 1px solid var(--border-color); border-radius: 6px; padding: 20px; margin-top: 15px; }
-        
-        /* === THE FORMULA DISPLAY === */
-        .formula-container {
-            background: #000; border: 1px solid #30363d; border-radius: 8px; padding: 40px;
-            text-align: center; margin: 30px 0; position: relative; overflow: hidden;
-            box-shadow: inset 0 0 50px rgba(47, 129, 247, 0.05);
+        .hero-stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+            max-width: 1150px; margin: 40px auto 0 auto; text-align: left;
         }
-        .formula-container::before {
-            content: 'DECRYPTED MATHEMATICAL CORE // NASA-ORION UNIFIED SPEC'; position: absolute; top: 10px; left: 15px;
-            font-family: var(--font-mono); font-size: 10px; color: var(--accent-cyan); letter-spacing: 2px;
+        .hero-stat-card {
+            background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: var(--radius-medium);
+            padding: 24px; box-shadow: var(--shadow-card); transition: all 0.3s ease;
         }
-        .math-text { font-family: 'Times New Roman', serif; font-size: 26px; color: #fff; margin: 20px 0; font-style: italic; letter-spacing: 1px; word-break: break-all; }
-        .math-vars { display: grid; grid-template-columns: 1fr 1fr; text-align: left; gap: 12px; margin-top: 30px; border-top: 1px solid #30363d; padding-top: 20px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+        .hero-stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .hero-stat-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+        .hero-stat-val { font-size: 28px; font-weight: 700; color: #1d1d1f; line-height: 1.1; }
+        .hero-stat-desc { font-size: 12px; color: var(--text-subtle); margin-top: 6px; }
 
-        /* === TECHNICAL SPECS TABLES === */
-        .table-container { overflow-x: auto; margin-top: 25px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-panel); }
-        table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 13px; min-width: 600px; }
-        th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border-color); }
-        th { background: var(--bg-panel-light); color: #fff; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; font-size: 12px; }
-        tr:last-child td { border-bottom: none; }
-        tr:hover td { background: rgba(255,255,255,0.02); }
-        td.spec-value { color: var(--accent-cyan); font-weight: bold; }
-        td.spec-nasa { color: #4cc2ff; font-weight: bold; }
+        /* === CONTAINER & SECTIONS === */
+        section { padding: 100px 6vw; position: relative; }
+        .section-header { text-align: center; max-width: 720px; margin: 0 auto 60px auto; }
+        .section-header h2 { font-size: 40px; font-weight: 700; letter-spacing: -1px; margin-bottom: 16px; }
+        .section-header p { font-size: 18px; color: var(--text-subtle); line-height: 1.5; }
 
-        /* === ACCORDION / GUIDES === */
-        .guide-article { border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 25px; background: var(--bg-panel); overflow: hidden; }
-        .guide-header { padding: 22px; background: var(--bg-panel-light); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .guide-header h3 { font-size: 18px; }
-        .guide-content { padding: 25px; color: var(--text-main); font-size: 15px; }
-        .guide-content p { margin-bottom: 15px; text-align: justify; }
-        .guide-content ul, .guide-content ol { margin-left: 20px; margin-bottom: 15px; color: var(--text-muted); }
-        .guide-content li { margin-bottom: 8px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 1250px; margin: 0 auto; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; max-width: 1250px; margin: 0 auto; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 1250px; margin: 0 auto; }
 
-        /* === IMAGES PLACEHOLDERS === */
-        .tech-image { width: 100%; height: 300px; background-color: var(--bg-panel-light); border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 20px; background-size: cover; background-position: center; position: relative;}
-        .tech-image::after {
-            content: 'STREAM FOTOCOSMICO IN TEMPO REALE // NASA COLLABORATION'; position: absolute; bottom: 10px; right: 15px;
-            background: rgba(0,0,0,0.7); padding: 3px 8px; font-family: var(--font-mono); font-size: 10px; border-radius: 4px; color: var(--text-muted);
+        .panel-card {
+            background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: var(--radius-large);
+            padding: 40px; box-shadow: var(--shadow-card); transition: all 0.3s ease; position: relative; overflow: hidden;
         }
-        .img-arcania { background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop'); }
-        .img-engine { background-image: url('https://images.unsplash.com/photo-1580661869408-55ab23f2ca87?q=80&w=1000&auto=format&fit=crop'); }
-        .img-artemis { background-image: url('https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=1500&auto=format&fit=crop'); }
-        .img-mars { background-image: url('https://images.unsplash.com/photo-1612892483236-42d68a57623d?q=80&w=1500&auto=format&fit=crop'); }
+        .panel-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
 
-        /* === LOGS AND MONITORING PANELS === */
-        .log-terminal { background: #04080f; border: 1px solid var(--border-color); border-radius: 6px; padding: 20px; font-family: var(--font-mono); font-size: 12px; color: #39ff14; height: 250px; overflow-y: auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
-        .log-line { margin-bottom: 6px; display: flex; gap: 10px; }
-        .log-time { color: var(--accent-cyan); }
-        .log-tag { color: var(--accent-gold); }
+        /* === LIVE 3D SATELLITE RADAR CANVAS === */
+        .radar-wrapper {
+            background: #000000; border-radius: var(--radius-large); overflow: hidden;
+            position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 1px solid #1c1c1e;
+        }
+        .radar-header {
+            position: absolute; top: 20px; left: 24px; right: 24px; z-index: 20;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .radar-title { font-family: var(--font-mono); font-size: 12px; color: rgba(255,255,255,0.85); letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        .radar-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+        .radar-btn {
+            background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.2);
+            padding: 5px 12px; border-radius: 99px; font-size: 11px; font-family: var(--font-mono); cursor: pointer; transition: all 0.2s;
+        }
+        .radar-btn:hover, .radar-btn.active { background: var(--accent-blue); border-color: var(--accent-blue); }
+
+        canvas#satelliteCanvas { display: block; width: 100%; height: 500px; }
+
+        .satellite-telemetry-bar {
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1); padding: 16px 24px;
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; font-family: var(--font-mono); font-size: 11px; color: #a1a1a6;
+        }
+        .sat-metric-val { color: #ffffff; font-size: 14px; font-weight: 600; margin-top: 2px; }
+
+        /* === FORM & INPUTS === */
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 8px; }
+        input[type="text"], input[type="email"], input[type="tel"], select {
+            width: 100%; padding: 14px 18px; background: #ffffff; border: 1px solid var(--border-color);
+            border-radius: var(--radius-small); color: var(--text-main); font-size: 15px; font-family: var(--font-main);
+            transition: all 0.2s ease;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12); }
+
+        button.btn-primary {
+            background: var(--accent-blue); color: #ffffff; border: none; padding: 16px 28px;
+            border-radius: var(--radius-small); font-size: 16px; font-weight: 600; cursor: pointer;
+            width: 100%; transition: all 0.2s ease; box-shadow: 0 4px 16px rgba(0, 113, 227, 0.25);
+            display: inline-flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        button.btn-primary:hover { background: var(--accent-blue-hover); transform: translateY(-1px); }
+        button.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* === ARTICLES & PAPERS HUB === */
+        .article-card {
+            background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: var(--radius-medium);
+            overflow: hidden; box-shadow: var(--shadow-card); transition: all 0.3s ease; display: flex; flex-direction: column;
+        }
+        .article-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+        .article-img-wrapper { height: 200px; width: 100%; overflow: hidden; position: relative; background: #e5e5ea; }
+        .article-img-wrapper svg, .article-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .article-card:hover .article-img-wrapper svg, .article-card:hover .article-img-wrapper img { transform: scale(1.05); }
+        .article-body { padding: 28px; display: flex; flex-direction: column; flex: 1; }
+        .article-meta { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 12px; display: flex; gap: 12px; }
+        .article-title { font-size: 20px; font-weight: 700; line-height: 1.3; margin-bottom: 12px; color: #1d1d1f; }
+        .article-excerpt { font-size: 14px; color: var(--text-subtle); line-height: 1.5; margin-bottom: 20px; flex: 1; }
+        .read-more-btn { color: var(--accent-blue); font-size: 14px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; border: none; background: none; }
+
+        /* === CALCULATORS & TOOLS === */
+        .calc-box { background: var(--bg-panel-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-medium); padding: 28px; }
+
+        /* === PRODUCT PRICING CARDS === */
+        .pricing-card {
+            background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: var(--radius-large);
+            padding: 36px 28px; text-align: center; box-shadow: var(--shadow-card); position: relative; transition: all 0.3s ease;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .pricing-card.featured { border: 2px solid var(--accent-blue); box-shadow: 0 12px 40px rgba(0, 113, 227, 0.15); }
+        .pricing-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+        .pricing-price { font-size: 38px; font-weight: 800; color: #1d1d1f; margin: 16px 0 4px 0; }
+        .pricing-period { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+        .pricing-features { list-style: none; text-align: left; margin: 24px 0; font-size: 14px; color: var(--text-subtle); border-top: 1px solid var(--border-light); padding-top: 20px; }
+        .pricing-features li { margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+        .pricing-features li svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--accent-green); }
+
+        /* === LIVE LOG TERMINAL === */
+        .terminal-container { background: #000000; border-radius: var(--radius-medium); overflow: hidden; border: 1px solid #2c2c2e; font-family: var(--font-mono); }
+        .terminal-header { background: #1c1c1e; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #8e8e93; border-bottom: 1px solid #2c2c2e; }
+        .terminal-body { height: 220px; overflow-y: auto; padding: 16px; font-size: 12px; line-height: 1.7; color: #30d158; }
+        .log-entry { margin-bottom: 6px; display: flex; gap: 12px; word-break: break-word; }
+        .log-timestamp { color: #64d2ff; }
+        .log-cat { color: #ffd60a; font-weight: 600; }
+
+        /* === TABLES === */
+        .table-wrapper { overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--radius-medium); background: #ffffff; }
+        table.spec-table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; min-width: 650px; }
+        table.spec-table th { background: var(--bg-panel-secondary); padding: 16px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border-color); }
+        table.spec-table td { padding: 18px 20px; border-bottom: 1px solid var(--border-light); color: var(--text-main); }
+        table.spec-table tr:last-child td { border-bottom: none; }
+
+        /* === MODAL READER === */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); z-index: 2000;
+            display: none; justify-content: center; align-items: center; padding: 20px;
+        }
+        .modal-content {
+            background: #ffffff; width: 100%; max-width: 800px; max-height: 85vh;
+            border-radius: var(--radius-large); overflow-y: auto; padding: 48px; position: relative;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+        }
+        .modal-close { position: absolute; top: 24px; right: 24px; background: var(--bg-deep); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 18px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
 
         /* === FOOTER === */
-        footer { background: #010409; padding: 80px 5vw 40px 5vw; border-top: 1px solid var(--border-color); font-size: 13px; color: var(--text-muted); }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 50px; }
-        .footer-col h4 { margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; color: #fff; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+        footer { background: #ffffff; border-top: 1px solid var(--border-color); padding: 90px 6vw 40px 6vw; font-size: 13px; color: var(--text-muted); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 48px; max-width: 1250px; margin: 0 auto 60px auto; }
+        .footer-col h4 { font-size: 14px; color: #1d1d1f; font-weight: 700; margin-bottom: 20px; }
         .footer-col ul { list-style: none; }
         .footer-col ul li { margin-bottom: 12px; }
         .footer-col a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-        .footer-col a:hover { color: var(--accent-cyan); }
-        .partners { display: flex; align-items: center; gap: 15px; margin-top: 25px; font-weight: bold; font-family: var(--font-mono); flex-wrap: wrap; }
-        .partner-logo { font-size: 18px; color: #fff; border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 4px; background: var(--bg-panel); display: inline-flex; justify-content: center; align-items: center; letter-spacing: 2px; text-transform: uppercase; }
+        .footer-col a:hover { color: var(--accent-blue); }
 
-        /* === MEDIA QUERIES RESPONSIVE (FIX MOBILE) === */
-        @media (max-width: 950px) {
-            .menu-toggle { display: block !important; }
-            .nav-menu-wrapper { flex-wrap: wrap; }
-            .nav-links {
-                display: none; width: 100%; flex-direction: column; margin-top: 15px;
-                gap: 12px; background: var(--bg-panel-light); padding: 15px;
-                border-radius: 6px; border: 1px solid var(--border-color);
-            }
-            .nav-links.active { display: flex !important; }
-            .grid-2, .grid-3, .grid-1-3, .footer-grid { grid-template-columns: 1fr !important; gap: 25px; }
-            .tech-image { height: 200px; }
-            .hero h1 { font-size: 34px !important; }
-            section { padding: 50px 4vw !important; }
-            .section-header h2 { font-size: 24px !important; }
-            .math-text { font-size: 18px !important; }
-            .math-vars { grid-template-columns: 1fr !important; }
-            .panel { padding: 20px; }
+        .partner-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+        .partner-chip { background: var(--bg-deep); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 8px; font-weight: 700; color: #1d1d1f; font-size: 12px; letter-spacing: 0.5px; }
+
+        /* === RESPONSIVE UTILS === */
+        @media (max-width: 1024px) {
+            .hero-title { font-size: 44px; }
+            .hero-stats-grid, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: 1fr; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff; flex-direction: column; padding: 24px; border-bottom: 1px solid var(--border-color); box-shadow: var(--shadow-hover); }
+            .nav-links.active { display: flex; }
+            .hero-title { font-size: 34px; }
+            .hero-stats-grid, .footer-grid { grid-template-columns: 1fr; }
+            section { padding: 60px 5vw; }
+            .panel-card { padding: 24px; }
+            .satellite-telemetry-bar { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
 
+    <!-- TOPBAR INFORMATIVA -->
     <div class="topbar">
-        <span>DATA STREAM: COGNITIVE DEEP SYNCHRONIZATION // OPEN NASA LINK</span>
-        <span>HUB CENTRAL: ORION LABS (EUROPE) // DATA SOURCE: NASA JPL</span>
-        <span id="clock" class="text-cyan">SYS TIME: 2026-06-04 15:26:00 UTC</span>
+        <div class="topbar-ticker">
+            <span><strong class="pulse-dot"></strong> ORION LABS CORE NETWORK: ONLINE</span>
+            <span>DATA SOURCE: <strong class="text-blue">HORIZON GLOBAL RTDB</strong></span>
+            <span>PARTNER UPLINK: <strong class="text-green">EUTELSAT VEO3 CONSTELLATION</strong></span>
+        </div>
+        <div class="font-mono">
+            SYS TIME UTC: <span id="utc-clock" class="text-blue">--:--:--</span>
+        </div>
     </div>
 
+    <!-- NAVBAR APPLE WHITE -->
     <nav>
-        <div class="nav-container">
-            <div class="nav-menu-wrapper">
-                <a href="#" class="brand-logo">
-                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="#2f81f7" stroke-width="2" stroke-dasharray="8 4" />
-                        <path d="M50 15 L85 85 L15 85 Z" fill="none" stroke="#ffffff" stroke-width="2" />
-                        <circle cx="50" cy="55" r="12" fill="#0052cc" opacity="0.6" />
-                        <path d="M25 65 Q50 30 75 65" fill="none" stroke="#f85149" stroke-width="2" />
-                    </svg>
-                    <div class="brand-text">
-                        <span class="brand-title">ORION HUB</span>
-                        <span class="brand-sub">NASA & HORIZON JOINT PLATFORM</span>
-                    </div>
-                </a>
-                
-                <div class="menu-toggle" onclick="toggleMobileMenu()">MENU ☰</div>
-                
-                <ul class="nav-links">
-                    <li><a href="#core-theory">Fisica TFSA</a></li>
-                    <li><a href="#propulsion">Propulsione Arcania</a></li>
-                    <li><a href="#veo3-satellite" class="text-gold">Rete Satellitare Veo3</a></li>
-                    <li><a href="#artemis">Programma Artemis</a></li>
-                    <li><a href="#mars">Marte Exploration</a></li>
-                </ul>
+        <a href="#" class="brand-container">
+            <div class="brand-icon-wrapper">
+                <svg width="26" height="26" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="44" stroke="#0071e3" stroke-width="6"/>
+                    <ellipse cx="50" cy="50" rx="44" ry="16" stroke="#34c759" stroke-width="4" transform="rotate(-25 50 50)"/>
+                    <circle cx="50" cy="50" r="10" fill="#0071e3"/>
+                </svg>
             </div>
-        </div>
+            <div class="brand-titles">
+                <span class="brand-title">ORION SPACE AGENCY</span>
+                <span class="brand-sub">HORIZON GLOBAL GROUP</span>
+            </div>
+        </a>
+
+        <div class="menu-toggle" onclick="toggleMenu()">Menu</div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#radar-section">Radar Live 3D</a></li>
+            <li><a href="#veo3-portal">Verifica Veo3</a></li>
+            <li><a href="#research">Paper Scientifici</a></li>
+            <li><a href="#tools">Calcolatori</a></li>
+            <li><a href="#pricing">Piani Servizio</a></li>
+            <li><a href="#propulsion">Propulsione</a></li>
+            <li><a href="#veo3-portal" class="nav-btn">Attiva Veo3</a></li>
+        </ul>
     </nav>
 
+    <!-- HERO DASHBOARD -->
     <header class="hero">
-        <div style="max-width: 1000px;">
-            <div class="hero-meta">
-                <span class="badge">Integrazione Dati NASA Compliant</span>
-                <span class="badge nasa">Accordo Inter-Agenzia 2024-2035</span>
-                <span class="badge success">Stato: Operativo</span>
+        <div class="badge-pill green">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Infrastruttura Satellitare Sincronizzata
+        </div>
+        
+        <h1 class="hero-title">Piattaforma di Ingegneria Aerospaziale e Reti Quantistiche.</h1>
+        <p class="hero-subtitle">
+            Orion Space Agency, in partnership con Horizon Global ed Eutelsat, sviluppa dorsali di comunicazione ultra-veloci e sistemi di propulsione avanzata.
+        </p>
+
+        <div class="hero-stats-grid">
+            <div class="hero-stat-card">
+                <div class="hero-stat-label">Satelliti in Tracciamento</div>
+                <div class="hero-stat-val text-blue" id="stat-sat-count">10 ATTIVI</div>
+                <div class="hero-stat-desc">Costellazione Veo3 & Relays</div>
             </div>
-            <h1 style="font-size: 52px; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1.5px;">ARCHITETTURA QUANTISTICA UNIFICATA</h1>
-            <p style="font-size: 18px; color: var(--text-muted); max-width: 750px;">Monitoraggio dei sistemi di calcolo avanzati e sincronizzazione delle dorsali a banda ultralarga planetaria.</p>
-            
-            <div class="status-grid">
-                <div class="status-box">
-                    <div class="label">Rete Sincronizzazione Dati</div>
-                    <div class="value text-green">ONLINE</div>
-                </div>
-                <div class="status-box">
-                    <div class="label">Canale Satellitare Principale</div>
-                    <div class="value text-cyan">VEO3 DISTRIBUTED</div>
-                </div>
-                <div class="status-box">
-                    <div class="label">Latenza Uplink Centrale</div>
-                    <div class="value font-mono">14.2 ms</div>
-                </div>
+            <div class="hero-stat-card">
+                <div class="hero-stat-label">Latenza Uplink Media</div>
+                <div class="hero-stat-val text-green">12.4 ms</div>
+                <div class="hero-stat-desc">Sincronizzazione Eutelsat</div>
+            </div>
+            <div class="hero-stat-card">
+                <div class="hero-stat-label">Bit Error Rate (BER)</div>
+                <div class="hero-stat-val font-mono">1.2e-11</div>
+                <div class="hero-stat-desc">Crittografia Quantistica QKD</div>
+            </div>
+            <div class="hero-stat-card">
+                <div class="hero-stat-label">Stato Database Centralizzato</div>
+                <div class="hero-stat-val text-purple">HORIZON ID</div>
+                <div class="hero-stat-desc">RTDB Europe-West1 Ready</div>
             </div>
         </div>
     </header>
 
-    <section id="core-theory">
+    <!-- MAPPA LIVE 3D E MONITOR SATELITARE -->
+    <section id="radar-section">
         <div class="section-header">
-            <h2>01 / Teoria del Campo Gravitazionale Unificato</h2>
-            <p>SPECIFICHE DI RICERCA ACCADEMICA DECLASSIFICATA // TRATTATO DI COOPERAZIONE</p>
+            <div class="badge-pill">Telemetria Spaziale Live</div>
+            <h2>Monitoraggio Radiale Costellazione Satellitare</h2>
+            <p>Visualizzazione in tempo reale dei vettori orbitali, delle stazioni di terra e dei fasci dati interconnessi.</p>
         </div>
-        <div class="grid-2">
-            <div class="panel">
-                <div class="tech-image img-arcania"></div>
-                <h3 style="margin-bottom: 15px;">Fisica TFSA e Campi Torsionali</h3>
-                <p style="color: var(--text-muted); font-size: 15px; text-align: justify;">
-                    Il framework matematico sviluppato congiuntamente permette la stabilizzazione delle metriche spaziali locali attraverso l'interazione controllata di campi magnetici rotanti iper-veloci, superando la curvatura standard di Einstein.
-                </p>
+
+        <div class="radar-wrapper" style="max-width: 1250px; margin: 0 auto;">
+            <div class="radar-header">
+                <div class="radar-title">
+                    <span class="pulse-dot"></span> ORION LIVE ORBITAL RADAR v4.2 // EUTELSAT SYNC
+                </div>
+                <div class="radar-controls">
+                    <button class="radar-btn active" onclick="filterSats('all')">Tutti (10)</button>
+                    <button class="radar-btn" onclick="filterSats('GEO')">Orbita GEO</button>
+                    <button class="radar-btn" onclick="filterSats('LEO')">Orbita LEO</button>
+                    <button class="radar-btn" onclick="filterSats('QUANTUM')">Quantum Nodes</button>
+                </div>
             </div>
-            <div class="panel" style="display: flex; flex-direction: column; justify-content: center;">
-                <div class="formula-container">
-                    <div class="math-text">
-                        G<sub>&mu;&nu;</sub> + &Lambda;g<sub>&mu;&nu;</sub> = &chi; ( T<sub>&mu;&nu;</sub> + &Psi;<sub>&mu;&nu;</sub><sup>TFSA</sup> )
-                    </div>
-                    <div class="math-vars">
-                        <div><strong>G<sub>&mu;&nu;</sub></strong>: Tensore di Einstein</div>
-                        <div><strong>&Psi;<sub>&mu;&nu;</sub><sup>TFSA</sup></strong>: Tensore Energetico Quantico</div>
-                    </div>
+
+            <canvas id="satelliteCanvas"></canvas>
+
+            <div class="satellite-telemetry-bar">
+                <div>
+                    <div>SATELLITE SELEZIONATO</div>
+                    <div class="sat-metric-val text-blue" id="tele-name">Eutelsat Quantum-1</div>
+                </div>
+                <div>
+                    <div>ALTITUDINE ORBITALE</div>
+                    <div class="sat-metric-val" id="tele-alt">35,786 km (GEO)</div>
+                </div>
+                <div>
+                    <div>VELOCITÀ DI TRASLAZIONE</div>
+                    <div class="sat-metric-val" id="tele-speed">3.07 km/s</div>
+                </div>
+                <div>
+                    <div>STAZIONE DI TERRA AGGANCIATA</div>
+                    <div class="sat-metric-val text-green" id="tele-station">Roma Teleport (ITA)</div>
+                </div>
+                <div>
+                    <div>EFFICIENZA DI CANALE</div>
+                    <div class="sat-metric-val font-mono text-purple" id="tele-eff">99.98%</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="veo3-satellite" style="background: rgba(210, 153, 34, 0.02);">
-        <div class="section-header" style="border-left-color: var(--accent-gold);">
-            <h2>02 / Connettività Satellitare Globale Veo3</h2>
-            <p>PIATTAFORMA RADIALE INTERFACCIATA CON L'INFRASTRUTTURA HORIZON SERVIZI</p>
+    <!-- PORTALE COPERTURA E FORM FIREBASE HORIZON ID -->
+    <section id="veo3-portal" style="background: #ffffff; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+        <div class="section-header">
+            <div class="badge-pill orange">Allacciamento Banda Ultralarga</div>
+            <h2>Verifica Copertura Satellitare Veo3</h2>
+            <p>Interfacciamento diretto con l'infrastruttura Eutelsat per servire aree civili, industriali e remote.</p>
         </div>
-        
+
         <div class="grid-2">
-            <div class="panel">
-                <h3 style="margin-bottom: 15px;" class="text-cyan">Verifica Copertura Radiale</h3>
-                <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;">
-                    Inserisci la posizione geografica o l'indirizzo della sede operativa per calcolare il vettore d'intercettazione del modulo parabolico con la costellazione Veo3.
+            <!-- Colonna 1: Test Indirizzo -->
+            <div class="panel-card" style="background: var(--bg-panel-secondary);">
+                <h3 style="font-size: 24px; margin-bottom: 12px;">Analisi Spettrale Indirizzo</h3>
+                <p style="color: var(--text-subtle); font-size: 15px; margin-bottom: 24px;">
+                    Immetti le coordinate o l'indirizzo della tua sede per simulare il puntamento parabolico verso i satelliti Veo3.
                 </p>
-                
-                <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
-                    <input type="text" id="veo3-address" placeholder="Es. Via dell'Aeroporto 45, Roma" style="flex: 1; min-width: 200px; padding: 12px; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; color: #fff;">
-                    <button onclick="checkVeo3Coverage()" style="background: var(--accent-cyan); color: #fff; border: none; padding: 12px 22px; border-radius: 6px; font-weight: bold; cursor: pointer;">Test Connessione</button>
+
+                <div class="form-group">
+                    <label class="form-label">Indirizzo Completo o Coordinate GPS</label>
+                    <input type="text" id="veo3-address" placeholder="Es. Via Salaria 120, Roma / Coordinate GPS">
                 </div>
-                
-                <div id="veo3-results" style="display: none;" class="panel-light">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                        <span class="badge success">Aggancio Satellitare Ottimale</span>
+
+                <button type="button" class="btn-primary" onclick="checkVeo3Coverage()" style="margin-bottom: 24px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    Esegui Benchmark Spettrale
+                </button>
+
+                <!-- Risultati Benchmark -->
+                <div id="veo3-results" style="display: none; border-top: 1px solid var(--border-color); padding-top: 24px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <span class="badge-pill green">Ottimale - Pronta Attivazione</span>
+                        <span class="font-mono text-muted" style="font-size: 11px;">NODI EUTELSAT ATTIVI: 4/4</span>
                     </div>
-                    <div class="log-terminal" style="height: 130px; background: #02040a;">
-                        <div class="log-line"><span class="log-time">[STATUS]</span> <span class="log-tag">RETICOLO GEOSTAZIONARIO:</span> Copertura 100% Disponibile</div>
-                        <div class="log-line"><span class="log-time">[TEST]</span> <span class="log-tag">DOWNLOAD NOMINALE STABILE:</span> <span class="text-cyan">300 Mbps</span></div>
-                        <div class="log-line"><span class="log-time">[TEST]</span> <span class="log-tag">UPLOAD NOMINALE STABILE:</span> <span class="text-gold">230 Mbps</span></div>
+
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; text-align: center;">
+                        <div style="background: #fff; padding: 12px; border-radius: 8px; border: 1px solid var(--border-light);">
+                            <div style="font-size: 10px; color: var(--text-muted); font-weight: 700;">LATENZA (PING)</div>
+                            <div id="res-ping" style="font-size: 18px; font-weight: 700; color: var(--accent-blue);">--</div>
+                        </div>
+                        <div style="background: #fff; padding: 12px; border-radius: 8px; border: 1px solid var(--border-light);">
+                            <div style="font-size: 10px; color: var(--text-muted); font-weight: 700;">RAPPORTO SNR</div>
+                            <div id="res-snr" style="font-size: 18px; font-weight: 700; color: var(--accent-green);">--</div>
+                        </div>
+                        <div style="background: #fff; padding: 12px; border-radius: 8px; border: 1px solid var(--border-light);">
+                            <div style="font-size: 10px; color: var(--text-muted); font-weight: 700;">ANGOLO ELEVAZIONE</div>
+                            <div id="res-elevation" style="font-size: 18px; font-weight: 700; color: var(--accent-purple);">--</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="panel">
-                <h3 style="margin-bottom: 15px;">Richiesta Configurazione Hardware Parabola</h3>
+            <!-- Colonna 2: Modulo Inserimento Pratica RTDB -->
+            <div class="panel-card">
+                <h3 style="font-size: 24px; margin-bottom: 12px;">Richiesta Modulo Operativo</h3>
+                <p style="color: var(--text-subtle); font-size: 15px; margin-bottom: 24px;">
+                    I dati verranno inviati direttamente alla console di gestione Horizon Servizi.
+                </p>
+
                 <form id="veo3-form" onsubmit="submitVeo3Request(event)">
-                    <div style="margin-bottom: 12px;">
-                        <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; color: var(--text-muted);">CATEGORIA INFRASTRUTTURALE</label>
-                        <select id="veo3-tipo" style="width: 100%; padding: 11px; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; color: #fff;">
-                            <option value="Civile">Impianto Civile (Residenziale Autonomo)</option>
-                            <option value="Industriale">Impianto Industriale (Aziende e Server Network)</option>
-                        </select>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                        <div>
-                            <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; color: var(--text-muted);">INTESTATARIO / NOMINATIVO</label>
-                            <input type="text" id="veo3-nome" required style="width: 100%; padding: 10px; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; color: #fff;">
+                    <div class="grid-2" style="gap: 16px; margin-bottom: 0;">
+                        <div class="form-group">
+                            <label class="form-label">Tipologia Profilo</label>
+                            <select id="veo3-piano" required>
+                                <option value="Veo3 Residenziale 300M">Veo3 Residenziale (300 Mbps)</option>
+                                <option value="Veo3 Business Pro 1G">Veo3 Business Pro (1 Gbps)</option>
+                                <option value="Veo3 Deep Space Link 10G">Veo3 Deep Space Link (10 Gbps)</option>
+                            </select>
                         </div>
-                        <div>
-                            <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; color: var(--text-muted);">RECAPITO TELEFONICO</label>
-                            <input type="tel" id="veo3-tel" required style="width: 100%; padding: 10px; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; color: #fff;">
+                        <div class="form-group">
+                            <label class="form-label">Destinazione Uso</label>
+                            <select id="veo3-tipo">
+                                <option value="Residenziale Autonomo">Residenziale Autonomo</option>
+                                <option value="Complesso Industriale">Complesso Industriale</option>
+                                <option value="Data Center / Server Hub">Data Center / Server Hub</option>
+                            </select>
                         </div>
                     </div>
-                    
-                    <div style="margin-bottom: 12px;">
-                        <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; color: var(--text-muted);">EMAIL DI RIFERIMENTO</label>
-                        <input type="email" id="veo3-email" required style="width: 100%; padding: 10px; background: var(--bg-deep); border: 1px solid var(--border-color); border-radius: 6px; color: #fff;">
+
+                    <div class="grid-2" style="gap: 16px; margin-bottom: 0;">
+                        <div class="form-group">
+                            <label class="form-label">Nome e Cognome / Referente</label>
+                            <input type="text" id="veo3-nome" placeholder="Mario Rossi" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Recapito Telefonico</label>
+                            <input type="tel" id="veo3-tel" placeholder="+39 340 0000000" required>
+                        </div>
                     </div>
-                    
-                    <div style="margin-bottom: 18px;">
-                        <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; color: var(--text-muted);">INDIRIZZO DI ALLACCIAMENTO VALIDATO</label>
-                        <input type="text" id="veo3-final-address" readonly placeholder="Esegui prima la verifica copertura a sinistra" required style="width: 100%; padding: 10px; background: var(--bg-panel-light); border: 1px solid var(--border-color); border-radius: 6px; color: var(--accent-gold); font-weight: bold;">
+
+                    <div class="form-group">
+                        <label class="form-label">Email Aziendale / Personale</label>
+                        <input type="email" id="veo3-email" placeholder="mario.rossi@domain.com" required>
                     </div>
-                    
-                    <button type="submit" id="veo3-submit-btn" style="width: 100%; background: var(--accent-green); color: #fff; border: none; padding: 14px; border-radius: 6px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">
-                        Apri Pratica Su Database Horizon
+
+                    <div class="form-group">
+                        <label class="form-label">Indirizzo Verificato</label>
+                        <input type="text" id="veo3-final-address" placeholder="Esegui prima il benchmark a sinistra" readonly required style="background: var(--bg-panel-secondary); color: var(--accent-blue); font-weight: 600;">
+                    </div>
+
+                    <button type="submit" id="veo3-submit-btn" class="btn-primary">
+                        Invia Pratica ad Horizon Servizi Staff
                     </button>
                 </form>
             </div>
         </div>
     </section>
 
-    <section id="propulsion">
-        <div class="section-header nasa-style">
-            <h2>03 / Sistemi di Propulsione Deep Space</h2>
-            <p>SPECIFICHE DEGLI APPARATI DI VOLO CONGIUNTI // ARCHIVIO TECNICO</p>
+    <!-- RESEARCH & PAPER SCIENTIFICI -->
+    <section id="research">
+        <div class="section-header">
+            <div class="badge-pill purple">Pubblicazioni Accademiche Orion</div>
+            <h2>Paper Scientifici e Documentazione Tecnica</h2>
+            <p>Esplora gli articoli della divisione di ricerca e sviluppo su fisica applicata e crittografia.</p>
         </div>
-        <div class="panel">
-            <div class="tech-image img-engine"></div>
-            <h3 style="margin-bottom: 15px;">Matrice delle Prestazioni Comparative</h3>
-            
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Modulo Propulsore</th>
-                            <th>Tipologia Core</th>
-                            <th>Efficienza Di Spinta</th>
-                            <th>Integrazione Sistemi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Arcania Mark VII</td>
-                            <td>Torsionale Quantico</td>
-                            <td class="spec-value">99.4%</td>
-                            <td>Orion Labs Spec</td>
-                        </tr>
-                        <tr>
-                            <td>VASIMR NX-3</td>
-                            <td>Plasma Magnetoidrodinamico</td>
-                            <td class="spec-nasa">87.2%</td>
-                            <td>NASA JPL Core</td>
-                        </tr>
-                        <tr>
-                            <td>Orion Unified Core</td>
-                            <td>Fusione Magnetica Confinata</td>
-                            <td class="spec-value">94.8%</td>
-                            <td>Joint Horizon System</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+        <div class="grid-3">
+            <!-- Article 1 -->
+            <div class="article-card">
+                <div class="article-img-wrapper">
+                    <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="200" fill="#f0f4f8"/>
+                        <circle cx="200" cy="100" r="70" stroke="#0071e3" stroke-width="2" stroke-dasharray="6 6"/>
+                        <circle cx="200" cy="100" r="40" fill="#0071e3" fill-opacity="0.1" stroke="#0071e3" stroke-width="2"/>
+                        <line x1="100" y1="100" x2="300" y2="100" stroke="#34c759" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="article-body">
+                    <div class="article-meta">
+                        <span>PUBBLICAZIONE #409</span>
+                        <span>ORION PHYSICS LAB</span>
+                    </div>
+                    <h3 class="article-title">Entanglement Macro-Scalare su Reti Satellitari</h3>
+                    <p class="article-excerpt">
+                        Analisi dell'accoppiamento dei fotoni impiegati nei transponder Eutelsat per eliminare il decadimento del segnale nelle orbite geostazionarie.
+                    </p>
+                    <button class="read-more-btn" onclick="openModal('paper1')">
+                        Leggi Articolo Completo 
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Article 2 -->
+            <div class="article-card">
+                <div class="article-img-wrapper">
+                    <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="200" fill="#f8f4f0"/>
+                        <path d="M50 150 Q200 20 350 150" stroke="#af52de" stroke-width="3" fill="none"/>
+                        <path d="M50 50 Q200 180 350 50" stroke="#ff9500" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+                    </svg>
+                </div>
+                <div class="article-body">
+                    <div class="article-meta">
+                        <span>PUBBLICAZIONE #412</span>
+                        <span>TFSA METRICS</span>
+                    </div>
+                    <h3 class="article-title">Controllo della Metrica di Campo TFSA</h3>
+                    <p class="article-excerpt">
+                        Come le fluttuazioni magnetoidrodinamiche controllate permettono la contrazione locale del vettore relativistico durante il volo spaziale.
+                    </p>
+                    <button class="read-more-btn" onclick="openModal('paper2')">
+                        Leggi Articolo Completo 
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Article 3 -->
+            <div class="article-card">
+                <div class="article-img-wrapper">
+                    <svg viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="200" fill="#f0f8f4"/>
+                        <rect x="120" y="50" width="160" height="100" rx="12" stroke="#34c759" stroke-width="2" fill="none"/>
+                        <path d="M160 50 V30 C160 20 240 20 240 30 V50" stroke="#34c759" stroke-width="2" fill="none"/>
+                    </svg>
+                </div>
+                <div class="article-body">
+                    <div class="article-meta">
+                        <span>PUBBLICAZIONE #418</span>
+                        <span>HORIZON SECURITY</span>
+                    </div>
+                    <h3 class="article-title">Protocolli di Distribuzione QKD Post-Quantistica</h3>
+                    <p class="article-excerpt">
+                        Integrazione delle chiavi crittografiche monouso distribuite tramite il database Horizon ID per la sicurezza totale dei dati sensibili.
+                    </p>
+                    <button class="read-more-btn" onclick="openModal('paper3')">
+                        Leggi Articolo Completo 
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4 style="color: #fff; font-size: 16px; margin-bottom: 15px;">ORION LABS HUB</h4>
-                <p style="line-height: 1.8; font-size: 13px;">Infrastruttura tecnologica integrata per la gestione delle telecomunicazioni e lo sviluppo di applicativi digitali distribuiti sul territorio nazionale ed internazionale.</p>
+    <!-- INTERACTIVE CALCULATORS -->
+    <section id="tools" style="background: #ffffff; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+        <div class="section-header">
+            <div class="badge-pill">Strumenti di Calcolo</div>
+            <h2>Calcolatori Interattivi Orion</h2>
+            <p>Utilizza gli algoritmi di calcolo per valutare latenze e parametri di trasmissione relativistica.</p>
+        </div>
+
+        <div class="grid-2">
+            <!-- Calculator 1: Time Dilation & Latency -->
+            <div class="calc-box">
+                <h3 style="margin-bottom: 12px; font-size: 20px;">1. Calcolatore Dilatazione Temporale Relativistica</h3>
+                <p style="color: var(--text-subtle); font-size: 14px; margin-bottom: 20px;">
+                    Calcola la discrepanza temporale tra un orologio atomico a terra ed uno a bordo di un satellite in orbita.
+                </p>
+
+                <div class="form-group">
+                    <label class="form-label">Altitudine Satellitare (km)</label>
+                    <input type="number" id="calc-alt" value="35786" oninput="runCalculations()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Velocità Orbitale (km/s)</label>
+                    <input type="number" id="calc-speed" value="3.07" step="0.01" oninput="runCalculations()">
+                </div>
+
+                <div style="background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; margin-top: 20px;">
+                    <div style="font-size: 12px; color: var(--text-muted);">DILATAZIONE TEMPORALE CALCOLATA (&Delta;t)</div>
+                    <div id="out-dilation" class="font-mono text-purple" style="font-size: 20px; font-weight: 700;">+45.2 microseconds / giorno</div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">COMPENSAZIONE COMPOSITA VEO3</div>
+                    <div id="out-compensation" class="font-mono text-green" style="font-size: 14px; font-weight: 600;">ACTIVE (0.00 ns Drift)</div>
+                </div>
             </div>
-            <div class="footer-col">
-                <h4>Collegamenti</h4>
-                <ul>
-                    <li><a href="#core-theory">Teoria Fisica</a></li>
-                    <li><a href="#veo3-satellite">Verifica Veo3</a></li>
-                    <li><a href="#propulsion">Sistemi di Spinta</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Documenti</h4>
-                <ul>
-                    <li><a href="#">Trattati Internazionali</a></li>
-                    <li><a href="#">Specifiche API Horizon</a></li>
-                    <li><a href="#">Crittografia Sistemi</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Consorzio Partner</h4>
-                <p style="margin-bottom: 15px; font-size: 12px;">I programmi di allineamento e cablaggio sono distribuiti e regolati in partnership commerciale con la divisione di Horizon Servizi Italia.</p>
-                <div class="partners">
-                    <span class="partner-logo">nasa</span>
-                    <span class="partner-logo">horizon</span>
+
+            <!-- Calculator 2: Bandwidth & SNR Estimator -->
+            <div class="calc-box">
+                <h3 style="margin-bottom: 12px; font-size: 20px;">2. Estimatore Banda & SNR Veo3</h3>
+                <p style="color: var(--text-subtle); font-size: 14px; margin-bottom: 20px;">
+                    Simula la velocità massima di trasferimento dati in base al diametro della parabola ed alle condizioni atmosferiche.
+                </p>
+
+                <div class="form-group">
+                    <label class="form-label">Diametro Paraboloide (cm)</label>
+                    <select id="calc-dish" onchange="runCalculations()">
+                        <option value="60">60 cm (Standard Residenziale)</option>
+                        <option value="90">90 cm (High Gain Enterprise)</option>
+                        <option value="150">150 cm (Deep Space Uplink)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Condizioni Atmosferiche</label>
+                    <select id="calc-weather" onchange="runCalculations()">
+                        <option value="1.0">Cielo Sereno (Attenuazione 0 dB)</option>
+                        <option value="0.85">Pioggia Moderata (Attenuazione -1.2 dB)</option>
+                        <option value="0.65">Tempesta / Nevicata (Attenuazione -3.5 dB)</option>
+                    </select>
+                </div>
+
+                <div style="background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; margin-top: 20px;">
+                    <div style="font-size: 12px; color: var(--text-muted);">THROUGHPUT MASSIMO STIMATO</div>
+                    <div id="out-speed" class="font-mono text-blue" style="font-size: 20px; font-weight: 700;">300.00 Mbps</div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">DISPONIBILITÀ CANALE EUTELSAT</div>
+                    <div id="out-uptime" class="font-mono text-green" style="font-size: 14px; font-weight: 600;">99.999% SLA</div>
                 </div>
             </div>
         </div>
-        
-        <div style="border-top: 1px solid #30363d; padding-top: 25px; text-align: center; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; font-size: 12px;">
-            <p>© 2026 Orion Labs & Horizon Servizi Italia. Connessione sicura e crittografata al database RTDB centralizzato. Tutti i diritti riservati.</p>
-            <p style="font-family: var(--font-mono); color: var(--accent-cyan);">SYS_VERSION_5.2.0_MOBILE_READY</p>
+    </section>
+
+    <!-- ECOSYSTEM VEO3 PLANS -->
+    <section id="pricing">
+        <div class="section-header">
+            <div class="badge-pill green">Soluzioni Connettività Horizon</div>
+            <h2>Piani di Servizio Veo3 Satellitare</h2>
+            <p>Seleziona l'infrastruttura adatta alle tue esigenze civili, aziendali o aerospaziali.</p>
+        </div>
+
+        <div class="grid-4">
+            <!-- Plan 1 -->
+            <div class="pricing-card">
+                <div>
+                    <div class="pricing-title">Veo3 Basic</div>
+                    <div style="color: var(--text-muted); font-size: 13px;">Residenziale Autonomo</div>
+                    <div class="pricing-price">€49</div>
+                    <div class="pricing-period">/ mese (IVA inclusa)</div>
+                    
+                    <ul class="pricing-features">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Download fino a 300 Mbps</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Upload fino a 50 Mbps</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Kit Paraboloide 60cm Incluso</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Supporto Horizon Servizi</li>
+                    </ul>
+                </div>
+                <a href="#veo3-portal" class="btn-primary" style="text-decoration: none;">Ordina Basic</a>
+            </div>
+
+            <!-- Plan 2 (Featured) -->
+            <div class="pricing-card featured">
+                <div class="badge-pill green" style="position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--accent-blue); color: #fff;">Più Richiesto</div>
+                <div>
+                    <div class="pricing-title">Veo3 Pro Business</div>
+                    <div style="color: var(--text-muted); font-size: 13px;">Piccole e Medie Imprese</div>
+                    <div class="pricing-price">€149</div>
+                    <div class="pricing-period">/ mese (IVA esclusa)</div>
+                    
+                    <ul class="pricing-features">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Download fino a 1000 Mbps</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Upload fino a 250 Mbps</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> IP Statico Dedicato Horizon</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> SLA di Ripristino 4 Ore</li>
+                    </ul>
+                </div>
+                <a href="#veo3-portal" class="btn-primary" style="text-decoration: none;">Ordina Business</a>
+            </div>
+
+            <!-- Plan 3 -->
+            <div class="pricing-card">
+                <div>
+                    <div class="pricing-title">Quantum Enterprise</div>
+                    <div style="color: var(--text-muted); font-size: 13px;">Data Center & Defense</div>
+                    <div class="pricing-price">€499</div>
+                    <div class="pricing-period">/ mese</div>
+                    
+                    <ul class="pricing-features">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Banda Simmetrica 2.5 Gbps</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Crittografia Quantistica QKD</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Ridondanza Satellitare Dual-Node</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Account Manager Dedicato</li>
+                    </ul>
+                </div>
+                <a href="#veo3-portal" class="btn-primary" style="text-decoration: none;">Richiedi Enterprise</a>
+            </div>
+
+            <!-- Plan 4 -->
+            <div class="pricing-card">
+                <div>
+                    <div class="pricing-title">Orbital Maritime</div>
+                    <div style="color: var(--text-muted); font-size: 13px;">Navigazione & Avionica</div>
+                    <div class="pricing-price">€899</div>
+                    <div class="pricing-period">/ mese</div>
+                    
+                    <ul class="pricing-features">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Puntamento Auto-Mantenuto</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Copertura Oceanica Globale</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Integrazione Horizon Fleet</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg> Supporto Satellitare H24</li>
+                    </ul>
+                </div>
+                <a href="#veo3-portal" class="btn-primary" style="text-decoration: none;">Contatta Orion</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROPULSION SPECS TABLE -->
+    <section id="propulsion">
+        <div class="section-header">
+            <div class="badge-pill purple">Aerospace Hardware Specs</div>
+            <h2>Matrice Comparativa Propulsori Ionici e Quantistici</h2>
+            <p>Specifiche di rendimento e requisiti energetici per i moduli aerospaziali Orion.</p>
+        </div>
+
+        <div class="table-wrapper" style="max-width: 1250px; margin: 0 auto;">
+            <table class="spec-table">
+                <thead>
+                    <tr>
+                        <th>Nome Modulo</th>
+                        <th>Principale Vettore Propulsivo</th>
+                        <th>Spinta Nominale (N)</th>
+                        <th>Impulso Specifico (Isp)</th>
+                        <th>Consumo energetico</th>
+                        <th>Stato Integrazione</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Arcania Mark VII</strong></td>
+                        <td>Torsionale Quantico</td>
+                        <td class="text-blue font-mono">1,450 N</td>
+                        <td class="font-mono">12,500 s</td>
+                        <td>45 kW</td>
+                        <td><span class="badge-pill green">Operativo Orion Labs</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Aetheris V-1</strong></td>
+                        <td>Plasma Magnetoidrodinamico</td>
+                        <td class="text-blue font-mono">820 N</td>
+                        <td class="font-mono">8,400 s</td>
+                        <td>28 kW</td>
+                        <td><span class="badge-pill">Test Eutelsat Network</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Orion Unified Core</strong></td>
+                        <td>Fusione Magnetica Confinata</td>
+                        <td class="text-blue font-mono">5,800 N</td>
+                        <td class="font-mono">35,000 s</td>
+                        <td>120 kW</td>
+                        <td><span class="badge-pill purple">Prototipo Horizon Global</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Zephyr Ion-Drive</strong></td>
+                        <td>Griglia Ionica al Xeno</td>
+                        <td class="text-blue font-mono">180 N</td>
+                        <td class="font-mono">4,100 s</td>
+                        <td>6 kW</td>
+                        <td><span class="badge-pill green">In Orbita Su Veo3-Alpha</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- LIVE CONSOLE LOGS -->
+    <section style="background: #ffffff; border-top: 1px solid var(--border-light);">
+        <div class="section-header" style="margin-bottom: 30px;">
+            <div class="badge-pill">Console System Audit</div>
+            <h2>Log Operativi di Sistema in Tempo Reale</h2>
+        </div>
+
+        <div class="terminal-container" style="max-width: 1000px; margin: 0 auto;">
+            <div class="terminal-header">
+                <div>SYSTEM LOG FEED // ORION LABS MONITOR</div>
+                <div style="display: flex; gap: 10px;">
+                    <span style="color: var(--accent-green); font-size: 10px;">● CONNECTED TO HORIZON RTDB</span>
+                </div>
+            </div>
+            <div class="terminal-body" id="logTerminal">
+                <!-- Inserito via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL READER PER ARTICOLI -->
+    <div class="modal-overlay" id="articleModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="badge-pill purple" id="modal-badge" style="margin-bottom: 16px;">PAPER SCIENTIFICO</div>
+            <h2 id="modal-title" style="font-size: 32px; margin-bottom: 20px;">Titolo Articolo</h2>
+            <div style="font-size: 13px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 24px;" id="modal-meta">
+                AUTORE: Dr. Aris Thorne // ORION LABS // HORIZON GLOBAL
+            </div>
+            <div id="modal-body" style="font-size: 16px; color: var(--text-subtle); line-height: 1.7;">
+                <!-- Contenuto Articolo -->
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER STILE APPLE -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Orion Space Agency</h4>
+                <p style="line-height: 1.6; font-size: 13px; margin-bottom: 16px;">
+                    Divisione avanzata di ingegneria aerospaziale e comunicazioni quantistiche del gruppo Horizon Global. Operiamo in stretta collaborazione con Eutelsat per l'erogazione di connettività satellitare ad alta efficienza.
+                </p>
+                <div class="partner-badges">
+                    <span class="partner-chip">Horizon Global</span>
+                    <span class="partner-chip">Eutelsat</span>
+                    <span class="partner-chip">Horizon ID</span>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Navigazione</h4>
+                <ul>
+                    <li><a href="#radar-section">Radar 3D Satelliti</a></li>
+                    <li><a href="#veo3-portal">Portale Copertura Veo3</a></li>
+                    <li><a href="#research">Paper e Ricerca</a></li>
+                    <li><a href="#tools">Strumenti di Calcolo</a></li>
+                    <li><a href="#pricing">Listino Servizi Veo3</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Infrastruttura Dati</h4>
+                <ul>
+                    <li><a href="#">Horizon ID Auth</a></li>
+                    <li><a href="#">Realtime Database Europe</a></li>
+                    <li><a href="#">Status Server Veo3</a></li>
+                    <li><a href="#">Security Protocol QKD</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Note Legali & Conformità</h4>
+                <p style="font-size: 12px; line-height: 1.6;">
+                    Tutti i marchi Horizon Global, Orion Space Agency ed Eutelsat sono registrati e tutelati. L'instradamento dei dati del form avviene su infrastruttura Firebase RTDB certificata.
+                </p>
+            </div>
+        </div>
+
+        <div style="border-top: 1px solid var(--border-light); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; max-width: 1250px; margin: 0 auto;">
+            <p>© 2026 Orion Space Agency & Horizon Global. Tutti i diritti riservati.</p>
+            <div class="font-mono" style="font-size: 11px;">SYS_BUILD: 8.4.2_APPLE_ENTERPRISE_READY</div>
         </div>
     </footer>
 
+    <!-- JAVASCRIPT LOGIC & CANVAS 3D ENGINE -->
     <script>
-        function toggleMobileMenu() {
-            const links = document.querySelector('.nav-links');
-            links.classList.toggle('active');
+        // UTC Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('utc-clock').innerText = now.toUTCString().split(' ')[4] + ' UTC';
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Live Log Terminal Stream
+        const logs = [
+            { cat: "GEO_SYNC", msg: "Pacchetto Dati Eutelsat sincronizzato su nodo Roma Teleport." },
+            { cat: "QKD_KEY", msg: "Nuova chiave quantistica iniettata su RTDB Horizon ID." },
+            { cat: "ORBITAL", msg: "Correzione di rotta completata per satellite Orion-Veo3 Gamma." },
+            { cat: "VEO3_LINK", msg: "Verificato rapporto SNR su frequenza Ka-Band: 22.4 dB." },
+            { cat: "PROPOSED", msg: "Test di spinta Arcania Mark VII completato con successo." }
+        ];
+
+        function appendLog(customMsg) {
+            const term = document.getElementById('logTerminal');
+            const now = new Date().toISOString().split('T')[1].slice(0, 8);
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            
+            if(customMsg) {
+                entry.innerHTML = `<span class="log-timestamp">[${now}]</span> <span class="log-cat">USER_EVENT:</span> <span>${customMsg}</span>`;
+            } else {
+                const randomLog = logs[Math.floor(Math.random() * logs.length)];
+                entry.innerHTML = `<span class="log-timestamp">[${now}]</span> <span class="log-cat">${randomLog.cat}:</span> <span>${randomLog.msg}</span>`;
+            }
+            
+            term.appendChild(entry);
+            term.scrollTop = term.scrollHeight;
+        }
+        setInterval(() => appendLog(), 4000);
+        appendLog("Inizializzazione portale Orion Space Agency completata.");
+
+        /* === ADVANCED 3D SATELLITE CANVAS ENGINE === */
+        const canvas = document.getElementById('satelliteCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = 500;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Lista estesa di 10 satelliti
+        const satellites = [
+            { id: 1, name: "Eutelsat Quantum-1", type: "GEO", alt: "35,786 km", speed: "3.07 km/s", station: "Roma Teleport", eff: "99.98%", r: 180, speedAngle: 0.005, angle: 0, color: "#0071e3" },
+            { id: 2, name: "Orion-Veo3 Alpha", type: "LEO", alt: "550 km", speed: "7.59 km/s", station: "Paris Hub", eff: "99.92%", r: 120, speedAngle: 0.018, angle: 1.2, color: "#34c759" },
+            { id: 3, name: "Orion-Veo3 Beta", type: "LEO", alt: "550 km", speed: "7.59 km/s", station: "Frankfurt Core", eff: "99.95%", r: 120, speedAngle: 0.018, angle: 3.4, color: "#34c759" },
+            { id: 4, name: "Orion-Veo3 Gamma", type: "LEO", alt: "550 km", speed: "7.59 km/s", station: "London Uplink", eff: "99.89%", r: 120, speedAngle: 0.018, angle: 5.1, color: "#34c759" },
+            { id: 5, name: "Horizon Relay Node A", type: "MEO", alt: "2,000 km", speed: "4.89 km/s", station: "Madrid Gateway", eff: "99.99%", r: 150, speedAngle: 0.01, angle: 0.8, color: "#ff9500" },
+            { id: 6, name: "Horizon Relay Node B", type: "MEO", alt: "2,000 km", speed: "4.89 km/s", station: "Zurich Station", eff: "99.97%", r: 150, speedAngle: 0.01, angle: 3.9, color: "#ff9500" },
+            { id: 7, name: "Eutelsat Konnect VHTS", type: "GEO", alt: "35,786 km", speed: "3.07 km/s", station: "Milan Teleport", eff: "100.0%", r: 185, speedAngle: 0.004, angle: 2.1, color: "#0071e3" },
+            { id: 8, name: "Quantum Entanglement Hub", type: "QUANTUM", alt: "800 km", speed: "7.42 km/s", station: "Orion Physics Lab", eff: "99.99%", r: 135, speedAngle: 0.015, angle: 4.5, color: "#af52de" },
+            { id: 9, name: "Sentinel-Horizon Polar", type: "LEO", alt: "700 km", speed: "7.50 km/s", station: "Oslo Station", eff: "99.85%", r: 130, speedAngle: 0.016, angle: 2.8, color: "#30b0c7" },
+            { id: 10, name: "Deep Space Probe Orion-X", type: "QUANTUM", alt: "12,000 km", speed: "2.10 km/s", station: "Deep Space Array", eff: "99.70%", r: 210, speedAngle: 0.003, angle: 1.0, color: "#af52de" }
+        ];
+
+        let activeFilter = 'all';
+        let selectedSat = satellites[0];
+
+        function filterSats(filter) {
+            activeFilter = filter;
+            document.querySelectorAll('.radar-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function drawRadar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            // 1. Disegna Terra 3D con Gradiente
+            const earthRadius = 55;
+            const earthGrad = ctx.createRadialGradient(cx - 15, cy - 15, 10, cx, cy, earthRadius);
+            earthGrad.addColorStop(0, '#0071e3');
+            earthGrad.addColorStop(0.8, '#003d7a');
+            earthGrad.addColorStop(1, '#001a33');
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, earthRadius, 0, Math.PI * 2);
+            ctx.fillStyle = earthGrad;
+            ctx.fill();
+
+            // Atmo Halo
+            ctx.beginPath();
+            ctx.arc(cx, cy, earthRadius + 6, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(0, 113, 227, 0.3)';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            // Stazioni di Terra (Punti Rossi sul Pianeta)
+            const groundStations = [
+                { name: "Roma", a: 0.2 }, { name: "Parigi", a: 1.8 }, { name: "NY", a: 3.5 }
+            ];
+            groundStations.forEach(st => {
+                let gx = cx + Math.cos(st.a) * (earthRadius - 10);
+                let gy = cy + Math.sin(st.a) * (earthRadius - 10);
+                ctx.beginPath();
+                ctx.arc(gx, gy, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#ff3b30';
+                ctx.fill();
+            });
+
+            // 2. Anelli Orbitali
+            [120, 135, 150, 180, 210].forEach(r => {
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 8]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            });
+
+            // 3. Disegna e Aggiorna Satelliti
+            satellites.forEach(sat => {
+                sat.angle += sat.speedAngle;
+                
+                // Filtro visibilità
+                if(activeFilter !== 'all' && sat.type !== activeFilter) return;
+
+                const sx = cx + Math.cos(sat.angle) * sat.r;
+                const sy = cy + Math.sin(sat.angle) * (sat.r * 0.6); // Effetto prospettico 3D (ellittico)
+
+                // Raggio di connettività verso la Terra
+                ctx.beginPath();
+                ctx.moveTo(sx, sy);
+                ctx.lineTo(cx, cy);
+                ctx.strokeStyle = sat.color + '33'; // Trasparenza
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Corpo Satellite
+                ctx.beginPath();
+                ctx.arc(sx, sy, 5, 0, Math.PI * 2);
+                ctx.fillStyle = sat.color;
+                ctx.fill();
+
+                // Glow del satellite selezionato
+                if(sat.id === selectedSat.id) {
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, 10, 0, Math.PI * 2);
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+
+                // Etichetta Testo
+                ctx.font = '10px monospace';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+                ctx.fillText(sat.name, sx + 9, sy + 3);
+            });
+
+            requestAnimationFrame(drawRadar);
+        }
+        drawRadar();
+
+        // Interattività Click su Canvas per selezionare Satellite
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            satellites.forEach(sat => {
+                const sx = cx + Math.cos(sat.angle) * sat.r;
+                const sy = cy + Math.sin(sat.angle) * (sat.r * 0.6);
+                const dist = Math.hypot(clickX - sx, clickY - sy);
+
+                if(dist < 15) {
+                    selectedSat = sat;
+                    document.getElementById('tele-name').innerText = sat.name;
+                    document.getElementById('tele-alt').innerText = sat.alt + ` (${sat.type})`;
+                    document.getElementById('tele-speed').innerText = sat.speed;
+                    document.getElementById('tele-station').innerText = sat.station;
+                    document.getElementById('tele-eff').innerText = sat.eff;
+                    appendLog(`[SELEZIONE RADAR] Connessione al segnale di: ${sat.name}`);
+                }
+            });
+        });
+
+        /* === CALCULATORS LOGIC === */
+        function runCalculations() {
+            // Calc 1: Time Dilation
+            const alt = parseFloat(document.getElementById('calc-alt').value) || 0;
+            const speed = parseFloat(document.getElementById('calc-speed').value) || 0;
+            const dilation = (45.2 * (alt / 35786) * (speed / 3.07)).toFixed(2);
+            document.getElementById('out-dilation').innerText = `+${dilation} microseconds / giorno`;
+
+            // Calc 2: Bandwidth
+            const dish = parseFloat(document.getElementById('calc-dish').value);
+            const weather = parseFloat(document.getElementById('calc-weather').value);
+            const baseSpeed = dish === 60 ? 300 : (dish === 90 ? 1000 : 2500);
+            const finalSpeed = (baseSpeed * weather).toFixed(1);
+            document.getElementById('out-speed').innerText = `${finalSpeed} Mbps`;
+        }
+
+        /* === MODAL ARTICLES SYSTEM === */
+        const paperContents = {
+            paper1: {
+                title: "Entanglement Macro-Scalare su Reti Satellitari",
+                badge: "PAPER #409 // ORION PHYSICS",
+                meta: "AUTORI: Dr. Aris Thorne, Ing. Elena Vance // ORION LABS",
+                body: `<p>La trasmissione dei dati su scala intercontinentale affronta da sempre il limite invalicabile imposto dalla velocità della luce e dall'attenuazione atmosferica. Presso i laboratori Orion, in sinergia con la costellazione Eutelsat, è stato sperimentato l'impiego di coppie di fotoni in stato di entanglement distribuito.</p>
+                <br><p>Utilizzando la fibra quantistica per connettere la Stazione di Terra di Roma Teleport con i transponder in orbita geostazionaria, si è ottenuta una stabilizzazione dello stato quantico con un tasso di decoerenza inferiore allo 0.001%. Questo apre la strada alla sincronizzazione di database a latenza zero ed alla protezione totale dei dati contro intercettazioni esterne.</p>`
+            },
+            paper2: {
+                title: "Controllo della Metrica di Campo TFSA",
+                badge: "PAPER #412 // ADVANCED PROPULSION",
+                meta: "AUTORI: Dr. Aris Thorne // DIVISIONE AEROSPACE HORIZON GLOBAL",
+                body: `<p>La teoria del campo TFSA (Torsional Field Space Expansion) definisce la possibilità di alterare localmente la curvatura dello spazio-tempo tramite l'applicazione di un campo magnetico a frequenza armonica quantizzata.</p>
+                <br><p>Durante le simulazioni svolte sul modello Arcania Mark VII, i rilevatori laser hanno registrato una riduzione percettibile della massa inerziale equivalente del 14.2%, permettendo ai vettori di spinta di raggiungere la velocità orbitale target con un risparmio del 38% sul consumo di plasma convenzionale.</p>`
+            },
+            paper3: {
+                title: "Protocolli di Distribuzione QKD Post-Quantistica",
+                badge: "PAPER #418 // HORIZON SECURITY",
+                meta: "AUTORI: Team Horizon ID Security & Quantum Taskforce",
+                body: `<p>La sicurezza delle transazioni digitali dell'ecosistema Horizon ID richiede protocolli di crittografia in grado di resistere ad attacchi sferrati da computer quantistici ad elevate prestazioni.</p>
+                <br><p>Il protocollo Orion-QKD implementato negli apparati Veo3 garantisce che ogni singola sessione di dati scambiata sia cifrata con una chiave quantistica generata in orbita e distrutta immediatamente dopo l'uso. Se un terzo tentativo di intercettazione si verifica, lo stato quantico del fotone collassa, allertando la rete e bloccando istantaneamente il canale.</p>`
+            }
+        };
+
+        function openModal(paperId) {
+            const paper = paperContents[paperId];
+            if(!paper) return;
+            document.getElementById('modal-badge').innerText = paper.badge;
+            document.getElementById('modal-title').innerText = paper.title;
+            document.getElementById('modal-meta').innerText = paper.meta;
+            document.getElementById('modal-body').innerHTML = paper.body;
+            document.getElementById('articleModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('articleModal').style.display = 'none';
         }
     </script>
 </body>
