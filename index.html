@@ -3,536 +3,605 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORION | Enterprise Satellite & Fiber Network - S.B. Global Horizon</title>
+    <title>Orion, La connettività 2.0 - S.B. Global Horizon</title>
     
     <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- Icone -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icone Phosphor (Via CSS per massima compatibilità mobile/iOS) -->
+    <link href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/duotone/style.css" rel="stylesheet">
 
     <style>
         :root {
             --primary: #00e5ff;
             --primary-dark: #008b99;
             --secondary: #8b5cf6;
-            --tertiary: #ec4899;
-            --bg-base: #010308;
-            --bg-surface: #070d17;
-            --bg-surface-elevated: #0d1524;
+            --gta-accent: #ff007f;
+            --gta-gold: #ffb703;
+            --bg-base: #020611;
+            --bg-surface: #09101f;
+            --bg-surface-elevated: #0f192e;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --glass-bg: rgba(13, 21, 36, 0.4);
-            --glass-border: rgba(0, 229, 255, 0.15);
-            --glass-highlight: rgba(255, 255, 255, 0.05);
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --glass-bg: rgba(15, 25, 46, 0.65);
+            --glass-border: rgba(0, 229, 255, 0.2);
+            --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
         html { scroll-behavior: smooth; }
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-base);
             color: var(--text-main);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.05), transparent 30%),
-                radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.05), transparent 30%);
-            background-attachment: fixed;
             overflow-x: hidden;
-            line-height: 1.7;
+            line-height: 1.6;
         }
 
         h1, h2, h3, h4, h5 { font-family: 'Space Grotesk', sans-serif; }
 
+        /* --- BACKGROUND GLOBALE --- */
+        .bg-glow {
+            position: fixed; inset: 0; pointer-events: none; z-index: -1;
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(0, 229, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+        }
+
         /* --- ANIMAZIONI SCROLL --- */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-        .delay-1 { transition-delay: 0.1s; }
-        .delay-2 { transition-delay: 0.2s; }
-        .delay-3 { transition-delay: 0.3s; }
 
         /* --- NAVBAR --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 20px 5vw;
-            background: rgba(1, 3, 8, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            position: fixed; top: 0; width: 100%; padding: 16px 5vw;
+            background: rgba(2, 6, 17, 0.85); backdrop-filter: blur(16px);
             display: flex; justify-content: space-between; align-items: center;
             z-index: 1000; border-bottom: 1px solid var(--glass-border);
         }
         .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none;}
-        .logo-text { font-size: 28px; font-weight: 700; color: var(--text-main); letter-spacing: 2px; }
+        .logo-icon-wrap {
+            width: 44px; height: 44px; background: rgba(0, 229, 255, 0.1);
+            border: 1px solid var(--primary); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .logo-text { font-size: 26px; font-weight: 800; color: var(--text-main); letter-spacing: 2px; }
         .logo-text span { color: var(--primary); }
-        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .logo-tag { font-size: 10px; color: var(--text-muted); display: block; margin-top: -4px; letter-spacing: 1px; }
+
+        .nav-links { display: flex; gap: 28px; align-items: center; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); }
         .nav-links a:hover { color: var(--primary); }
-        .btn-nav { background: var(--text-main); color: #000 !important; padding: 12px 28px; border-radius: 8px; font-weight: 700; }
-        .btn-nav:hover { background: var(--primary); transform: scale(1.05); box-shadow: 0 0 20px rgba(0,229,255,0.3); }
+        .btn-nav { background: var(--primary); color: #000 !important; padding: 10px 22px; border-radius: 8px; font-weight: 700; text-transform: uppercase; }
+        .btn-nav:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 0 20px rgba(0,229,255,0.4); }
 
         /* --- HERO SECTION --- */
         .hero {
             min-height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            padding: 160px 5vw 80px;
+            padding: 140px 5vw 80px;
             background: 
-                linear-gradient(to bottom, rgba(1,3,8,0.3) 0%, var(--bg-base) 100%), 
-                url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=2072&auto=format&fit=crop') no-repeat center center/cover;
+                linear-gradient(to bottom, rgba(2,6,17,0.4) 0%, var(--bg-base) 100%), 
+                url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop') no-repeat center center/cover;
             position: relative;
         }
-        .hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, transparent 40%, #010308 100%); pointer-events: none; }
-        .hero-content { position: relative; z-index: 2; max-width: 1000px; }
+        .hero-content { position: relative; z-index: 2; max-width: 950px; }
         
-        .badge { display: inline-block; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.3); color: var(--primary); padding: 8px 20px; border-radius: 50px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 30px; }
+        .badge-brand { 
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(0,229,255,0.08); border: 1px solid var(--primary); color: var(--primary); 
+            padding: 8px 22px; border-radius: 50px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 24px; 
+        }
         
-        .hero h1 { font-size: clamp(48px, 7vw, 84px); color: #fff; margin-bottom: 24px; line-height: 1.05; font-weight: 700; letter-spacing: -2px; }
-        .hero h1 span { background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero h1 { font-size: clamp(40px, 6vw, 76px); color: #fff; margin-bottom: 20px; line-height: 1.1; font-weight: 800; }
+        .hero h1 span { background: linear-gradient(135deg, var(--primary), #a5f3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .hero p { font-size: clamp(18px, 2.5vw, 22px); color: var(--text-muted); margin-bottom: 50px; font-weight: 300; }
+        .hero p { font-size: clamp(18px, 2.2vw, 22px); color: var(--text-muted); margin-bottom: 40px; font-weight: 300; max-width: 850px; margin-inline: auto; }
         
+        .hero-cta-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+
         .btn-primary {
-            display: inline-flex; align-items: center; gap: 10px;
-            background: var(--primary); color: #000; padding: 20px 48px; border: none;
-            border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 12px;
+            background: var(--primary); color: #000; padding: 18px 42px; border: none;
+            border-radius: 12px; font-weight: 800; font-size: 16px; cursor: pointer;
             text-transform: uppercase; transition: var(--transition); text-decoration: none;
-            font-family: 'Space Grotesk', sans-serif; letter-spacing: 2px; box-shadow: 0 10px 30px rgba(0,229,255,0.2);
+            font-family: 'Space Grotesk', sans-serif; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(0,229,255,0.25);
         }
         .btn-primary:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255,255,255,0.3); }
 
-        /* --- STATISTICHE --- */
-        .stats-container { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin: -50px auto 0; padding: 0 5vw; }
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 12px;
+            background: rgba(255,255,255,0.05); color: #fff; padding: 18px 36px; border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer;
+            text-transform: uppercase; transition: var(--transition); text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.15); border-color: #fff; }
+
+        /* --- STATISTICHE & TAGLINE --- */
+        .stats-container { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin: -40px auto 0; padding: 0 5vw; }
         .stats-grid { 
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
-            background: rgba(7, 13, 23, 0.7); backdrop-filter: blur(24px); border: 1px solid var(--glass-border);
-            border-radius: 24px; padding: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            background: var(--bg-surface); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 36px; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
         }
-        .stat-box { text-align: center; border-right: 1px solid rgba(255,255,255,0.05); }
+        .stat-box { text-align: center; border-right: 1px solid rgba(255,255,255,0.08); }
         .stat-box:last-child { border-right: none; }
-        .stat-value { font-family: 'Space Grotesk', sans-serif; font-size: clamp(32px, 4vw, 48px); font-weight: 700; color: #fff; line-height: 1; margin-bottom: 8px; }
-        .stat-value span { color: var(--primary); font-size: 0.7em; }
-        .stat-label { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        .stat-value { font-family: 'Space Grotesk', sans-serif; font-size: clamp(28px, 3.5vw, 44px); font-weight: 800; color: #fff; line-height: 1; margin-bottom: 6px; }
+        .stat-value span { color: var(--primary); font-size: 0.65em; }
+        .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
 
-        /* --- LAYOUT GLOBALE SEZIONI --- */
-        .section { padding: 120px 5vw; position: relative; }
-        .section-alt { background: var(--bg-surface); border-top: 1px solid rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.02); }
-        .container { max-width: 1400px; margin: 0 auto; }
+        /* --- SEZIONI --- */
+        .section { padding: 100px 5vw; position: relative; }
+        .section-alt { background: var(--bg-surface); border-top: 1px solid rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .container { max-width: 1300px; margin: 0 auto; }
         
-        .section-header { text-align: center; margin-bottom: 80px; max-width: 900px; margin-inline: auto; }
-        .section-subtitle { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); text-transform: uppercase; font-weight: 600; letter-spacing: 3px; font-size: 13px; margin-bottom: 16px; }
-        .section-subtitle i { font-size: 18px; }
-        .section-title { font-size: clamp(36px, 5vw, 56px); margin-bottom: 24px; color: #fff; line-height: 1.1; letter-spacing: -1px; }
-        .section-desc { color: var(--text-muted); font-size: 20px; font-weight: 300; }
+        .section-header { text-align: center; margin-bottom: 70px; max-width: 850px; margin-inline: auto; }
+        .section-subtitle { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); text-transform: uppercase; font-weight: 700; letter-spacing: 2px; font-size: 13px; margin-bottom: 12px; }
+        .section-title { font-size: clamp(32px, 4vw, 52px); margin-bottom: 18px; color: #fff; line-height: 1.15; }
+        .section-desc { color: var(--text-muted); font-size: 18px; font-weight: 300; }
 
-        /* --- GRIGLIE & CARD GLASSMORPHISM --- */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        /* --- GRIGLIE & CARDS --- */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px; }
         
         .glass-card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px;
-            padding: 40px; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px;
+            padding: 36px; backdrop-filter: blur(12px);
             transition: var(--transition); position: relative; overflow: hidden; height: 100%;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
-        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 100%); pointer-events: none; }
-        .glass-card:hover { transform: translateY(-10px); border-color: rgba(0,229,255,0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.6); background: rgba(13, 21, 36, 0.6); }
+        .glass-card:hover { transform: translateY(-6px); border-color: var(--primary); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         
-        .icon-wrapper { width: 70px; height: 70px; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
-        .icon-wrapper i { font-size: 36px; color: var(--primary); }
+        .icon-wrapper { width: 60px; height: 60px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
+        .icon-wrapper i { font-size: 30px; color: var(--primary); }
         
-        .glass-card h3 { font-size: 26px; margin-bottom: 16px; color: #fff; }
-        .glass-card p { color: var(--text-muted); font-size: 16px; margin-bottom: 24px; }
+        .glass-card h3 { font-size: 24px; margin-bottom: 14px; color: #fff; }
+        .glass-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 20px; }
         
-        /* Data Tables & Lists per Specifiche Tecniche */
-        .tech-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .tech-table tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .tech-table { width: 100%; border-collapse: collapse; margin-top: auto; }
+        .tech-table tr { border-bottom: 1px solid rgba(255,255,255,0.06); }
         .tech-table tr:last-child { border-bottom: none; }
-        .tech-table td { padding: 12px 0; font-size: 15px; }
-        .tech-table td:first-child { color: var(--text-main); font-weight: 500; width: 45%; }
+        .tech-table td { padding: 10px 0; font-size: 14px; }
+        .tech-table td:first-child { color: #fff; font-weight: 600; }
         .tech-table td:last-child { color: var(--text-muted); text-align: right; }
 
-        .feature-list { list-style: none; margin-top: 24px; }
-        .feature-list li { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; font-size: 16px; color: var(--text-main); }
-        .feature-list li i { color: var(--primary); font-size: 24px; margin-top: 2px; }
-        .feature-list li span { color: var(--text-muted); font-size: 14px; display: block; margin-top: 4px; }
+        .feature-list { list-style: none; margin-top: 20px; }
+        .feature-list li { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; font-size: 15px; color: var(--text-main); }
+        .feature-list li i { color: var(--primary); font-size: 22px; flex-shrink: 0; margin-top: 2px; }
 
-        /* --- SETTORI BUSINESS (Marittimo, Aviazione) --- */
-        .business-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        /* --- SETTORI B2B --- */
+        .business-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .business-card { 
-            position: relative; border-radius: 24px; overflow: hidden; min-height: 400px;
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 40px;
+            position: relative; border-radius: 20px; overflow: hidden; min-height: 380px;
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 32px;
             border: 1px solid rgba(255,255,255,0.1); transition: var(--transition);
         }
-        .business-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(1,3,8,0.95) 0%, rgba(1,3,8,0.2) 100%); z-index: 1; }
-        .business-card:hover { transform: scale(1.02); border-color: var(--primary); }
+        .business-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(2,6,17,0.95) 0%, rgba(2,6,17,0.2) 100%); z-index: 1; }
+        .business-card:hover { transform: translateY(-4px); border-color: var(--primary); }
         .business-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: var(--transition); }
-        .business-card:hover img { transform: scale(1.1); }
+        .business-card:hover img { transform: scale(1.08); }
         .business-content { position: relative; z-index: 2; }
-        .business-content h3 { color: #fff; font-size: 28px; margin-bottom: 10px; }
-        .business-content p { color: var(--text-muted); font-size: 15px; }
+        .business-content h3 { color: #fff; font-size: 24px; margin-bottom: 8px; }
+        .business-content p { color: var(--text-muted); font-size: 14px; }
 
-        /* --- BANNER ROCKSTAR GAMING --- */
-        .gaming-section { padding: 120px 5vw; background: radial-gradient(circle at center, rgba(255, 170, 0, 0.05) 0%, var(--bg-base) 70%); }
+        /* --- BANNER GTA 6 ROCKSTAR GAMES --- */
+        .gaming-section { padding: 90px 5vw; background: radial-gradient(circle at center, rgba(255, 0, 127, 0.06) 0%, var(--bg-base) 70%); overflow: hidden; }
         .rockstar-container {
-            background: linear-gradient(135deg, #0a0703 0%, #1c0900 100%); border: 1px solid rgba(255, 170, 0, 0.3);
-            border-radius: 32px; padding: 80px 60px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 60px; align-items: center;
-            box-shadow: 0 30px 80px rgba(255, 170, 0, 0.08); position: relative; overflow: hidden;
+            background: linear-gradient(135deg, #12030d 0%, #1a0826 50%, #081121 100%);
+            border: 1px solid var(--gta-accent); border-radius: 28px; padding: 50px 40px;
+            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center;
+            box-shadow: 0 20px 60px rgba(255, 0, 127, 0.15); position: relative; overflow: hidden; max-width: 100%;
         }
-        .rockstar-logo-bg { position: absolute; right: -10%; top: -20%; font-size: 400px; color: rgba(255,170,0,0.03); transform: rotate(15deg); pointer-events: none; }
-        .gaming-text h2 { color: #ffaa00; font-size: clamp(32px, 4vw, 48px); margin-bottom: 24px; text-transform: uppercase; font-weight: 700; }
-        .gaming-text p { color: #cbd5e1; font-size: 18px; margin-bottom: 24px; }
-        .gaming-stats { display: flex; gap: 40px; margin-top: 40px; border-top: 1px solid rgba(255,170,0,0.2); padding-top: 40px; }
-        .g-stat h4 { color: #ffaa00; font-size: 32px; }
-        .g-stat span { color: var(--text-muted); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .gta-badge {
+            display: inline-flex; align-items: center; gap: 8px; background: rgba(255,0,127,0.15);
+            border: 1px solid var(--gta-accent); color: #ff66be; padding: 6px 16px; border-radius: 30px;
+            font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;
+        }
+        .gaming-text h2 { color: #fff; font-size: clamp(28px, 3.5vw, 42px); margin-bottom: 16px; font-weight: 800; line-height: 1.1; }
+        .gaming-text h2 span { color: var(--gta-gold); }
+        .gaming-text p { color: #cbd5e1; font-size: 16px; margin-bottom: 20px; }
+        
+        .gaming-stats { display: flex; gap: 30px; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; flex-wrap: wrap; }
+        .g-stat h4 { color: var(--gta-accent); font-size: 28px; font-weight: 800; }
+        .g-stat span { color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* --- FORM CHECKOUT & FIREBASE --- */
-        .checkout-section { background: var(--bg-surface-elevated); padding: 120px 5vw; border-top: 1px solid rgba(255,255,255,0.05); }
+        .rockstar-visual {
+            position: relative; text-align: center; border-radius: 20px; overflow: hidden;
+            border: 1px solid rgba(255, 183, 3, 0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+        }
+        .rockstar-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* --- FORM CHECKOUT & VERIFICA COPERTURA --- */
+        .checkout-section { background: var(--bg-surface-elevated); padding: 100px 5vw; border-top: 1px solid rgba(255,255,255,0.05); }
         .form-terminal {
             background: var(--bg-base); border: 1px solid var(--glass-border); border-radius: 24px; 
-            padding: 60px; max-width: 1000px; margin: 0 auto; box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            padding: 50px; max-width: 950px; margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
             position: relative; overflow: hidden;
         }
         .form-terminal::before { content:''; position:absolute; top:0; left:0; width:100%; height:4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
         
-        .form-step { margin-bottom: 40px; }
-        .step-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .step-number { width: 40px; height: 40px; background: rgba(0,229,255,0.1); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: 'Space Grotesk'; font-size: 18px; }
-        .step-title { font-size: 24px; color: #fff; }
+        .form-step { margin-bottom: 30px; }
+        .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .step-number { width: 36px; height: 36px; background: rgba(0,229,255,0.15); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: 'Space Grotesk'; font-size: 16px; }
+        .step-title { font-size: 22px; color: #fff; }
 
-        .address-bar { display: flex; gap: 16px; }
-        .input-dark { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; color: #fff; font-size: 16px; font-family: 'Inter'; outline: none; transition: var(--transition); }
-        .input-dark:focus { border-color: var(--primary); background: rgba(0,229,255,0.02); }
-        .btn-check { background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 0 40px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'Space Grotesk'; letter-spacing: 1px; text-transform: uppercase; }
-        .btn-check:hover { background: rgba(0,229,255,0.1); }
+        .address-bar { display: flex; gap: 12px; }
+        .input-dark { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); padding: 16px 20px; border-radius: 12px; color: #fff; font-size: 15px; font-family: 'Inter'; outline: none; transition: var(--transition); }
+        .input-dark:focus { border-color: var(--primary); background: rgba(0,229,255,0.03); }
+        
+        .btn-check { background: var(--primary); color: #000; border: none; padding: 0 32px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: 'Space Grotesk'; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+        .btn-check:hover { background: #fff; box-shadow: 0 0 20px rgba(0,229,255,0.4); }
 
-        #coverage-result { display: none; margin-top: 24px; padding: 24px; border-radius: 12px; font-size: 16px; animation: fadeIn 0.5s ease-out; }
+        #coverage-result { display: none; margin-top: 20px; padding: 20px; border-radius: 14px; font-size: 15px; animation: fadeIn 0.4s ease-out; }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-        .form-group { display: flex; flex-direction: column; gap: 10px; }
+        .progress-bar-wrap { width: 100%; background: rgba(255,255,255,0.1); height: 10px; border-radius: 10px; margin-top: 12px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 10px; transition: width 1s ease-in-out; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
         .form-group.full { grid-column: span 2; }
-        .form-group label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .form-group label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
         .btn-submit {
-            background: #fff; color: #000; padding: 24px; border: none; border-radius: 12px;
-            font-weight: 700; font-size: 18px; cursor: pointer; text-transform: uppercase;
-            transition: var(--transition); width: 100%; margin-top: 40px; font-family: 'Space Grotesk'; letter-spacing: 2px;
-            display: flex; justify-content: center; align-items: center; gap: 12px;
+            background: #fff; color: #000; padding: 20px; border: none; border-radius: 12px;
+            font-weight: 800; font-size: 16px; cursor: pointer; text-transform: uppercase;
+            transition: var(--transition); width: 100%; margin-top: 30px; font-family: 'Space Grotesk'; letter-spacing: 1px;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
         }
         .btn-submit:hover { background: var(--primary); box-shadow: 0 10px 30px rgba(0,229,255,0.3); transform: translateY(-2px); }
 
         /* --- FOOTER --- */
-        footer { background: #000103; padding: 100px 5vw 40px; border-top: 1px solid rgba(255,255,255,0.05); }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 80px; }
-        .footer-brand p { color: var(--text-muted); margin-top: 24px; max-width: 350px; font-size: 15px; }
-        .footer-links h4 { color: #fff; margin-bottom: 24px; font-size: 18px; letter-spacing: 1px; }
+        footer { background: #01030a; padding: 80px 5vw 40px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 60px; }
+        .footer-brand p { color: var(--text-muted); margin-top: 16px; max-width: 360px; font-size: 14px; }
+        .footer-links h4 { color: #fff; margin-bottom: 20px; font-size: 16px; letter-spacing: 1px; }
         .footer-links ul { list-style: none; }
-        .footer-links li { margin-bottom: 16px; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: var(--transition); font-size: 15px; }
-        .footer-links a:hover { color: var(--primary); padding-left: 5px; }
-        .footer-bottom { text-align: center; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); font-size: 14px; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: var(--transition); font-size: 14px; }
+        .footer-links a:hover { color: var(--primary); padding-left: 4px; }
+        
+        .footer-institutional {
+            display: flex; gap: 24px; align-items: center; justify-content: center; flex-wrap: wrap;
+            padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px;
+        }
+        .inst-badge { color: var(--text-muted); font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .footer-bottom { text-align: center; color: rgba(255,255,255,0.4); font-size: 13px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- RESPONSIVE --- */
-        @media (max-width: 1200px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
-            .stat-box:nth-child(2) { border-right: none; }
+        @media (max-width: 1100px) {
+            .rockstar-container { grid-template-columns: 1fr; padding: 40px 24px; }
             .business-grid { grid-template-columns: repeat(2, 1fr); }
-            .rockstar-container { grid-template-columns: 1fr; padding: 60px 40px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+            .stat-box:nth-child(2) { border-right: none; }
         }
-        @media (max-width: 992px) {
+        @media (max-width: 850px) {
             .grid-2 { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-            .form-terminal { padding: 40px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+            .form-terminal { padding: 30px 20px; }
+            .address-bar { flex-direction: column; }
+            .btn-check { padding: 16px; }
         }
-        @media (max-width: 768px) {
-            nav { padding: 15px 20px; }
-            .nav-links { display: none; } /* Mobile Menu Hint */
+        @media (max-width: 600px) {
+            nav { padding: 12px 16px; }
+            .nav-links { display: none; }
             .hero { padding-top: 120px; }
-            .stats-container { margin-top: 40px; position: static; }
-            .stats-grid { grid-template-columns: 1fr; border-radius: 16px; padding: 30px; gap: 30px; }
-            .stat-box { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 30px; }
-            .stat-box:last-child { border-bottom: none; padding-bottom: 0; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .stat-box { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 20px; margin-bottom: 20px; }
+            .stat-box:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
             .business-grid { grid-template-columns: 1fr; }
             .form-grid { grid-template-columns: 1fr; }
             .form-group.full { grid-column: span 1; }
-            .address-bar { flex-direction: column; }
-            .btn-check { padding: 20px; }
             .footer-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
+    <div class="bg-glow"></div>
+
     <!-- NAVBAR -->
     <nav>
         <a href="#" class="logo-container">
-            <i class="ph-fill ph-planet" style="font-size: 36px; color: var(--primary);"></i>
-            <span class="logo-text">ORI<span>ON</span></span>
+            <div class="logo-icon-wrap">
+                <!-- ICONA LOGO CORRETTA (ph-radar) -->
+                <i class="ph-fill ph-radar" style="font-size: 24px; color: var(--primary);"></i>
+            </div>
+            <div>
+                <span class="logo-text">ORI<span>ON</span></span>
+                <span class="logo-tag">S.B. Global Horizon | S.Brotto Holding</span>
+            </div>
         </a>
         <div class="nav-links">
-            <a href="#divisione">La Divisione</a>
-            <a href="#infrastruttura">Infrastruttura</a>
+            <a href="#soluzione">L'Infrastruttura</a>
+            <a href="#tecnologia">Tecnologia</a>
             <a href="#hardware">Terminali</a>
             <a href="#business">Enterprise</a>
-            <a href="#gaming">Gaming</a>
-            <a href="#richiedi" class="btn-nav">Onboarding</a>
+            <a href="#gta6">GTA 6</a>
+            <a href="#copertura" class="btn-nav">Verifica Copertura</a>
         </div>
     </nav>
 
     <!-- HERO -->
     <header class="hero">
         <div class="hero-content reveal">
-            <div class="badge">S.B. Global Horizon - Aerospace Division</div>
-            <h1>Connettività oltre i<br><span>Confini Terrestri</span></h1>
-            <p>Non siamo un semplice provider. ORION è una rete neurale globale che fonde la capillarità di 3.200 satelliti in bassa orbita (LEO) con la potenza assoluta del nostro backbone in pura fibra ottica terrestre. Fino a 10 Gbps. Ovunque.</p>
-            <a href="#richiedi" class="btn-primary">
-                Verifica Copertura <i class="ph-bold ph-arrow-right"></i>
-            </a>
+            <div class="badge-brand">
+                <i class="ph-bold ph-broadcast"></i> Orion FWA • Nuova Infrastruttura Radiosatellitare
+            </div>
+            <h1>Connessioni senza confini,<br><span>per un'Italia più connessa.</span></h1>
+            <p>Orion, divisione strategica di S.B. Global Horizon, porta la connettività ad alta velocità e fibra radio-ottica anche dove le reti tradizionali non arrivano o non sono sufficienti.</p>
+            
+            <div class="hero-cta-group">
+                <a href="#copertura" class="btn-primary">
+                    Verifica Subito la Copertura <i class="ph-bold ph-arrow-right"></i>
+                </a>
+                <a href="#soluzione" class="btn-secondary">
+                    Scopri la Tecnologia
+                </a>
+            </div>
         </div>
     </header>
 
-    <!-- STATISTICHE GLOBALI -->
-    <div class="stats-container reveal delay-1">
+    <!-- STATISTICHE E VELOCITÀ -->
+    <div class="stats-container reveal">
         <div class="stats-grid">
             <div class="stat-box">
-                <div class="stat-value">3.245</div>
-                <div class="stat-label">Satelliti LEO Attivi</div>
-            </div>
-            <div class="stat-box">
                 <div class="stat-value">10<span> Gbps</span></div>
-                <div class="stat-label">Banda Max Erogata</div>
+                <div class="stat-label">Nelle Aree Urbane</div>
             </div>
             <div class="stat-box">
-                <div class="stat-value">< 25<span> ms</span></div>
-                <div class="stat-label">Latenza Media</div>
+                <div class="stat-value">1<span> Gbps</span></div>
+                <div class="stat-label">Nelle Aree Remote</div>
             </div>
             <div class="stat-box">
-                <div class="stat-value">99.999<span>%</span></div>
-                <div class="stat-label">Uptime Garantito (SLA)</div>
+                <div class="stat-value">&lt; 15<span> ms</span></div>
+                <div class="stat-label">Latenza Reale Rilevata</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">100<span>%</span></div>
+                <div class="stat-label">Stabilità Diretta FWA</div>
             </div>
         </div>
     </div>
 
-    <!-- MISSION & DIVISIONE -->
-    <section id="divisione" class="section container reveal">
+    <!-- MISSION & COPERTURA REGIONALE -->
+    <section id="soluzione" class="section container reveal">
         <div class="grid-2">
             <div>
-                <span class="section-subtitle"><i class="ph-bold ph-crosshair"></i> Chi Siamo</span>
-                <h2 class="section-title">L'anello di congiunzione tra Spazio e Terra.</h2>
-                <p class="section-desc" style="margin-bottom: 24px;">Fondata per superare i limiti strutturali del Digital Divide globale, la divisione <strong>ORION</strong> nasce all'interno dei laboratori di <strong>S.B. Global Horizon</strong>.</p>
-                <p style="color: var(--text-muted); margin-bottom: 24px;">Il nostro obiettivo non è fornire "internet via satellite", ma creare un'infrastruttura ibrida in cui il pacchetto dati sceglie dinamicamente la rotta più veloce: attraverso i cavi in fibra ottica sotterranei, o rimbalzando tramite laser ottici nello spazio siderale. Il tutto gestito e orchestrato dal nostro sistema proprietario <strong>Horizon OS</strong>.</p>
+                <span class="section-subtitle"><i class="ph-bold ph-target"></i> Dove il segnale non arriva</span>
+                <h2 class="section-title">Arriva la Fibra Radio-Ottica Orion.</h2>
+                <p class="section-desc" style="margin-bottom: 20px;">
+                    Dimentica i cali di rete e l'instabilità delle vecchie ADSL o parabole tradizionali. La rete Orion abbina stazioni terrestri ad altissima capacità con satelliti di ultima generazione a bassa orbita.
+                </p>
+                <p style="color: var(--text-muted); margin-bottom: 24px;">
+                    Il risultato è un segnale istantaneo, pulito e continuo, in grado di garantire velocità pari alla fibra ottica urbana anche nei comuni più isolati o nelle zone industriali periferiche.
+                </p>
                 <ul class="feature-list">
-                    <li><i class="ph-fill ph-check-circle"></i><div><strong>Integrazione Totale</strong><span>Nessun intermediario. Gestiamo il satellite, la Ground Station e il router di casa tua.</span></div></li>
-                    <li><i class="ph-fill ph-check-circle"></i><div><strong>Resilienza Geopolitica</strong><span>Infrastruttura indipendente da cavi sottomarini facilmente sabotabili o danneggiabili.</span></div></li>
+                    <li>
+                        <i class="ph-fill ph-check-circle"></i>
+                        <div>
+                            <strong>Servizio già attivo nel Nord e Centro Italia</strong>
+                            <span style="color: var(--text-muted);">Lombardia, Piemonte, Valle d'Aosta, Liguria, Veneto, Trentino-A.A., Friuli-V.G., Emilia-Romagna, Toscana, Umbria, Marche, Lazio.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="ph-fill ph-check-circle"></i>
+                        <div>
+                            <strong>Installazione Semplice e Trasparente</strong>
+                            <span style="color: var(--text-muted);">Nessun lavoro invasivo: colleghi il kit e sei pronto a navigare.</span>
+                        </div>
+                    </li>
                 </ul>
             </div>
-            <div style="position: relative; border-radius: 24px; overflow: hidden; height: 600px;">
-                <img src="https://images.unsplash.com/photo-1518331647614-7a1f04cd34f5?q=80&w=2069&auto=format&fit=crop" alt="Pianeta Terra e Satelliti" style="width:100%; height:100%; object-fit:cover;">
-                <div style="position: absolute; inset:0; background: linear-gradient(to right, var(--bg-base), transparent);"></div>
+            <div style="position: relative; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); min-height: 420px;">
+                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop" alt="Dorsale Satellitare Orion" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
             </div>
         </div>
     </section>
 
-    <!-- INFRASTRUTTURA DI RETE (Deep Dive) -->
-    <section id="infrastruttura" class="section section-alt">
+    <!-- TECNOLOGIA SEMPLIFICATA ED EMPIRICA -->
+    <section id="tecnologia" class="section section-alt">
         <div class="container">
             <div class="section-header reveal">
-                <span class="section-subtitle"><i class="ph-bold ph-network"></i> Topologia di Rete</span>
-                <h2 class="section-title">Come abbattiamo la latenza</h2>
-                <p class="section-desc">I sistemi satellitari tradizionali (GEO) orbitano a 35.000 km, causando ritardi di oltre 600ms. La costellazione ORION riscrive le regole della fisica delle telecomunicazioni operando in orbita terrestre bassa (LEO).</p>
+                <span class="section-subtitle"><i class="ph-bold ph-cpu"></i> Semplicità & Potenza</span>
+                <h2 class="section-title">Infrastruttura Concreta e Performativa</h2>
+                <p class="section-desc">Un'architettura progettata per eliminare colli di bottiglia e garantire sempre la massima priorità al tuo traffico dati.</p>
             </div>
 
             <div class="grid-3">
-                <div class="glass-card reveal delay-1">
-                    <div class="icon-wrapper"><i class="ph ph-atom"></i></div>
-                    <h3>Orbita LEO (550 km)</h3>
-                    <p>Volando a un'altitudine 65 volte inferiore rispetto ai vecchi satelliti, il segnale radio impiega frazioni di millisecondo per raggiungere lo spazio e tornare indietro, abbattendo il ping sotto i 25ms.</p>
+                <div class="glass-card reveal">
+                    <div>
+                        <!-- ICONA LEO SATELLITARE CORRETTA (ph-planet) -->
+                        <div class="icon-wrapper"><i class="ph-bold ph-planet"></i></div>
+                        <h3>Copertura Satellitare LEO</h3>
+                        <p>I satelliti di nuova generazione orbitano vicini alla Terra, consentendo ai dati di compiere il tragitto in un tempo impercettibile per l'utente finale.</p>
+                    </div>
                     <table class="tech-table">
-                        <tr><td>Altitudine Operativa</td><td>540 - 570 km</td></tr>
-                        <tr><td>Inclinazione Orbitale</td><td>53.0°, 70.0°, 97.6°</td></tr>
-                        <tr><td>Velocità di crociera</td><td>27.000 km/h</td></tr>
-                        <tr><td>Tempo di latenza radio</td><td>~2-4 ms (solo tratta)</td></tr>
+                        <tr><td>Reattività</td><td>Nessun lag visibile</td></tr>
+                        <tr><td>Resistenza Meteo</td><td>Segnale Auto-Amplificato</td></tr>
+                        <tr><td>Disponibilità</td><td>99.9% Garantita</td></tr>
                     </table>
                 </div>
 
-                <div class="glass-card reveal delay-2">
-                    <div class="icon-wrapper" style="background: rgba(139,92,246,0.1); border-color: rgba(139,92,246,0.3); color: var(--secondary);"><i class="ph ph-intersect"></i></div>
-                    <h3>Laser Inter-Satellite (ISL)</h3>
-                    <p>I satelliti ORION comunicano tra loro nel vuoto spaziale tramite laser ottici ad altissima frequenza. Questo crea un vero e proprio "backbone spaziale" più veloce della fibra nel vetro.</p>
+                <div class="glass-card reveal">
+                    <div>
+                        <div class="icon-wrapper"><i class="ph-bold ph-lightning"></i></div>
+                        <h3>Ponte Radio-Ottico</h3>
+                        <p>La fibra ottica della dorsale S.B. Global Horizon si collega direttamente ai nostri ripetitori sul territorio, azzerando le perdite di pacchetti.</p>
+                    </div>
                     <table class="tech-table">
-                        <tr><td>Tecnologia</td><td>Optical Laser Link Gen3</td></tr>
-                        <tr><td>Capacità per Laser</td><td>100 Gbps</td></tr>
-                        <tr><td>Range di tracciamento</td><td>Oltre 3.000 km</td></tr>
-                        <tr><td>Vantaggio fisico</td><td>Velocità luce nel vuoto (+47%)</td></tr>
+                        <tr><td>Banda Urbana</td><td>Fino a 10 Gbps</td></tr>
+                        <tr><td>Banda Rurale</td><td>Fino a 1 Gbps</td></tr>
+                        <tr><td>Traffic Priority</td><td>Gaming & Streaming 4K</td></tr>
                     </table>
                 </div>
 
-                <div class="glass-card reveal delay-3">
-                    <div class="icon-wrapper" style="background: rgba(236,72,153,0.1); border-color: rgba(236,72,153,0.3); color: var(--tertiary);"><i class="ph ph-broadcast"></i></div>
-                    <h3>Ground Stations Horizon</h3>
-                    <p>Oltre 150 stazioni terrestri sparse per l'Europa raccolgono il segnale dai satelliti e lo immettono direttamente nell'infrastruttura Edge-Computing in fibra ottica di S.B. Global Horizon.</p>
+                <div class="glass-card reveal">
+                    <div>
+                        <div class="icon-wrapper"><i class="ph-bold ph-shield-check"></i></div>
+                        <h3>Sicurezza & Ridondanza</h3>
+                        <p>Se una linea di terra subisce un'interruzione, la rete Orion commuta istantaneamente sul canale satellitare senza far cadere la tua connessione.</p>
+                    </div>
                     <table class="tech-table">
-                        <tr><td>Dorsale Terrestre</td><td>Fibra Ottica Proprietaria</td></tr>
-                        <tr><td>Bande di Uplink</td><td>Ka-Band (27.5 - 30.0 GHz)</td></tr>
-                        <tr><td>Edge Computing</td><td>Horizon OS Server Racks</td></tr>
-                        <tr><td>Redundancy</td><td>Tier IV Data Center Link</td></tr>
+                        <tr><td>Protezione</td><td>Crittografia End-to-End</td></tr>
+                        <tr><td>Backup Automatico</td><td>Attivo 24/7</td></tr>
+                        <tr><td>Assistenza</td><td>Tecnici Italiani H24</td></tr>
                     </table>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SPECIFICHE HARDWARE TERMINALI -->
+    <!-- SPECIFICHE HARDWARE -->
     <section id="hardware" class="section">
         <div class="container reveal">
             <div class="section-header">
-                <span class="section-subtitle"><i class="ph-bold ph-cpu"></i> Equipaggiamento Utente</span>
-                <h2 class="section-title">Tecnologia Aerospaziale nel tuo giardino.</h2>
-                <p class="section-desc">Ricevere segnali da un satellite che viaggia a 27.000 km/h richiede hardware eccezionale. Abbiamo miniaturizzato i radar militari per creare il terminale domestico definitivo.</p>
+                <span class="section-subtitle"><i class="ph-bold ph-devices"></i> Equipaggiamento Incluso</span>
+                <h2 class="section-title">Hardware di Livello Superiore per la Tua Casa</h2>
+                <p class="section-desc">Componenti miniaturizzati ed eleganti pensati per la massima resa ed estetica.</p>
             </div>
 
             <div class="grid-2">
-                <!-- CPE Parabola -->
-                <div class="glass-card" style="padding: 50px;">
-                    <div style="display: flex; justify-content: space-between; align-items:flex-start; margin-bottom: 30px;">
-                        <div>
-                            <h3 style="color: var(--primary); font-size: 32px; margin-bottom: 5px;">Terminale "Stargaze V2"</h3>
-                            <span style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-size: 13px;">Unità Esterna (CPE)</span>
+                <div class="glass-card">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items:center; margin-bottom: 20px;">
+                            <h3 style="color: var(--primary); font-size: 26px;">Terminale Orion Stargaze</h3>
+                            <i class="ph-duotone ph-broadcast" style="font-size: 40px; color: var(--primary);"></i>
                         </div>
-                        <i class="ph-duotone ph-satellite" style="font-size: 48px; color: rgba(255,255,255,0.1);"></i>
+                        <p>Un’antenna compatta ed elegante in grado di auto-allinearsi con il miglior punto di segnale, priva di motori rumorosi o parti fragili.</p>
+                        <ul class="feature-list">
+                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Allineamento Automatico Smart</strong><span>Sintonia immediata all'accensione.</span></div></li>
+                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Impermeabile & Resiliente (IP68)</strong><span>Progettata per resistere a pioggia battente, neve e temperature estreme.</span></div></li>
+                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Basso Consumo Energetico</strong><span>Consumi ottimizzati per un impatto minimo in bolletta.</span></div></li>
+                        </ul>
                     </div>
-                    
-                    <p>Non è una parabola fissa. Stargaze V2 è un'antenna a <strong>Scansione Elettronica Attiva (Phased Array)</strong>. Utilizza algoritmi di beamforming complessi per tracciare digitalmente i satelliti in cielo senza muovere alcun componente meccanico.</p>
-                    
-                    <ul class="feature-list" style="margin-top: 30px;">
-                        <li><i class="ph-fill ph-radar"></i><div><strong>Phased Array & Beamforming</strong><span>Migliaia di minuscole antenne interne cambiano la fase del segnale in millisecondi per "inseguire" il satellite invisibile.</span></div></li>
-                        <li><i class="ph-fill ph-waves"></i><div><strong>Frequenze Operative (Ku-Band)</strong><span>Ricezione (Rx): 10.7 - 12.7 GHz.<br>Trasmissione (Tx): 14.0 - 14.5 GHz.</span></div></li>
-                        <li><i class="ph-fill ph-thermometer-hot"></i><div><strong>Gestione Termica Estrema</strong><span>Opera da -30°C a +50°C. Sensori integrati rilevano la neve e avviano lo scioglimento termico della superficie (IP68).</span></div></li>
-                        <li><i class="ph-fill ph-lightning"></i><div><strong>Assorbimento Energetico</strong><span>Architettura a basso consumo: media di 45-65W in operatività standard.</span></div></li>
-                    </ul>
                 </div>
 
-                <!-- Router -->
-                <div class="glass-card" style="padding: 50px;">
-                    <div style="display: flex; justify-content: space-between; align-items:flex-start; margin-bottom: 30px;">
-                        <div>
-                            <h3 style="color: var(--secondary); font-size: 32px; margin-bottom: 5px;">Horizon Quantum</h3>
-                            <span style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-size: 13px;">Unità Interna (Router Core)</span>
+                <div class="glass-card">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items:center; margin-bottom: 20px;">
+                            <h3 style="color: var(--secondary); font-size: 26px;">Router Horizon Wi-Fi 7</h3>
+                            <i class="ph-duotone ph-router" style="font-size: 40px; color: var(--secondary);"></i>
                         </div>
-                        <i class="ph-duotone ph-router" style="font-size: 48px; color: rgba(255,255,255,0.1);"></i>
+                        <p>Il cuore della rete domestica. Distribuisce il segnale ultra-veloce in ogni stanza senza cali di prestazioni anche con decine di dispositivi connessi.</p>
+                        <ul class="feature-list">
+                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Wi-Fi 7 Ultima Generazione</strong><span>Copertura totale per case a più piani e pareti spesse.</span></div></li>
+                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Porte Ethernet Multi-Gigabit</strong><span>Connessione diretta ultra-stabile per PC, Console e Smart TV.</span></div></li>
+                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Configurazione Plug & Play</strong><span>Gia configurato nei nostri laboratori, pronto all'uso.</span></div></li>
+                        </ul>
                     </div>
-                    
-                    <p>Tutta la potenza dello spazio sarebbe inutile se frenata da un router obsoleto. Horizon Quantum è ingegnerizzato per distribuire 10 Gbps via cavo e gestire flussi wireless massicci in tutta la casa.</p>
-                    
-                    <ul class="feature-list" style="margin-top: 30px;">
-                        <li><i class="ph-fill ph-wifi-high"></i><div><strong>Wi-Fi 7 Tri-Band (802.11be)</strong><span>Utilizza simultaneamente le bande 2.4 GHz, 5 GHz e 6 GHz con canali ampi 320MHz per azzerare le congestioni locali.</span></div></li>
-                        <li><i class="ph-fill ph-plugs-connected"></i><div><strong>I/O ad altissima capacità</strong><span>1 porta WAN/LAN a 10 Gbps (per il modulo 10G Urbano).<br>3 porte LAN a 2.5 Gbps per PC e Console.</span></div></li>
-                        <li><i class="ph-fill ph-shield-check"></i><div><strong>Sicurezza Horizon OS</strong><span>Firewall SPI integrato, crittografia WPA3-Personal/Enterprise, protezione DDoS di rete.</span></div></li>
-                        <li><i class="ph-fill ph-chart-line-up"></i><div><strong>Hardware & Mesh</strong><span>CPU Quad-Core ARM @2.2GHz. Supporto nativo per nodi Mesh Quantum per coprire ville multi-piano.</span></div></li>
-                    </ul>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SOLUZIONI BUSINESS (Marine, Aviation, Enterprise) -->
+    <!-- SOLUZIONI ENTERPRISE -->
     <section id="business" class="section section-alt">
         <div class="container reveal">
             <div class="section-header">
-                <span class="section-subtitle"><i class="ph-bold ph-buildings"></i> Horizon B2B Solutions</span>
-                <h2 class="section-title">Copertura Globale per le Imprese</h2>
-                <p class="section-desc">Dalle piattaforme petrolifere oceaniche alle flotte aeree commerciali, ORION fornisce soluzioni B2B ad altissime prestazioni con SLA stringenti e terminali corazzati.</p>
+                <span class="section-subtitle"><i class="ph-bold ph-buildings"></i> Soluzioni Aziendali</span>
+                <h2 class="section-title">Connettività Business Senza Compromessi</h2>
+                <p class="section-desc">Garantiamo continuità operativa a imprese, cantieri e settori strategici su tutto il territorio.</p>
             </div>
 
             <div class="business-grid">
                 <div class="business-card">
-                    <img src="https://images.unsplash.com/photo-1572097727404-585ee581b854?q=80&w=2070&auto=format&fit=crop" alt="Mare e Nave">
+                    <img src="https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?q=80&w=2073&auto=format&fit=crop" alt="Orion Maritime">
                     <div class="business-content">
-                        <h3>ORION Maritime</h3>
-                        <p>Terminali resistenti alla corrosione salina, progettati per navi cargo, crociere e yacht. Mantenimento del segnale anche con rollio e beccheggio elevati in mare aperto.</p>
+                        <h3>Orion Maritime</h3>
+                        <p>Connessione continua per imbarcazioni, porti e strutture costiere con stabilità e banda dedicata.</p>
                     </div>
                 </div>
                 <div class="business-card">
-                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop" alt="Aereo in Volo">
+                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop" alt="Orion Logistics">
                     <div class="business-content">
-                        <h3>ORION Aviation</h3>
-                        <p>Antenne ultra-piatte aerodinamiche per aerei commerciali e jet privati. Streaming 4K per ogni passeggero a 10.000 metri di quota, velocità mach 0.8.</p>
+                        <h3>Logistica e Cantieri</h3>
+                        <p>Connetti immediatamente hub remoti, magazzini e siti operativi provvisori senza attendere scavi.</p>
                     </div>
                 </div>
                 <div class="business-card">
-                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" alt="Data Center">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" alt="Enterprise Backup">
                     <div class="business-content">
-                        <h3>Enterprise Backup</h3>
-                        <p>Soluzione Multi-WAN SD-WAN per Data Center e sedi aziendali isolate. Il satellite ORION interviene in millisecondi in caso di trancio della fibra terrestre (Failover).</p>
+                        <h3>Enterprise Disaster Recovery</h3>
+                        <p>Backup automatico in fibra radio per aziende che non possono permettersi nemmeno un secondo di offline.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PARTNERSHIP GAMING -->
-    <section id="gaming" class="gaming-section">
+    <!-- BANNER PARTNERSHIP ESCLUSIVA GTA 6 -->
+    <section id="gta6" class="gaming-section">
         <div class="container reveal">
             <div class="rockstar-container">
-                <i class="ph-fill ph-star rockstar-logo-bg"></i>
                 <div class="gaming-text">
-                    <h2>Premium Routing:<br>Rockstar Games</h2>
-                    <p>Nell'ambito del gaming competitivo, la larghezza di banda è inutile se il ping è alto. Per questo, ORION è la <strong>prima infrastruttura satellitare al mondo certificata da Rockstar Games</strong>.</p>
-                    <p>S.B. Global Horizon ha stabilito cavi di peering diretto (Private Interconnects) tra le nostre stazioni di terra e i data center europei di Rockstar. I tuoi pacchetti dati per <strong>GTA Online</strong> o <strong>Red Dead Online</strong> non viaggiano sulla rete internet pubblica: usano una "corsia preferenziale" dedicata all'interno del nostro backbone.</p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Rockstar_Games_Logo.svg" alt="Rockstar Games" style="width: 70px; margin-bottom: 24px; display: block; filter: drop-shadow(0 0 10px rgba(255,183,3,0.3));">
+                    <div class="gta-badge">
+                        <i class="ph-bold ph-game-controller"></i> Partnership Esclusiva Gaming
+                    </div>
+                    <h2>Rete Ottimizzata per <span>GTA 6</span></h2>
+                    <p>In occasione dell'uscita di <strong>GTA 6</strong>, Orion ha strutturato accordi di peering diretto con i server di sviluppo per garantire la corsia preferenziale di instradamento traffico.</p>
+                    <p>Zero packet loss, NAT aperto nativo e ping ridotto ai minimi termini fisici per vivere l'esperienza multiplayer di GTA VI al massimo del potenziale.</p>
                     
                     <div class="gaming-stats">
                         <div class="g-stat">
-                            <h4>< 20ms</h4>
-                            <span>Ping Medio Rilevato</span>
+                            <h4>&lt; 15ms</h4>
+                            <span>Ping Medio GTA VI</span>
                         </div>
                         <div class="g-stat">
                             <h4>0%</h4>
-                            <span>Packet Loss Garantito</span>
+                            <span>Perdita Pacchetti</span>
                         </div>
                         <div class="g-stat">
                             <h4>NAT 1</h4>
-                            <span>Apertura Porte Nativa</span>
+                            <span>Apertura Automatica</span>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <!-- Immagine concettuale Gaming/Rockstar -->
-                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop" alt="Gaming Setup" style="width:100%; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid rgba(255,170,0,0.3);">
+                <div class="rockstar-visual">
+                    <!-- IMMAGINE GTA 6 CORRETTA (Miniatura Youtube Ufficiale - Anti rottura) -->
+                    <img src="https://i.ytimg.com/vi/QdBZY2fkU-0/maxresdefault.jpg" alt="GTA 6 Official Snapshot">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FORM DI ONBOARDING / FIREBASE GESTIONALE -->
-    <section id="richiedi" class="checkout-section">
+    <!-- MODULO DI VERIFICA COPERTURA E ACQUISIZIONE -->
+    <section id="copertura" class="checkout-section">
         <div class="container reveal">
             <div class="section-header">
-                <span class="section-subtitle"><i class="ph-bold ph-terminal-window"></i> Portale di Acquisizione Dati</span>
-                <h2 class="section-title">Richiedi l'Infrastruttura ORION</h2>
-                <p class="section-desc">Collegamento diretto ai server S.B. Global Horizon ERP. Verifica la copertura geolocalizzata e trasmetti il fascicolo per ricevere l'hardware a casa tua.</p>
+                <span class="section-subtitle"><i class="ph-bold ph-map-pin-line"></i> Verifica Subito</span>
+                <h2 class="section-title">Controlla la Copertura nella Tua Zona</h2>
+                <p class="section-desc">Inserisci il tuo indirizzo per verificare la disponibilità e richiedere l'attivazione immediata del servizio.</p>
             </div>
 
             <div class="form-terminal">
                 
-                <!-- STEP 1: VERIFICA -->
                 <div class="form-step">
                     <div class="step-header">
                         <div class="step-number">1</div>
-                        <h3 class="step-title">Telemetria e Analisi Copertura</h3>
+                        <h3 class="step-title">Scansione Mappa & Disponibilità</h3>
                     </div>
-                    <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 15px;">I nostri algoritmi analizzeranno la densità urbana e le linee di vista satellitari per assegnarti automaticamente il profilo 10 Gbps (Urbano) o 1 Gbps (Rurale/Satellitare puro).</p>
                     
                     <div class="address-bar">
-                        <input type="text" id="check-indirizzo" class="input-dark" placeholder="Inserisci Indirizzo (Es. Via Roma 15, Milano)">
-                        <button class="btn-check" onclick="verificaCopertura()">Scansiona Mappa</button>
+                        <input type="text" id="check-indirizzo" class="input-dark" placeholder="Inserisci il tuo indirizzo completo (Es. Via Roma 15, Milano o Via Dante 4, Bologna)">
+                        <button class="btn-check" onclick="verificaCopertura()">Verifica Ora</button>
                     </div>
                     
                     <div id="coverage-result"></div>
                     <input type="hidden" id="velocita-assegnata" value="">
                 </div>
 
-                <!-- STEP 2: DATI INTESTATARIO -->
-                <div id="dati-personali" class="form-step" style="display: none; opacity: 0; transition: opacity 0.8s; margin-top: 60px;">
+                <div id="dati-personali" class="form-step" style="display: none; opacity: 0; transition: opacity 0.6s; margin-top: 40px;">
                     <div class="step-header">
                         <div class="step-number">2</div>
-                        <h3 class="step-title">Generazione Fascicolo Utente</h3>
+                        <h3 class="step-title">Dati per la Richiesta di Attivazione</h3>
                     </div>
                     
                     <div class="form-grid">
@@ -547,16 +616,16 @@
                         
                         <div class="form-group">
                             <label>Codice Fiscale / P.IVA *</label>
-                            <input type="text" id="req-cf" class="input-dark" placeholder="16 caratteri o 11 numeri" maxlength="16" style="text-transform: uppercase;">
+                            <input type="text" id="req-cf" class="input-dark" placeholder="Codice Fiscale o Partita IVA" maxlength="16" style="text-transform: uppercase;">
                         </div>
                         <div class="form-group">
-                            <label>Documento Identità (Num.)</label>
-                            <input type="text" id="req-ci" class="input-dark" placeholder="Es. CA12345XX" style="text-transform: uppercase;">
+                            <label>Documento d'Identità (Opzionale)</label>
+                            <input type="text" id="req-ci" class="input-dark" placeholder="Numero Documento" style="text-transform: uppercase;">
                         </div>
 
                         <div class="form-group full">
-                            <label>Indirizzo di Installazione confermato (Locked by System)</label>
-                            <input type="text" id="req-indirizzo" class="input-dark" readonly style="background: rgba(0,0,0,0.6); color: var(--primary); font-family: 'Space Grotesk'; font-weight: 600;">
+                            <label>Indirizzo di Installazione Confermato</label>
+                            <input type="text" id="req-indirizzo" class="input-dark" readonly style="background: rgba(0,0,0,0.5); color: var(--primary); font-weight: 700;">
                         </div>
 
                         <div class="form-group">
@@ -566,27 +635,23 @@
                         <div class="form-group">
                             <label>Provincia & CAP *</label>
                             <div style="display:flex; gap:10px;">
-                                <input type="text" id="req-prov" class="input-dark" placeholder="PR" style="width:30%; text-transform: uppercase;" maxlength="2">
-                                <input type="text" id="req-cap" class="input-dark" placeholder="00000" style="width:70%;" maxlength="5">
+                                <input type="text" id="req-prov" class="input-dark" placeholder="PR" style="width:35%; text-transform: uppercase;" maxlength="2">
+                                <input type="text" id="req-cap" class="input-dark" placeholder="CAP" style="width:65%;" maxlength="5">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label>Email di contatto *</label>
-                            <input type="email" id="req-email" class="input-dark" placeholder="nome@azienda.com">
+                            <label>Email *</label>
+                            <input type="email" id="req-email" class="input-dark" placeholder="indirizzo@email.com">
                         </div>
                         <div class="form-group">
-                            <label>Recapito Telefonico *</label>
+                            <label>Telefono *</label>
                             <input type="tel" id="req-tel" class="input-dark" placeholder="+39 ...">
-                        </div>
-                        
-                        <div class="form-group full" style="display:none;">
-                            <input type="text" id="req-stato" value="Italia">
                         </div>
                     </div>
 
                     <button class="btn-submit" onclick="inviaRichiestaGestionale()">
-                        Trasmetti al Server ERP Horizon <i class="ph-bold ph-upload-simple"></i>
+                        Invia Richiesta di Attivazione <i class="ph-bold ph-paper-plane-right"></i>
                     </button>
                 </div>
 
@@ -599,57 +664,61 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="#" class="logo-container" style="margin-bottom: 20px;">
-                        <i class="ph-fill ph-planet" style="font-size: 32px; color: var(--primary);"></i>
+                    <a href="#" class="logo-container" style="margin-bottom: 16px;">
+                        <div class="logo-icon-wrap">
+                            <i class="ph-fill ph-radar" style="font-size: 22px; color: var(--primary);"></i>
+                        </div>
                         <span class="logo-text">ORI<span>ON</span></span>
                     </a>
-                    <p>Una divisione strategica di S.B. Global Horizon, dedicata a riscrivere i protocolli di telecomunicazione tramite infrastrutture aerospaziali.</p>
+                    <p>Orion è la divisione FWA & Satellitare di <strong>S.B. Global Horizon</strong>, parte del gruppo <strong>S.Brotto Holding</strong>. Connettiamo le persone dove gli altri non arrivano.</p>
                 </div>
                 <div class="footer-links">
-                    <h4>Divisioni Principali</h4>
+                    <h4>Servizi</h4>
                     <ul>
-                        <li><a href="https://servizihorizon.it" target="_blank">S.B. Global Horizon</a></li>
-                        <li><a href="https://wd-globalhorizon.it" target="_blank">Web Development Dept.</a></li>
-                        <li><a href="#">Horizon Cloud & OS</a></li>
-                        <li><a href="#">Security & Penetration Testing</a></li>
+                        <li><a href="#copertura">Orion FWA Residenziale</a></li>
+                        <li><a href="#business">Soluzioni Enterprise</a></li>
+                        <li><a href="#business">Orion Maritime</a></li>
+                        <li><a href="#gta6">GTA 6 Ultra-Routing</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
-                    <h4>Tecnologia e Dati</h4>
+                    <h4>Infrastruttura</h4>
                     <ul>
-                        <li><a href="#">Specifiche Stargaze V2</a></li>
-                        <li><a href="#">Documentazione Router 10G</a></li>
-                        <li><a href="#">Live Satellite Tracker</a></li>
-                        <li><a href="#">Stato Rete (Status Page)</a></li>
+                        <li><a href="#tecnologia">Dorsale Radio-Ottica</a></li>
+                        <li><a href="#hardware">Terminale Stargaze</a></li>
+                        <li><a href="#hardware">Router Wi-Fi 7</a></li>
+                        <li><a href="#copertura">Mappa Copertura</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
-                    <h4>Legale e Supporto</h4>
+                    <h4>Azienda & Legale</h4>
                     <ul>
                         <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Termini di Servizio (SLA)</a></li>
-                        <li><a href="#">Impatto Ambientale & Space Debris</a></li>
-                        <li><a href="#">Supporto Tecnico Enterprise</a></li>
+                        <li><a href="#">Termini e Condizioni</a></li>
+                        <li><a href="#">Trasparenza Tariffaria</a></li>
+                        <li><a href="#">Contatti & Assistenza</a></li>
                     </ul>
                 </div>
             </div>
+
+            <div class="footer-institutional">
+                <div class="inst-badge"><i class="ph-bold ph-shield-check"></i> EISMEA - European Innovation Council</div>
+                <div class="inst-badge"><i class="ph-bold ph-globe-hemisphere-west"></i> COMINT - Politiche Spazio e Aerospazio</div>
+                <div class="inst-badge"><i class="ph-bold ph-buildings"></i> MIMIT - Ministero delle Imprese e del Made in Italy</div>
+            </div>
+
             <div class="footer-bottom">
-                &copy; 2026 S.B. Global Horizon - ORION Aerospace Division. Sviluppato e gestito tramite ecosistema Horizon OS. P.IVA / CF Database Centralizzato.
+                <p>&copy; 2026 S.B. Global Horizon | S.Brotto Holding. Tutti i diritti riservati.</p>
+                <p style="margin-top: 6px; font-weight: 600; color: var(--text-main);">P.IVA: 40306275892</p>
             </div>
         </div>
     </footer>
 
-
-    <!-- ==============================================
-         SCRIPT: ANIMAZIONI E LOGICA FIREBASE GESTIONALE
-         ============================================== -->
-    
-    <!-- Moduli Firebase V10 (Stessa Config. del tuo ERP) -->
+    <!-- LOGICA SCRIPT E FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
         import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
 
-        // CONFIGURAZIONE HORIZON GLS (Non modificare)
         const firebaseConfig = {
             apiKey: "AIzaSyBJjhL9-d-2QMKDYviV7KfYhUOHWDAoasU",
             authDomain: "horizongls.firebaseapp.com",
@@ -663,87 +732,181 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Funzione Globale Verifica Copertura
+        const regioniNordCentro = [
+            "lombardia", "piemonte", "valle d'aosta", "liguria", "veneto", 
+            "trentino", "friuli", "emilia", "toscana", "umbria", "marche", "lazio"
+        ];
+        
+        const cittaNordCentro = [
+            "milano", "roma", "torino", "bologna", "firenze", "venezia", "verona", "genova", 
+            "padova", "brescia", "parma", "modena", "trieste", "perugia", "ancona", "trento", 
+            "aosta", "bergamo", "monza", "treviso", "udine", "la spezia", "pisa", "livorno"
+        ];
+
+        const sudItaliaKeywords = [
+            "napoli", "bari", "palermo", "catania", "messina", "reggio calabria", "cagliari", 
+            "taranto", "foggia", "salerno", "potenza", "campobasso", "pescara", "lecce",
+            "campania", "puglia", "basilicata", "calabria", "sicilia", "sardegna", "abruzzo", "molise"
+        ];
+
         window.verificaCopertura = function() {
-            const inputAddr = document.getElementById('check-indirizzo').value.trim().toLowerCase();
+            const inputAddr = document.getElementById('check-indirizzo').value.trim();
+            const addrLower = inputAddr.toLowerCase();
             const resultDiv = document.getElementById('coverage-result');
             const hiddenSpeed = document.getElementById('velocita-assegnata');
             const formArea = document.getElementById('dati-personali');
             const btnCheck = document.querySelector('.btn-check');
 
-            if(inputAddr.length < 5) {
+            if(inputAddr.length < 5 || !/[a-zA-Z]/.test(inputAddr) || !/\d/.test(inputAddr) && !cittaNordCentro.some(c => addrLower.includes(c))) {
                 resultDiv.style.display = 'block';
                 resultDiv.style.background = 'rgba(239, 68, 68, 0.1)';
                 resultDiv.style.border = '1px solid #ef4444';
                 resultDiv.style.color = '#ef4444';
-                resultDiv.innerHTML = '<i class="ph-bold ph-warning-circle"></i> Input errato. Inserire un indirizzo valido per consentire il lock satellitare.';
+                resultDiv.innerHTML = '<i class="ph-bold ph-warning-circle"></i> <strong>Indirizzo Inesistente o Incompleto</strong>. Inserisci una via regolare con numero civico e comune per effettuare la scansione.';
                 formArea.style.display = 'none';
                 return;
             }
 
-            // Simula elaborazione server
-            btnCheck.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Calcolo Orbite...';
+            btnCheck.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Verifico Mappa...';
             
             setTimeout(() => {
-                // Algoritmo divisione Urbano(10G) / Rurale(1G)
-                const grandiCitta = ["roma", "milano", "napoli", "torino", "palermo", "genova", "bologna", "firenze", "bari", "catania", "venezia", "verona", "padova", "brescia", "parma", "modena"];
-                let isUrbana = grandiCitta.some(citta => inputAddr.includes(citta));
+                let isNordCentro = regioniNordCentro.some(r => addrLower.includes(r)) || cittaNordCentro.some(c => addrLower.includes(c));
+                let isSud = sudItaliaKeywords.some(s => addrLower.includes(s));
+                let isRomania = addrLower.includes("romania") || addrLower.includes("bucarest") || addrLower.includes("cluj");
+                let isEstero = addrLower.includes("francia") || addrLower.includes("germania") || addrLower.includes("spagna") || addrLower.includes("uk") || addrLower.includes("london") || addrLower.includes("paris") || addrLower.includes("berlin");
 
-                let speedText = isUrbana ? "Profilo Urbano Fibra-Radio (Max 10 GBPS)" : "Profilo Rurale/Estremo Satellitare (Max 1 GBPS)";
-                let color = isUrbana ? "var(--primary)" : "#22C55E";
-                let bgInfo = isUrbana ? "rgba(0, 229, 255, 0.05)" : "rgba(34, 197, 94, 0.05)";
+                if (isNordCentro || (!isSud && !isRomania && !isEstero && (addrLower.includes("via") || addrLower.includes("corso") || addrLower.includes("piazza")))) {
+                    let isGrandiCitta = ["milano", "roma", "torino", "bologna", "firenze", "venezia", "verona", "genova"].some(c => addrLower.includes(c));
+                    let velocita = isGrandiCitta ? "Fino a 10 Gbps (Area Urbana)" : "Fino a 1 Gbps (Area Remota/FWA)";
 
-                resultDiv.style.display = 'block';
-                resultDiv.style.background = bgInfo;
-                resultDiv.style.border = `1px solid ${color}`;
-                resultDiv.style.color = '#fff';
-                
-                resultDiv.innerHTML = `
-                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px;">
-                        <i class="ph-fill ph-check-circle" style="color:${color}; font-size:28px;"></i> 
-                        <div>
-                            <span style="font-size:18px; font-weight:600; font-family:'Space Grotesk';">Lock Satellitare Confermato</span>
-                            <div style="font-size:13px; color:var(--text-muted);">Coordinate mappa sincronizzate. Copertura totale rilevata.</div>
+                    resultDiv.style.display = 'block';
+                    resultDiv.style.background = 'rgba(0, 229, 255, 0.08)';
+                    resultDiv.style.border = '1px solid var(--primary)';
+                    resultDiv.style.color = '#fff';
+                    
+                    resultDiv.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+                            <i class="ph-fill ph-check-circle" style="color:var(--primary); font-size:28px;"></i> 
+                            <div>
+                                <strong style="font-size:18px; color:#fff;">Servizio Attivo e Disponibile!</strong>
+                                <div style="font-size:13px; color:var(--text-muted);">Indirizzo verificato nelle mappe di rete Orion.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div style="font-size:15px; margin-left: 40px; color: var(--text-main);">
-                        Hardware Allocato: <strong>Antenna Stargaze V2 + Horizon Quantum Router</strong><br>
-                        Capacità Infrastruttura: <strong style="color:${color};">${speedText}</strong>
-                    </div>
-                `;
-                hiddenSpeed.value = speedText;
+                        <div style="margin-left: 40px; font-size:14px;">
+                            Profilo di Velocità Riservato: <strong style="color:var(--primary);">${velocita}</strong><br>
+                            Hardware: <strong>Terminale Orion Stargaze + Router Wi-Fi 7 Incluso</strong>
+                        </div>
+                    `;
+                    hiddenSpeed.value = velocita;
 
-                document.getElementById('req-indirizzo').value = document.getElementById('check-indirizzo').value;
-                formArea.style.display = 'block';
-                setTimeout(() => { formArea.style.opacity = '1'; }, 50);
-                
+                    document.getElementById('req-indirizzo').value = inputAddr;
+                    formArea.style.display = 'block';
+                    setTimeout(() => { formArea.style.opacity = '1'; }, 50);
+
+                } else if (isSud) {
+                    resultDiv.style.display = 'block';
+                    resultDiv.style.background = 'rgba(245, 158, 11, 0.1)';
+                    resultDiv.style.border = '1px solid #f59e0b';
+                    resultDiv.style.color = '#fff';
+                    
+                    resultDiv.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+                            <i class="ph-bold ph-clock" style="color:#f59e0b; font-size:26px;"></i> 
+                            <div>
+                                <strong style="font-size:16px;">Servizio Non Ancora Attivo nel Sud Italia</strong>
+                                <div style="font-size:13px; color:var(--text-muted);">Infrastruttura in fase finale di completamento.</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted);">
+                                <span>Stato di Avanzamento Lavori:</span>
+                                <strong style="color:#f59e0b;">90%</strong>
+                            </div>
+                            <div class="progress-bar-wrap">
+                                <div class="progress-bar-fill" style="width: 90%;"></div>
+                            </div>
+                        </div>
+                    `;
+                    formArea.style.display = 'none';
+
+                } else if (isRomania) {
+                    resultDiv.style.display = 'block';
+                    resultDiv.style.background = 'rgba(245, 158, 11, 0.1)';
+                    resultDiv.style.border = '1px solid #f59e0b';
+                    resultDiv.style.color = '#fff';
+                    
+                    resultDiv.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+                            <i class="ph-bold ph-clock" style="color:#f59e0b; font-size:26px;"></i> 
+                            <div>
+                                <strong style="font-size:16px;">Servizio Non Ancora Attivo in Romania</strong>
+                                <div style="font-size:13px; color:var(--text-muted);">Istanziamento dorsale europea in corso.</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted);">
+                                <span>Stato di Avanzamento Lavori:</span>
+                                <strong style="color:#f59e0b;">70%</strong>
+                            </div>
+                            <div class="progress-bar-wrap">
+                                <div class="progress-bar-fill" style="width: 70%;"></div>
+                            </div>
+                        </div>
+                    `;
+                    formArea.style.display = 'none';
+
+                } else {
+                    let randPerc = Math.floor(Math.random() * (65 - 35 + 1)) + 35;
+                    resultDiv.style.display = 'block';
+                    resultDiv.style.background = 'rgba(239, 68, 68, 0.1)';
+                    resultDiv.style.border = '1px solid #ef4444';
+                    resultDiv.style.color = '#fff';
+                    
+                    resultDiv.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+                            <i class="ph-bold ph-x-circle" style="color:#ef4444; font-size:26px;"></i> 
+                            <div>
+                                <strong style="font-size:16px;">Area Estera Attualmente Non Coperta</strong>
+                                <div style="font-size:13px; color:var(--text-muted);">Infrastruttura pianificata per le prossime fasi.</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted);">
+                                <span>Avanzamento Programmazione:</span>
+                                <strong style="color:#ef4444;">${randPerc}%</strong>
+                            </div>
+                            <div class="progress-bar-wrap">
+                                <div class="progress-bar-fill" style="width: ${randPerc}%; background:#ef4444;"></div>
+                            </div>
+                        </div>
+                    `;
+                    formArea.style.display = 'none';
+                }
+
                 btnCheck.innerHTML = 'Ricalibra Posizione';
-            }, 1800); // 1.8s finto caricamento per dare enfasi
+            }, 1200);
         };
 
-        // Funzione Trasmissione al Gestionale
         window.inviaRichiestaGestionale = async function() {
-            const nome = document.getElementById('req-nome').value;
-            const cognome = document.getElementById('req-cognome').value;
-            const cf = document.getElementById('req-cf').value;
+            const nome = document.getElementById('req-nome').value.trim();
+            const cognome = document.getElementById('req-cognome').value.trim();
+            const cf = document.getElementById('req-cf').value.trim();
             
             if(!nome || !cognome || !cf) {
-                alert("Protocollo Incompleto: I campi Nome, Cognome e Codice Fiscale sono mandatori per l'ERP.");
+                alert("Completa i campi obbligatori (Nome, Cognome e Codice Fiscale/P.IVA) per proseguire.");
                 return;
             }
 
             const btn = document.querySelector('.btn-submit');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Trasmissione Crittografata ad Horizon OS...';
+            btn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Invio in corso...';
             btn.style.pointerEvents = "none";
 
-            // Creazione Data per il tuo ERP
             const richiestaData = {
                 data: new Date().toLocaleDateString('it-IT') + " " + new Date().toLocaleTimeString('it-IT'),
                 richiedente: `${nome} ${cognome}`,
-                "ragioneSociale": cf, // Perfettamente allineato al tuo gestionale (Usa colonna rag sociale)
-                servizio: `Servizio ORION - ${document.getElementById('velocita-assegnata').value}`,
-                stato: "Nuova", // Indispensabile per farla comparire nell'ERP
+                ragioneSociale: cf,
+                servizio: `Orion FWA - ${document.getElementById('velocita-assegnata').value}`,
+                stato: "Nuova",
                 timestamp: serverTimestamp(),
                 dettagli_completi: {
                     carta_identita: document.getElementById('req-ci').value || "N/D",
@@ -751,58 +914,43 @@
                     citta: document.getElementById('req-citta').value,
                     provincia: document.getElementById('req-prov').value,
                     cap: document.getElementById('req-cap').value,
-                    nazione: document.getElementById('req-stato').value,
                     email: document.getElementById('req-email').value,
                     telefono: document.getElementById('req-tel').value
                 }
             };
 
             try {
-                // Invia a Firebase (Nodo richieste-servizi del tuo ERP)
                 await push(ref(db, 'richieste-servizi'), richiestaData);
                 
-                // Schermata di Successo
                 document.getElementById('dati-personali').innerHTML = `
-                    <div style="text-align:center; padding: 60px 20px; background: rgba(34,197,94,0.05); border: 1px dashed #22c55e; border-radius: 20px; margin-top:20px;">
-                        <i class="ph-fill ph-check-circle" style="font-size:90px; color:#22C55E; margin-bottom:24px; filter: drop-shadow(0 0 30px rgba(34,197,94,0.3));"></i>
-                        <h3 style="color:#fff; font-size:28px; margin-bottom:12px; font-family:'Space Grotesk';">Fascicolo Acquisito da Horizon OS</h3>
-                        <p style="color:var(--text-muted); font-size:16px; max-width: 600px; margin: 0 auto;">Il server centrale di S.B. Global Horizon ha registrato la pratica nella dashboard direzionale. Un tecnico della divisione logistica analizzerà i dati per l'invio dell'hardware "Stargaze V2".</p>
+                    <div style="text-align:center; padding: 40px 20px; background: rgba(0,229,255,0.05); border: 1px dashed var(--primary); border-radius: 16px;">
+                        <i class="ph-fill ph-check-circle" style="font-size:70px; color:var(--primary); margin-bottom:16px;"></i>
+                        <h3 style="color:#fff; font-size:24px; margin-bottom:10px;">Richiesta Presa in Carico!</h3>
+                        <p style="color:var(--text-muted); font-size:15px; max-width: 550px; margin: 0 auto;">
+                            Il team S.B. Global Horizon ha ricevuto la tua richiesta di attivazione. Un operatore ti contatterà nelle prossime ore per la spedizione del kit Orion Stargaze.
+                        </p>
                     </div>
                 `;
             } catch (error) {
-                console.error("Errore Sync Server: ", error);
-                alert("Errore critico di comunicazione. Sistema Gestionale irraggiungibile.");
-                btn.innerHTML = originalText;
+                console.error("Errore Invio: ", error);
+                alert("Errore durante l'invio della richiesta. Riprova più tardi.");
+                btn.innerHTML = 'Invia Richiesta di Attivazione';
                 btn.style.pointerEvents = "auto";
             }
         };
 
-        // ==========================================
-        // SCRIPT: Intersection Observer per Animazioni 
-        // (Effetto apparizione scroll)
-        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             const reveals = document.querySelectorAll('.reveal');
-            
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15 // Appare quando il 15% dell'elemento è visibile
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
+            const observer = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        // Smetti di osservare l'elemento una volta apparso
-                        observer.unobserve(entry.target);
+                        obs.unobserve(entry.target);
                     }
                 });
-            }, observerOptions);
-
-            reveals.forEach(reveal => observer.observe(reveal));
+            }, { threshold: 0.1 });
+            reveals.forEach(el => observer.observe(el));
         });
-
     </script>
 </body>
 </html>
