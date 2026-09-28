@@ -311,6 +311,152 @@
         <a href="#" class="logo-container">
             <div class="logo-icon-wrap">
                 <!-- ICONA LOGO CORRETTA (ph-broadcast) -->
+                <i class="ph-fill ph-broadcast" style="font-size: able td { padding: 10px 0; font-size: 14px; }
+        .tech-table td:first-child { color: #fff; font-weight: 600; }
+        .tech-table td:last-child { color: var(--text-muted); text-align: right; }
+
+        .feature-list { list-style: none; margin-top: 20px; }
+        .feature-list li { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; font-size: 15px; color: var(--text-main); }
+        .feature-list li i { color: var(--primary); font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+
+        /* --- SETTORI B2B --- */
+        .business-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .business-card { 
+            position: relative; border-radius: 20px; overflow: hidden; min-height: 380px;
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 32px;
+            border: 1px solid rgba(255,255,255,0.1); transition: var(--transition);
+        }
+        .business-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(2,6,17,0.95) 0%, rgba(2,6,17,0.2) 100%); z-index: 1; }
+        .business-card:hover { transform: translateY(-4px); border-color: var(--primary); }
+        .business-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: var(--transition); }
+        .business-card:hover img { transform: scale(1.08); }
+        .business-content { position: relative; z-index: 2; }
+        .business-content h3 { color: #fff; font-size: 24px; margin-bottom: 8px; }
+        .business-content p { color: var(--text-muted); font-size: 14px; }
+
+        /* --- BANNER GTA 6 ROCKSTAR GAMES --- */
+        .gaming-section { padding: 90px 5vw; background: radial-gradient(circle at center, rgba(255, 0, 127, 0.06) 0%, var(--bg-base) 70%); overflow: hidden; }
+        .rockstar-container {
+            background: linear-gradient(135deg, #12030d 0%, #1a0826 50%, #081121 100%);
+            border: 1px solid var(--gta-accent); border-radius: 28px; padding: 50px 40px;
+            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center;
+            box-shadow: 0 20px 60px rgba(255, 0, 127, 0.15); position: relative; overflow: hidden; max-width: 100%;
+        }
+        .gta-badge {
+            display: inline-flex; align-items: center; gap: 8px; background: rgba(255,0,127,0.15);
+            border: 1px solid var(--gta-accent); color: #ff66be; padding: 6px 16px; border-radius: 30px;
+            font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;
+        }
+        .gaming-text h2 { color: #fff; font-size: clamp(28px, 3.5vw, 42px); margin-bottom: 16px; font-weight: 800; line-height: 1.1; }
+        .gaming-text h2 span { color: var(--gta-gold); }
+        .gaming-text p { color: #cbd5e1; font-size: 16px; margin-bottom: 20px; }
+        
+        .gaming-stats { display: flex; gap: 30px; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; flex-wrap: wrap; }
+        .g-stat h4 { color: var(--gta-accent); font-size: 28px; font-weight: 800; }
+        .g-stat span { color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .rockstar-visual {
+            position: relative; text-align: center; border-radius: 20px; overflow: hidden;
+            border: 1px solid rgba(255, 183, 3, 0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+        }
+        .rockstar-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* --- FORM CHECKOUT & VERIFICA COPERTURA --- */
+        .checkout-section { background: var(--bg-surface-elevated); padding: 100px 5vw; border-top: 1px solid rgba(255,255,255,0.05); }
+        .form-terminal {
+            background: var(--bg-base); border: 1px solid var(--glass-border); border-radius: 24px; 
+            padding: 50px; max-width: 950px; margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+            position: relative; overflow: hidden;
+        }
+        .form-terminal::before { content:''; position:absolute; top:0; left:0; width:100%; height:4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+        
+        .form-step { margin-bottom: 30px; }
+        .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .step-number { width: 36px; height: 36px; background: rgba(0,229,255,0.15); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: 'Space Grotesk'; font-size: 16px; }
+        .step-title { font-size: 22px; color: #fff; }
+
+        .address-bar { display: flex; gap: 12px; }
+        .input-dark { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); padding: 16px 20px; border-radius: 12px; color: #fff; font-size: 15px; font-family: 'Inter'; outline: none; transition: var(--transition); }
+        .input-dark:focus { border-color: var(--primary); background: rgba(0,229,255,0.03); }
+        
+        .btn-check { background: var(--primary); color: #000; border: none; padding: 0 32px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: 'Space Grotesk'; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+        .btn-check:hover { background: #fff; box-shadow: 0 0 20px rgba(0,229,255,0.4); }
+
+        #coverage-result { display: none; margin-top: 20px; padding: 20px; border-radius: 14px; font-size: 15px; animation: fadeIn 0.4s ease-out; }
+
+        .progress-bar-wrap { width: 100%; background: rgba(255,255,255,0.1); height: 10px; border-radius: 10px; margin-top: 12px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 10px; transition: width 1s ease-in-out; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group.full { grid-column: span 2; }
+        .form-group label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        .btn-submit {
+            background: #fff; color: #000; padding: 20px; border: none; border-radius: 12px;
+            font-weight: 800; font-size: 16px; cursor: pointer; text-transform: uppercase;
+            transition: var(--transition); width: 100%; margin-top: 30px; font-family: 'Space Grotesk'; letter-spacing: 1px;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-submit:hover { background: var(--primary); box-shadow: 0 10px 30px rgba(0,229,255,0.3); transform: translateY(-2px); }
+
+        /* --- FOOTER --- */
+        footer { background: #01030a; padding: 80px 5vw 40px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 60px; }
+        .footer-brand p { color: var(--text-muted); margin-top: 16px; max-width: 360px; font-size: 14px; }
+        .footer-links h4 { color: #fff; margin-bottom: 20px; font-size: 16px; letter-spacing: 1px; }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: var(--transition); font-size: 14px; }
+        .footer-links a:hover { color: var(--primary); padding-left: 4px; }
+        
+        .footer-institutional {
+            display: flex; gap: 24px; align-items: center; justify-content: center; flex-wrap: wrap;
+            padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px;
+        }
+        .inst-badge { color: var(--text-muted); font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+
+        .footer-bottom { text-align: center; color: rgba(255,255,255,0.4); font-size: 13px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1100px) {
+            .rockstar-container { grid-template-columns: 1fr; padding: 40px 24px; }
+            .business-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+            .stat-box:nth-child(2) { border-right: none; }
+        }
+        @media (max-width: 850px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+            .form-terminal { padding: 30px 20px; }
+            .address-bar { flex-direction: column; }
+            .btn-check { padding: 16px; }
+        }
+        @media (max-width: 600px) {
+            nav { padding: 12px 16px; }
+            .nav-links { display: none; }
+            .hero { padding-top: 120px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .stat-box { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 20px; margin-bottom: 20px; }
+            .stat-box:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+            .business-grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full { grid-column: span 1; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <!-- NAVBAR -->
+    <nav>
+        <a href="#" class="logo-container">
+            <div class="logo-icon-wrap">
+                <!-- ICONA LOGO CORRETTA (ph-broadcast) -->
                 <i class="ph-fill ph-broadcast" style="font-size: 24px; color: var(--primary);"></i>
             </div>
             <div>
