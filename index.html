@@ -2,13 +2,13 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Orion, La connettività 2.0 - S.B. Global Horizon</title>
     
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Icone Phosphor (Via CSS per massima compatibilità mobile/iOS) -->
+    <!-- Icone Phosphor -->
     <link href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css" rel="stylesheet">
@@ -32,16 +32,20 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
-        body {
+        
+        /* FIX: Previene rigorosamente l'overflow orizzontale */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-base);
             color: var(--text-main);
-            overflow-x: hidden;
             line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
         h1, h2, h3, h4, h5 { font-family: 'Space Grotesk', sans-serif; }
+        img { max-width: 100%; height: auto; display: block; }
 
         /* --- BACKGROUND GLOBALE --- */
         .bg-glow {
@@ -57,26 +61,25 @@
 
         /* --- NAVBAR --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 16px 5vw;
-            background: rgba(2, 6, 17, 0.85); backdrop-filter: blur(16px);
+            position: fixed; top: 0; left: 0; right: 0; width: 100%; padding: 16px 5vw;
+            background: rgba(2, 6, 17, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             display: flex; justify-content: space-between; align-items: center;
             z-index: 1000; border-bottom: 1px solid var(--glass-border);
         }
-        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none;}
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
         .logo-icon-wrap {
             width: 44px; height: 44px; background: rgba(0, 229, 255, 0.1);
             border: 1px solid var(--primary); border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .logo-text { font-size: 26px; font-weight: 800; color: var(--text-main); letter-spacing: 2px; }
+        .logo-text { font-size: 24px; font-weight: 800; color: var(--text-main); letter-spacing: 2px; }
         .logo-text span { color: var(--primary); }
-        .logo-tag { font-size: 10px; color: var(--text-muted); display: block; margin-top: -4px; letter-spacing: 1px; }
+        .logo-tag { font-size: 10px; color: var(--text-muted); display: block; margin-top: -4px; letter-spacing: 1px; white-space: nowrap; }
 
         .nav-links { display: flex; gap: 28px; align-items: center; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); }
         .nav-links a:hover { color: var(--primary); }
         .btn-nav { background: var(--primary); color: #000 !important; padding: 10px 22px; border-radius: 8px; font-weight: 700; text-transform: uppercase; }
-        .btn-nav:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 0 20px rgba(0,229,255,0.4); }
 
         /* --- HERO SECTION --- */
         .hero {
@@ -84,11 +87,11 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
             padding: 140px 5vw 80px;
             background: 
-                linear-gradient(to bottom, rgba(2,6,17,0.4) 0%, var(--bg-base) 100%), 
+                linear-gradient(to bottom, rgba(2,6,17,0.5) 0%, var(--bg-base) 100%), 
                 url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop') no-repeat center center/cover;
             position: relative;
         }
-        .hero-content { position: relative; z-index: 2; max-width: 950px; }
+        .hero-content { position: relative; z-index: 2; max-width: 950px; width: 100%; }
         
         .badge-brand { 
             display: inline-flex; align-items: center; gap: 8px;
@@ -96,32 +99,32 @@
             padding: 8px 22px; border-radius: 50px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 24px; 
         }
         
-        .hero h1 { font-size: clamp(40px, 6vw, 76px); color: #fff; margin-bottom: 20px; line-height: 1.1; font-weight: 800; }
+        .hero h1 { font-size: clamp(36px, 6vw, 76px); color: #fff; margin-bottom: 20px; line-height: 1.1; font-weight: 800; }
         .hero h1 span { background: linear-gradient(135deg, var(--primary), #a5f3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .hero p { font-size: clamp(18px, 2.2vw, 22px); color: var(--text-muted); margin-bottom: 40px; font-weight: 300; max-width: 850px; margin-inline: auto; }
+        .hero p { font-size: clamp(16px, 2.2vw, 22px); color: var(--text-muted); margin-bottom: 40px; font-weight: 300; max-width: 850px; margin-inline: auto; }
         
         .hero-cta-group { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
 
         .btn-primary {
-            display: inline-flex; align-items: center; gap: 12px;
-            background: var(--primary); color: #000; padding: 18px 42px; border: none;
+            display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+            background: var(--primary); color: #000; padding: 18px 36px; border: none;
             border-radius: 12px; font-weight: 800; font-size: 16px; cursor: pointer;
             text-transform: uppercase; transition: var(--transition); text-decoration: none;
             font-family: 'Space Grotesk', sans-serif; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(0,229,255,0.25);
+            width: 100%; max-width: 320px;
         }
-        .btn-primary:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255,255,255,0.3); }
+        .btn-primary:hover { background: #fff; transform: translateY(-3px); }
 
         .btn-secondary {
-            display: inline-flex; align-items: center; gap: 12px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 12px;
             background: rgba(255,255,255,0.05); color: #fff; padding: 18px 36px; border: 1px solid rgba(255,255,255,0.2);
             border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer;
             text-transform: uppercase; transition: var(--transition); text-decoration: none;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Space Grotesk', sans-serif; width: 100%; max-width: 320px;
         }
-        .btn-secondary:hover { background: rgba(255,255,255,0.15); border-color: #fff; }
 
-        /* --- STATISTICHE & TAGLINE --- */
+        /* --- STATISTICHE --- */
         .stats-container { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin: -40px auto 0; padding: 0 5vw; }
         .stats-grid { 
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
@@ -134,32 +137,30 @@
         .stat-value span { color: var(--primary); font-size: 0.65em; }
         .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
 
-        /* --- SEZIONI --- */
-        .section { padding: 100px 5vw; position: relative; }
+        /* --- SEZIONI GENERALI --- */
+        .section { padding: 80px 5vw; position: relative; width: 100%; }
         .section-alt { background: var(--bg-surface); border-top: 1px solid rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.03); }
-        .container { max-width: 1300px; margin: 0 auto; }
+        .container { max-width: 1300px; margin: 0 auto; width: 100%; }
         
-        .section-header { text-align: center; margin-bottom: 70px; max-width: 850px; margin-inline: auto; }
+        .section-header { text-align: center; margin-bottom: 60px; max-width: 850px; margin-inline: auto; }
         .section-subtitle { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); text-transform: uppercase; font-weight: 700; letter-spacing: 2px; font-size: 13px; margin-bottom: 12px; }
-        .section-title { font-size: clamp(32px, 4vw, 52px); margin-bottom: 18px; color: #fff; line-height: 1.15; }
-        .section-desc { color: var(--text-muted); font-size: 18px; font-weight: 300; }
+        .section-title { font-size: clamp(28px, 4vw, 52px); margin-bottom: 18px; color: #fff; line-height: 1.15; }
+        .section-desc { color: var(--text-muted); font-size: clamp(16px, 2vw, 18px); font-weight: 300; }
 
         /* --- GRIGLIE & CARDS --- */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 28px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
         
         .glass-card {
             background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px;
-            padding: 36px; backdrop-filter: blur(12px);
-            transition: var(--transition); position: relative; overflow: hidden; height: 100%;
-            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 32px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            transition: var(--transition); display: flex; flex-direction: column; justify-content: space-between; height: 100%;
         }
-        .glass-card:hover { transform: translateY(-6px); border-color: var(--primary); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         
         .icon-wrapper { width: 60px; height: 60px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
         .icon-wrapper i { font-size: 30px; color: var(--primary); }
         
-        .glass-card h3 { font-size: 24px; margin-bottom: 14px; color: #fff; }
+        .glass-card h3 { font-size: 22px; margin-bottom: 14px; color: #fff; }
         .glass-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 20px; }
         
         .tech-table { width: 100%; border-collapse: collapse; margin-top: auto; }
@@ -170,7 +171,7 @@
         .tech-table td:last-child { color: var(--text-muted); text-align: right; }
 
         .feature-list { list-style: none; margin-top: 20px; }
-        .feature-list li { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; font-size: 15px; color: var(--text-main); }
+        .feature-list li { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; font-size: 15px; }
         .feature-list li i { color: var(--primary); font-size: 22px; flex-shrink: 0; margin-top: 2px; }
 
         /* --- SETTORI B2B --- */
@@ -178,68 +179,70 @@
         .business-card { 
             position: relative; border-radius: 20px; overflow: hidden; min-height: 380px;
             display: flex; flex-direction: column; justify-content: flex-end; padding: 32px;
-            border: 1px solid rgba(255,255,255,0.1); transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .business-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(2,6,17,0.95) 0%, rgba(2,6,17,0.2) 100%); z-index: 1; }
-        .business-card:hover { transform: translateY(-4px); border-color: var(--primary); }
         .business-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: var(--transition); }
-        .business-card:hover img { transform: scale(1.08); }
+        .business-card:hover img { transform: scale(1.05); }
         .business-content { position: relative; z-index: 2; }
-        .business-content h3 { color: #fff; font-size: 24px; margin-bottom: 8px; }
+        .business-content h3 { color: #fff; font-size: 22px; margin-bottom: 8px; }
         .business-content p { color: var(--text-muted); font-size: 14px; }
 
-        /* --- BANNER GTA 6 ROCKSTAR GAMES --- */
-        .gaming-section { padding: 90px 5vw; background: radial-gradient(circle at center, rgba(255, 0, 127, 0.06) 0%, var(--bg-base) 70%); overflow: hidden; }
+        /* --- BANNER GTA 6 --- */
+        .gaming-section { padding: 80px 5vw; background: radial-gradient(circle at center, rgba(255, 0, 127, 0.06) 0%, var(--bg-base) 70%); }
         .rockstar-container {
             background: linear-gradient(135deg, #12030d 0%, #1a0826 50%, #081121 100%);
-            border: 1px solid var(--gta-accent); border-radius: 28px; padding: 50px 40px;
-            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center;
-            box-shadow: 0 20px 60px rgba(255, 0, 127, 0.15); position: relative; overflow: hidden; max-width: 100%;
+            border: 1px solid var(--gta-accent); border-radius: 28px; padding: 40px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+            box-shadow: 0 20px 60px rgba(255, 0, 127, 0.15); width: 100%; overflow: hidden;
         }
         .gta-badge {
             display: inline-flex; align-items: center; gap: 8px; background: rgba(255,0,127,0.15);
             border: 1px solid var(--gta-accent); color: #ff66be; padding: 6px 16px; border-radius: 30px;
             font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;
         }
-        .gaming-text h2 { color: #fff; font-size: clamp(28px, 3.5vw, 42px); margin-bottom: 16px; font-weight: 800; line-height: 1.1; }
+        .gaming-text h2 { color: #fff; font-size: clamp(26px, 3.5vw, 40px); margin-bottom: 16px; font-weight: 800; line-height: 1.1; }
         .gaming-text h2 span { color: var(--gta-gold); }
-        .gaming-text p { color: #cbd5e1; font-size: 16px; margin-bottom: 20px; }
+        .gaming-text p { color: #cbd5e1; font-size: 15px; margin-bottom: 20px; }
         
-        .gaming-stats { display: flex; gap: 30px; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; flex-wrap: wrap; }
-        .g-stat h4 { color: var(--gta-accent); font-size: 28px; font-weight: 800; }
-        .g-stat span { color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .gaming-stats { display: flex; gap: 20px; margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; flex-wrap: wrap; }
+        .g-stat h4 { color: var(--gta-accent); font-size: 24px; font-weight: 800; }
+        .g-stat span { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .rockstar-visual {
-            position: relative; text-align: center; border-radius: 20px; overflow: hidden;
-            border: 1px solid rgba(255, 183, 3, 0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-        }
-        .rockstar-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .rockstar-visual { position: relative; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255, 183, 3, 0.3); }
 
-        /* --- FORM CHECKOUT & VERIFICA COPERTURA --- */
-        .checkout-section { background: var(--bg-surface-elevated); padding: 100px 5vw; border-top: 1px solid rgba(255,255,255,0.05); }
+        /* --- FORM CHECKOUT --- */
+        .checkout-section { background: var(--bg-surface-elevated); padding: 80px 5vw; border-top: 1px solid rgba(255,255,255,0.05); }
         .form-terminal {
             background: var(--bg-base); border: 1px solid var(--glass-border); border-radius: 24px; 
-            padding: 50px; max-width: 950px; margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-            position: relative; overflow: hidden;
+            padding: 40px; max-width: 950px; margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+            position: relative; overflow: hidden; width: 100%;
         }
         .form-terminal::before { content:''; position:absolute; top:0; left:0; width:100%; height:4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
         
         .form-step { margin-bottom: 30px; }
         .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .step-number { width: 36px; height: 36px; background: rgba(0,229,255,0.15); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: 'Space Grotesk'; font-size: 16px; }
-        .step-title { font-size: 22px; color: #fff; }
+        .step-number { width: 36px; height: 36px; background: rgba(0,229,255,0.15); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; flex-shrink: 0; }
+        .step-title { font-size: 20px; color: #fff; }
 
-        .address-bar { display: flex; gap: 12px; }
-        .input-dark { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); padding: 16px 20px; border-radius: 12px; color: #fff; font-size: 15px; font-family: 'Inter'; outline: none; transition: var(--transition); }
+        .address-bar { display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
+        .input-dark { 
+            flex: 1; min-width: 250px; width: 100%;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); 
+            padding: 16px; border-radius: 12px; color: #fff; font-size: 15px; 
+            font-family: 'Inter'; outline: none; transition: var(--transition); 
+        }
         .input-dark:focus { border-color: var(--primary); background: rgba(0,229,255,0.03); }
         
-        .btn-check { background: var(--primary); color: #000; border: none; padding: 0 32px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: 'Space Grotesk'; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
-        .btn-check:hover { background: #fff; box-shadow: 0 0 20px rgba(0,229,255,0.4); }
+        .btn-check { 
+            background: var(--primary); color: #000; border: none; padding: 16px 32px; 
+            border-radius: 12px; font-weight: 700; cursor: pointer; transition: var(--transition); 
+            text-transform: uppercase; white-space: nowrap; font-family: 'Space Grotesk';
+        }
 
-        #coverage-result { display: none; margin-top: 20px; padding: 20px; border-radius: 14px; font-size: 15px; animation: fadeIn 0.4s ease-out; }
-
-        .progress-bar-wrap { width: 100%; background: rgba(255,255,255,0.1); height: 10px; border-radius: 10px; margin-top: 12px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 10px; transition: width 1s ease-in-out; }
+        #coverage-result { display: none; margin-top: 20px; padding: 20px; border-radius: 14px; font-size: 15px; }
+        .progress-bar-wrap { width: 100%; background: rgba(255,255,255,0.1); height: 8px; border-radius: 8px; margin-top: 12px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 8px; transition: width 1s ease-in-out; }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group { display: flex; flex-direction: column; gap: 8px; }
@@ -247,58 +250,51 @@
         .form-group label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
 
         .btn-submit {
-            background: #fff; color: #000; padding: 20px; border: none; border-radius: 12px;
+            background: #fff; color: #000; padding: 18px; border: none; border-radius: 12px;
             font-weight: 800; font-size: 16px; cursor: pointer; text-transform: uppercase;
-            transition: var(--transition); width: 100%; margin-top: 30px; font-family: 'Space Grotesk'; letter-spacing: 1px;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
+            width: 100%; margin-top: 30px; display: flex; justify-content: center; align-items: center; gap: 10px;
         }
-        .btn-submit:hover { background: var(--primary); box-shadow: 0 10px 30px rgba(0,229,255,0.3); transform: translateY(-2px); }
 
         /* --- FOOTER --- */
-        footer { background: #01030a; padding: 80px 5vw 40px; border-top: 1px solid rgba(255,255,255,0.06); }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 60px; }
+        footer { background: #01030a; padding: 60px 5vw 30px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 50px; }
         .footer-brand p { color: var(--text-muted); margin-top: 16px; max-width: 360px; font-size: 14px; }
-        .footer-links h4 { color: #fff; margin-bottom: 20px; font-size: 16px; letter-spacing: 1px; }
+        .footer-links h4 { color: #fff; margin-bottom: 20px; font-size: 16px; }
         .footer-links ul { list-style: none; }
         .footer-links li { margin-bottom: 12px; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: var(--transition); font-size: 14px; }
-        .footer-links a:hover { color: var(--primary); padding-left: 4px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; }
         
         .footer-institutional {
-            display: flex; gap: 24px; align-items: center; justify-content: center; flex-wrap: wrap;
-            padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px;
+            display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap;
+            padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 24px;
         }
-        .inst-badge { color: var(--text-muted); font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        .inst-badge { color: var(--text-muted); font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 8px; text-transform: uppercase; text-align: center; }
+        .footer-bottom { text-align: center; color: rgba(255,255,255,0.4); font-size: 12px; }
 
-        .footer-bottom { text-align: center; color: rgba(255,255,255,0.4); font-size: 13px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 1100px) {
-            .rockstar-container { grid-template-columns: 1fr; padding: 40px 24px; }
+        /* --- RESPONSIVE MOBILE FIX --- */
+        @media (max-width: 1024px) {
+            .rockstar-container { grid-template-columns: 1fr; padding: 30px; }
             .business-grid { grid-template-columns: repeat(2, 1fr); }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .stat-box:nth-child(2) { border-right: none; }
         }
-        @media (max-width: 850px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
-            .form-terminal { padding: 30px 20px; }
-            .address-bar { flex-direction: column; }
-            .btn-check { padding: 16px; }
-        }
-        @media (max-width: 600px) {
-            nav { padding: 12px 16px; }
+        @media (max-width: 768px) {
+            nav { padding: 12px 20px; }
             .nav-links { display: none; }
-            .hero { padding-top: 120px; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .stat-box { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 20px; margin-bottom: 20px; }
-            .stat-box:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+            .grid-2 { grid-template-columns: 1fr; gap: 30px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .form-terminal { padding: 24px 16px; }
+            .btn-check { width: 100%; }
+        }
+        @media (max-width: 500px) {
+            .hero { padding-top: 120px; padding-bottom: 60px; }
+            .stats-grid { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
+            .stat-box { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 16px; }
+            .stat-box:last-child { border-bottom: none; padding-bottom: 0; }
             .business-grid { grid-template-columns: 1fr; }
             .form-grid { grid-template-columns: 1fr; }
             .form-group.full { grid-column: span 1; }
-            .footer-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
         }
     </style>
 </head>
@@ -306,561 +302,246 @@
 
     <div class="bg-glow"></div>
 
-    <!-- NAVBAR -->
     <nav>
         <a href="#" class="logo-container">
-            <div class="logo-icon-wrap">
-                <!-- ICONA LOGO CORRETTA (ph-broadcast) -->
-                <i class="ph-fill ph-broadcast" style="font-size: able td { padding: 10px 0; font-size: 14px; }
-        .tech-table td:first-child { color: #fff; font-weight: 600; }
-        .tech-table td:last-child { color: var(--text-muted); text-align: right; }
-
-        .feature-list { list-style: none; margin-top: 20px; }
-        .feature-list li { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; font-size: 15px; color: var(--text-main); }
-        .feature-list li i { color: var(--primary); font-size: 22px; flex-shrink: 0; margin-top: 2px; }
-
-        /* --- SETTORI B2B --- */
-        .business-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-        .business-card { 
-            position: relative; border-radius: 20px; overflow: hidden; min-height: 380px;
-            display: flex; flex-direction: column; justify-content: flex-end; padding: 32px;
-            border: 1px solid rgba(255,255,255,0.1); transition: var(--transition);
-        }
-        .business-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(2,6,17,0.95) 0%, rgba(2,6,17,0.2) 100%); z-index: 1; }
-        .business-card:hover { transform: translateY(-4px); border-color: var(--primary); }
-        .business-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: var(--transition); }
-        .business-card:hover img { transform: scale(1.08); }
-        .business-content { position: relative; z-index: 2; }
-        .business-content h3 { color: #fff; font-size: 24px; margin-bottom: 8px; }
-        .business-content p { color: var(--text-muted); font-size: 14px; }
-
-        /* --- BANNER GTA 6 ROCKSTAR GAMES --- */
-        .gaming-section { padding: 90px 5vw; background: radial-gradient(circle at center, rgba(255, 0, 127, 0.06) 0%, var(--bg-base) 70%); overflow: hidden; }
-        .rockstar-container {
-            background: linear-gradient(135deg, #12030d 0%, #1a0826 50%, #081121 100%);
-            border: 1px solid var(--gta-accent); border-radius: 28px; padding: 50px 40px;
-            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center;
-            box-shadow: 0 20px 60px rgba(255, 0, 127, 0.15); position: relative; overflow: hidden; max-width: 100%;
-        }
-        .gta-badge {
-            display: inline-flex; align-items: center; gap: 8px; background: rgba(255,0,127,0.15);
-            border: 1px solid var(--gta-accent); color: #ff66be; padding: 6px 16px; border-radius: 30px;
-            font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;
-        }
-        .gaming-text h2 { color: #fff; font-size: clamp(28px, 3.5vw, 42px); margin-bottom: 16px; font-weight: 800; line-height: 1.1; }
-        .gaming-text h2 span { color: var(--gta-gold); }
-        .gaming-text p { color: #cbd5e1; font-size: 16px; margin-bottom: 20px; }
-        
-        .gaming-stats { display: flex; gap: 30px; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; flex-wrap: wrap; }
-        .g-stat h4 { color: var(--gta-accent); font-size: 28px; font-weight: 800; }
-        .g-stat span { color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-
-        .rockstar-visual {
-            position: relative; text-align: center; border-radius: 20px; overflow: hidden;
-            border: 1px solid rgba(255, 183, 3, 0.3); box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-        }
-        .rockstar-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-        /* --- FORM CHECKOUT & VERIFICA COPERTURA --- */
-        .checkout-section { background: var(--bg-surface-elevated); padding: 100px 5vw; border-top: 1px solid rgba(255,255,255,0.05); }
-        .form-terminal {
-            background: var(--bg-base); border: 1px solid var(--glass-border); border-radius: 24px; 
-            padding: 50px; max-width: 950px; margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-            position: relative; overflow: hidden;
-        }
-        .form-terminal::before { content:''; position:absolute; top:0; left:0; width:100%; height:4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
-        
-        .form-step { margin-bottom: 30px; }
-        .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .step-number { width: 36px; height: 36px; background: rgba(0,229,255,0.15); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: 'Space Grotesk'; font-size: 16px; }
-        .step-title { font-size: 22px; color: #fff; }
-
-        .address-bar { display: flex; gap: 12px; }
-        .input-dark { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); padding: 16px 20px; border-radius: 12px; color: #fff; font-size: 15px; font-family: 'Inter'; outline: none; transition: var(--transition); }
-        .input-dark:focus { border-color: var(--primary); background: rgba(0,229,255,0.03); }
-        
-        .btn-check { background: var(--primary); color: #000; border: none; padding: 0 32px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: 'Space Grotesk'; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
-        .btn-check:hover { background: #fff; box-shadow: 0 0 20px rgba(0,229,255,0.4); }
-
-        #coverage-result { display: none; margin-top: 20px; padding: 20px; border-radius: 14px; font-size: 15px; animation: fadeIn 0.4s ease-out; }
-
-        .progress-bar-wrap { width: 100%; background: rgba(255,255,255,0.1); height: 10px; border-radius: 10px; margin-top: 12px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #ef4444); border-radius: 10px; transition: width 1s ease-in-out; }
-
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        .form-group.full { grid-column: span 2; }
-        .form-group label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-
-        .btn-submit {
-            background: #fff; color: #000; padding: 20px; border: none; border-radius: 12px;
-            font-weight: 800; font-size: 16px; cursor: pointer; text-transform: uppercase;
-            transition: var(--transition); width: 100%; margin-top: 30px; font-family: 'Space Grotesk'; letter-spacing: 1px;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-        }
-        .btn-submit:hover { background: var(--primary); box-shadow: 0 10px 30px rgba(0,229,255,0.3); transform: translateY(-2px); }
-
-        /* --- FOOTER --- */
-        footer { background: #01030a; padding: 80px 5vw 40px; border-top: 1px solid rgba(255,255,255,0.06); }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 60px; }
-        .footer-brand p { color: var(--text-muted); margin-top: 16px; max-width: 360px; font-size: 14px; }
-        .footer-links h4 { color: #fff; margin-bottom: 20px; font-size: 16px; letter-spacing: 1px; }
-        .footer-links ul { list-style: none; }
-        .footer-links li { margin-bottom: 12px; }
-        .footer-links a { color: var(--text-muted); text-decoration: none; transition: var(--transition); font-size: 14px; }
-        .footer-links a:hover { color: var(--primary); padding-left: 4px; }
-        
-        .footer-institutional {
-            display: flex; gap: 24px; align-items: center; justify-content: center; flex-wrap: wrap;
-            padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px;
-        }
-        .inst-badge { color: var(--text-muted); font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-
-        .footer-bottom { text-align: center; color: rgba(255,255,255,0.4); font-size: 13px; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 1100px) {
-            .rockstar-container { grid-template-columns: 1fr; padding: 40px 24px; }
-            .business-grid { grid-template-columns: repeat(2, 1fr); }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
-            .stat-box:nth-child(2) { border-right: none; }
-        }
-        @media (max-width: 850px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
-            .form-terminal { padding: 30px 20px; }
-            .address-bar { flex-direction: column; }
-            .btn-check { padding: 16px; }
-        }
-        @media (max-width: 600px) {
-            nav { padding: 12px 16px; }
-            .nav-links { display: none; }
-            .hero { padding-top: 120px; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .stat-box { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 20px; margin-bottom: 20px; }
-            .stat-box:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-            .business-grid { grid-template-columns: 1fr; }
-            .form-grid { grid-template-columns: 1fr; }
-            .form-group.full { grid-column: span 1; }
-            .footer-grid { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="bg-glow"></div>
-
-    <!-- NAVBAR -->
-    <nav>
-        <a href="#" class="logo-container">
-            <div class="logo-icon-wrap">
-                <!-- ICONA LOGO CORRETTA (ph-broadcast) -->
-                <i class="ph-fill ph-broadcast" style="font-size: 24px; color: var(--primary);"></i>
-            </div>
+            <div class="logo-icon-wrap"><i class="ph-fill ph-broadcast" style="font-size: 24px; color: var(--primary);"></i></div>
             <div>
                 <span class="logo-text">ORI<span>ON</span></span>
-                <span class="logo-tag">S.B. Global Horizon | S.Brotto Holding</span>
+                <span class="logo-tag">S.B. Global Horizon</span>
             </div>
         </a>
         <div class="nav-links">
             <a href="#soluzione">L'Infrastruttura</a>
             <a href="#tecnologia">Tecnologia</a>
             <a href="#hardware">Terminali</a>
-            <a href="#business">Enterprise</a>
-            <a href="#gta6">GTA 6</a>
             <a href="#copertura" class="btn-nav">Verifica Copertura</a>
         </div>
     </nav>
 
-    <!-- HERO -->
     <header class="hero">
         <div class="hero-content reveal">
-            <div class="badge-brand">
-                <i class="ph-bold ph-broadcast"></i> Orion FWA • Nuova Infrastruttura Radiosatellitare
-            </div>
-            <h1>Connessioni senza confini,<br><span>per un'Italia più connessa.</span></h1>
-            <p>Orion, divisione strategica di S.B. Global Horizon, porta la connettività ad alta velocità e fibra radio-ottica anche dove le reti tradizionali non arrivano o non sono sufficienti.</p>
-            
+            <div class="badge-brand"><i class="ph-bold ph-broadcast"></i> Orion FWA • Nuova Rete Radiosatellitare</div>
+            <h1>Connessioni senza confini,<br><span>per un'Italia connessa.</span></h1>
+            <p>Orion, divisione di S.B. Global Horizon, porta la fibra radio-ottica ad alta velocità dove le reti tradizionali si fermano.</p>
             <div class="hero-cta-group">
-                <a href="#copertura" class="btn-primary">
-                    Verifica Subito la Copertura <i class="ph-bold ph-arrow-right"></i>
-                </a>
-                <a href="#soluzione" class="btn-secondary">
-                    Scopri la Tecnologia
-                </a>
+                <a href="#copertura" class="btn-primary">Verifica Copertura <i class="ph-bold ph-arrow-right"></i></a>
+                <a href="#soluzione" class="btn-secondary">Scopri la Tecnologia</a>
             </div>
         </div>
     </header>
 
-    <!-- STATISTICHE E VELOCITÀ -->
     <div class="stats-container reveal">
         <div class="stats-grid">
-            <div class="stat-box">
-                <div class="stat-value">10<span> Gbps</span></div>
-                <div class="stat-label">Nelle Aree Urbane</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">1<span> Gbps</span></div>
-                <div class="stat-label">Nelle Aree Remote</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">&lt; 15<span> ms</span></div>
-                <div class="stat-label">Latenza Reale Rilevata</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value">100<span>%</span></div>
-                <div class="stat-label">Stabilità Diretta FWA</div>
-            </div>
+            <div class="stat-box"><div class="stat-value">10<span> Gbps</span></div><div class="stat-label">Banda Urbana</div></div>
+            <div class="stat-box"><div class="stat-value">1<span> Gbps</span></div><div class="stat-label">Banda Remota</div></div>
+            <div class="stat-box"><div class="stat-value">&lt; 15<span> ms</span></div><div class="stat-label">Latenza Rilevata</div></div>
+            <div class="stat-box"><div class="stat-value">100<span>%</span></div><div class="stat-label">Stabilità FWA</div></div>
         </div>
     </div>
 
-    <!-- MISSION & COPERTURA REGIONALE -->
     <section id="soluzione" class="section container reveal">
         <div class="grid-2">
             <div>
-                <span class="section-subtitle"><i class="ph-bold ph-target"></i> Dove il segnale non arriva</span>
-                <h2 class="section-title">Arriva la Fibra Radio-Ottica Orion.</h2>
-                <p class="section-desc" style="margin-bottom: 20px;">
-                    Dimentica i cali di rete e l'instabilità delle vecchie ADSL o parabole tradizionali. La rete Orion abbina stazioni terrestri ad altissima capacità con satelliti di ultima generazione a bassa orbita.
-                </p>
-                <p style="color: var(--text-muted); margin-bottom: 24px;">
-                    Il risultato è un segnale istantaneo, pulito e continuo, in grado di garantire velocità pari alla fibra ottica urbana anche nei comuni più isolati o nelle zone industriali periferiche.
-                </p>
+                <span class="section-subtitle"><i class="ph-bold ph-target"></i> Copertura Nazionale</span>
+                <h2 class="section-title">Arriva la Fibra Radio-Ottica.</h2>
+                <p class="section-desc" style="margin-bottom: 20px;">Dimentica l'instabilità delle vecchie reti. Orion abbina stazioni terrestri ad alta capacità con satelliti a bassa orbita.</p>
                 <ul class="feature-list">
-                    <li>
-                        <i class="ph-fill ph-check-circle"></i>
-                        <div>
-                            <strong>Servizio già attivo nel Nord e Centro Italia</strong>
-                            <span style="color: var(--text-muted);">Lombardia, Piemonte, Valle d'Aosta, Liguria, Veneto, Trentino-A.A., Friuli-V.G., Emilia-Romagna, Toscana, Umbria, Marche, Lazio.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="ph-fill ph-check-circle"></i>
-                        <div>
-                            <strong>Installazione Semplice e Trasparente</strong>
-                            <span style="color: var(--text-muted);">Nessun lavoro invasivo: colleghi il kit e sei pronto a navigare.</span>
-                        </div>
-                    </li>
+                    <li><i class="ph-fill ph-check-circle"></i><div><strong>Servizio Attivo al Nord e Centro Italia</strong><span style="display:block; color:var(--text-muted); font-size:13px;">Lombardia, Piemonte, Veneto, Emilia-Romagna, Toscana, Lazio e altre.</span></div></li>
+                    <li><i class="ph-fill ph-check-circle"></i><div><strong>Installazione Semplice</strong><span style="display:block; color:var(--text-muted); font-size:13px;">Nessun lavoro invasivo: colleghi il kit e navighi.</span></div></li>
                 </ul>
             </div>
-            <div style="position: relative; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); min-height: 420px;">
-                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop" alt="Dorsale Satellitare Orion" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            <div style="border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border);">
+                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop" alt="Dorsale Satellitare Orion">
             </div>
         </div>
     </section>
 
-    <!-- TECNOLOGIA SEMPLIFICATA ED EMPIRICA -->
     <section id="tecnologia" class="section section-alt">
         <div class="container">
             <div class="section-header reveal">
                 <span class="section-subtitle"><i class="ph-bold ph-cpu"></i> Semplicità & Potenza</span>
-                <h2 class="section-title">Infrastruttura Concreta e Performativa</h2>
-                <p class="section-desc">Un'architettura progettata per eliminare colli di bottiglia e garantire sempre la massima priorità al tuo traffico dati.</p>
+                <h2 class="section-title">Infrastruttura Concreta</h2>
             </div>
-
             <div class="grid-3">
                 <div class="glass-card reveal">
                     <div>
-                        <!-- ICONA LEO SATELLITARE CORRETTA (ph-planet) -->
                         <div class="icon-wrapper"><i class="ph-bold ph-planet"></i></div>
                         <h3>Copertura Satellitare LEO</h3>
-                        <p>I satelliti di nuova generazione orbitano vicini alla Terra, consentendo ai dati di compiere il tragitto in un tempo impercettibile per l'utente finale.</p>
+                        <p>I satelliti vicini alla Terra consentono ai dati di compiere il tragitto in un tempo impercettibile.</p>
                     </div>
-                    <table class="tech-table">
-                        <tr><td>Reattività</td><td>Nessun lag visibile</td></tr>
-                        <tr><td>Resistenza Meteo</td><td>Segnale Auto-Amplificato</td></tr>
-                        <tr><td>Disponibilità</td><td>99.9% Garantita</td></tr>
-                    </table>
                 </div>
-
                 <div class="glass-card reveal">
                     <div>
                         <div class="icon-wrapper"><i class="ph-bold ph-lightning"></i></div>
                         <h3>Ponte Radio-Ottico</h3>
-                        <p>La fibra ottica della dorsale S.B. Global Horizon si collega direttamente ai nostri ripetitori sul territorio, azzerando le perdite di pacchetti.</p>
+                        <p>Fibra ottica collegata direttamente ai ripetitori sul territorio, azzerando le perdite di segnale.</p>
                     </div>
-                    <table class="tech-table">
-                        <tr><td>Banda Urbana</td><td>Fino a 10 Gbps</td></tr>
-                        <tr><td>Banda Rurale</td><td>Fino a 1 Gbps</td></tr>
-                        <tr><td>Traffic Priority</td><td>Gaming & Streaming 4K</td></tr>
-                    </table>
                 </div>
-
                 <div class="glass-card reveal">
                     <div>
                         <div class="icon-wrapper"><i class="ph-bold ph-shield-check"></i></div>
-                        <h3>Sicurezza & Ridondanza</h3>
-                        <p>Se una linea di terra subisce un'interruzione, la rete Orion commuta istantaneamente sul canale satellitare senza far cadere la tua connessione.</p>
+                        <h3>Sicurezza & Backup</h3>
+                        <p>Commutazione istantanea sul canale satellitare in caso di interruzione fisica di rete.</p>
                     </div>
-                    <table class="tech-table">
-                        <tr><td>Protezione</td><td>Crittografia End-to-End</td></tr>
-                        <tr><td>Backup Automatico</td><td>Attivo 24/7</td></tr>
-                        <tr><td>Assistenza</td><td>Tecnici Italiani H24</td></tr>
-                    </table>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SPECIFICHE HARDWARE -->
     <section id="hardware" class="section">
         <div class="container reveal">
             <div class="section-header">
-                <span class="section-subtitle"><i class="ph-bold ph-devices"></i> Equipaggiamento Incluso</span>
-                <h2 class="section-title">Hardware di Livello Superiore per la Tua Casa</h2>
-                <p class="section-desc">Componenti miniaturizzati ed eleganti pensati per la massima resa ed estetica.</p>
+                <span class="section-subtitle"><i class="ph-bold ph-devices"></i> Equipaggiamento</span>
+                <h2 class="section-title">Hardware di Livello Superiore</h2>
             </div>
-
             <div class="grid-2">
                 <div class="glass-card">
                     <div>
-                        <div style="display: flex; justify-content: space-between; align-items:center; margin-bottom: 20px;">
-                            <h3 style="color: var(--primary); font-size: 26px;">Terminale Orion Stargaze</h3>
-                            <i class="ph-duotone ph-broadcast" style="font-size: 40px; color: var(--primary);"></i>
-                        </div>
-                        <p>Un’antenna compatta ed elegante in grado di auto-allinearsi con il miglior punto di segnale, priva di motori rumorosi o parti fragili.</p>
-                        <ul class="feature-list">
-                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Allineamento Automatico Smart</strong><span>Sintonia immediata all'accensione.</span></div></li>
-                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Impermeabile & Resiliente (IP68)</strong><span>Progettata per resistere a pioggia battente, neve e temperature estreme.</span></div></li>
-                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Basso Consumo Energetico</strong><span>Consumi ottimizzati per un impatto minimo in bolletta.</span></div></li>
-                        </ul>
+                        <h3 style="color: var(--primary);">Terminale Orion Stargaze</h3>
+                        <p>Antenna compatta ad allineamento automatico, impermeabile e resistente agli agenti atmosferici estremi.</p>
                     </div>
                 </div>
-
                 <div class="glass-card">
                     <div>
-                        <div style="display: flex; justify-content: space-between; align-items:center; margin-bottom: 20px;">
-                            <h3 style="color: var(--secondary); font-size: 26px;">Router Horizon Wi-Fi 7</h3>
-                            <i class="ph-duotone ph-router" style="font-size: 40px; color: var(--secondary);"></i>
-                        </div>
-                        <p>Il cuore della rete domestica. Distribuisce il segnale ultra-veloce in ogni stanza senza cali di prestazioni anche con decine di dispositivi connessi.</p>
-                        <ul class="feature-list">
-                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Wi-Fi 7 Ultima Generazione</strong><span>Copertura totale per case a più piani e pareti spesse.</span></div></li>
-                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Porte Ethernet Multi-Gigabit</strong><span>Connessione diretta ultra-stabile per PC, Console e Smart TV.</span></div></li>
-                            <li><i class="ph-fill ph-check-circle"></i><div><strong>Configurazione Plug & Play</strong><span>Gia configurato nei nostri laboratori, pronto all'uso.</span></div></li>
-                        </ul>
+                        <h3 style="color: var(--secondary);">Router Horizon Wi-Fi 7</h3>
+                        <p>Distribuisce il segnale multi-gigabit in ogni stanza senza cali di prestazioni per tutta la famiglia.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SOLUZIONI ENTERPRISE -->
-    <section id="business" class="section section-alt">
-        <div class="container reveal">
-            <div class="section-header">
-                <span class="section-subtitle"><i class="ph-bold ph-buildings"></i> Soluzioni Aziendali</span>
-                <h2 class="section-title">Connettività Business Senza Compromessi</h2>
-                <p class="section-desc">Garantiamo continuità operativa a imprese, cantieri e settori strategici su tutto il territorio.</p>
-            </div>
-
-            <div class="business-grid">
-                <div class="business-card">
-                    <img src="https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?q=80&w=2073&auto=format&fit=crop" alt="Orion Maritime">
-                    <div class="business-content">
-                        <h3>Orion Maritime</h3>
-                        <p>Connessione continua per imbarcazioni, porti e strutture costiere con stabilità e banda dedicata.</p>
-                    </div>
-                </div>
-                <div class="business-card">
-                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop" alt="Orion Logistics">
-                    <div class="business-content">
-                        <h3>Logistica e Cantieri</h3>
-                        <p>Connetti immediatamente hub remoti, magazzini e siti operativi provvisori senza attendere scavi.</p>
-                    </div>
-                </div>
-                <div class="business-card">
-                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop" alt="Enterprise Backup">
-                    <div class="business-content">
-                        <h3>Enterprise Disaster Recovery</h3>
-                        <p>Backup automatico in fibra radio per aziende che non possono permettersi nemmeno un secondo di offline.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- BANNER PARTNERSHIP ESCLUSIVA GTA 6 -->
     <section id="gta6" class="gaming-section">
         <div class="container reveal">
             <div class="rockstar-container">
                 <div class="gaming-text">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Rockstar_Games_Logo.svg" alt="Rockstar Games" style="width: 70px; margin-bottom: 24px; display: block; filter: drop-shadow(0 0 10px rgba(255,183,3,0.3));">
-                    <div class="gta-badge">
-                        <i class="ph-bold ph-game-controller"></i> Partnership Esclusiva Gaming
-                    </div>
+                    <div class="gta-badge"><i class="ph-bold ph-game-controller"></i> Partnership Gaming</div>
                     <h2>Rete Ottimizzata per <span>GTA 6</span></h2>
-                    <p>In occasione dell'uscita di <strong>GTA 6</strong>, Orion ha strutturato accordi di peering diretto con i server di sviluppo per garantire la corsia preferenziale di instradamento traffico.</p>
-                    <p>Zero packet loss, NAT aperto nativo e ping ridotto ai minimi termini fisici per vivere l'esperienza multiplayer di GTA VI al massimo del potenziale.</p>
-                    
+                    <p>Accordi di peering diretto per garantire ping minimo e 0% packet loss in vista dell'uscita multiplayer del decennio.</p>
                     <div class="gaming-stats">
-                        <div class="g-stat">
-                            <h4>&lt; 15ms</h4>
-                            <span>Ping Medio GTA VI</span>
-                        </div>
-                        <div class="g-stat">
-                            <h4>0%</h4>
-                            <span>Perdita Pacchetti</span>
-                        </div>
-                        <div class="g-stat">
-                            <h4>NAT 1</h4>
-                            <span>Apertura Automatica</span>
-                        </div>
+                        <div class="g-stat"><h4>&lt; 15ms</h4><span>Ping Medio</span></div>
+                        <div class="g-stat"><h4>0%</h4><span>Packet Loss</span></div>
                     </div>
                 </div>
                 <div class="rockstar-visual">
-                    <!-- IMMAGINE GTA 6 CORRETTA (Miniatura Youtube Ufficiale - Anti rottura) -->
-                    <img src="https://i.ytimg.com/vi/QdBZY2fkU-0/maxresdefault.jpg" alt="GTA 6 Official Snapshot">
+                    <img src="https://i.ytimg.com/vi/QdBZY2fkU-0/maxresdefault.jpg" alt="GTA 6 Screenshot">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- MODULO DI VERIFICA COPERTURA E ACQUISIZIONE -->
     <section id="copertura" class="checkout-section">
         <div class="container reveal">
             <div class="section-header">
-                <span class="section-subtitle"><i class="ph-bold ph-map-pin-line"></i> Verifica Subito</span>
-                <h2 class="section-title">Controlla la Copertura nella Tua Zona</h2>
-                <p class="section-desc">Inserisci il tuo indirizzo per verificare la disponibilità e richiedere l'attivazione immediata del servizio.</p>
+                <span class="section-subtitle"><i class="ph-bold ph-map-pin-line"></i> Verifica Mappa</span>
+                <h2 class="section-title">Controlla la Copertura</h2>
             </div>
 
             <div class="form-terminal">
-                
                 <div class="form-step">
                     <div class="step-header">
-                        <div class="step-number">1</div>
-                        <h3 class="step-title">Scansione Mappa & Disponibilità</h3>
+                        <div class="step-number">1</div><h3 class="step-title">Scansione Indirizzo</h3>
                     </div>
-                    
                     <div class="address-bar">
-                        <input type="text" id="check-indirizzo" class="input-dark" placeholder="Inserisci il tuo indirizzo completo (Es. Via Roma 15, Milano o Via Dante 4, Bologna)">
+                        <input type="text" id="check-indirizzo" class="input-dark" placeholder="Es. Via Roma 15, Milano">
                         <button class="btn-check" onclick="verificaCopertura()">Verifica Ora</button>
                     </div>
-                    
                     <div id="coverage-result"></div>
                     <input type="hidden" id="velocita-assegnata" value="">
                 </div>
 
-                <div id="dati-personali" class="form-step" style="display: none; opacity: 0; transition: opacity 0.6s; margin-top: 40px;">
+                <div id="dati-personali" class="form-step" style="display: none; margin-top: 40px;">
                     <div class="step-header">
-                        <div class="step-number">2</div>
-                        <h3 class="step-title">Dati per la Richiesta di Attivazione</h3>
+                        <div class="step-number">2</div><h3 class="step-title">Dati di Attivazione</h3>
                     </div>
-                    
                     <div class="form-grid">
-                        <div class="form-group">
-                            <label>Nome Intestatario *</label>
-                            <input type="text" id="req-nome" class="input-dark" placeholder="Il tuo nome">
-                        </div>
-                        <div class="form-group">
-                            <label>Cognome Intestatario *</label>
-                            <input type="text" id="req-cognome" class="input-dark" placeholder="Il tuo cognome">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Codice Fiscale / P.IVA *</label>
-                            <input type="text" id="req-cf" class="input-dark" placeholder="Codice Fiscale o Partita IVA" maxlength="16" style="text-transform: uppercase;">
-                        </div>
-                        <div class="form-group">
-                            <label>Documento d'Identità (Opzionale)</label>
-                            <input type="text" id="req-ci" class="input-dark" placeholder="Numero Documento" style="text-transform: uppercase;">
-                        </div>
-
-                        <div class="form-group full">
-                            <label>Indirizzo di Installazione Confermato</label>
-                            <input type="text" id="req-indirizzo" class="input-dark" readonly style="background: rgba(0,0,0,0.5); color: var(--primary); font-weight: 700;">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Città *</label>
-                            <input type="text" id="req-citta" class="input-dark" placeholder="Comune">
-                        </div>
-                        <div class="form-group">
-                            <label>Provincia & CAP *</label>
-                            <div style="display:flex; gap:10px;">
-                                <input type="text" id="req-prov" class="input-dark" placeholder="PR" style="width:35%; text-transform: uppercase;" maxlength="2">
-                                <input type="text" id="req-cap" class="input-dark" placeholder="CAP" style="width:65%;" maxlength="5">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Email *</label>
-                            <input type="email" id="req-email" class="input-dark" placeholder="indirizzo@email.com">
-                        </div>
-                        <div class="form-group">
-                            <label>Telefono *</label>
-                            <input type="tel" id="req-tel" class="input-dark" placeholder="+39 ...">
-                        </div>
+                        <div class="form-group"><label>Nome *</label><input type="text" id="req-nome" class="input-dark"></div>
+                        <div class="form-group"><label>Cognome *</label><input type="text" id="req-cognome" class="input-dark"></div>
+                        <div class="form-group full"><label>Codice Fiscale / P.IVA *</label><input type="text" id="req-cf" class="input-dark" maxlength="16"></div>
+                        <div class="form-group"><label>Email *</label><input type="email" id="req-email" class="input-dark"></div>
+                        <div class="form-group"><label>Telefono *</label><input type="tel" id="req-tel" class="input-dark"></div>
                     </div>
-
-                    <button class="btn-submit" onclick="inviaRichiestaGestionale()">
-                        Invia Richiesta di Attivazione <i class="ph-bold ph-paper-plane-right"></i>
-                    </button>
+                    <button class="btn-submit" onclick="inviaRichiestaGestionale()">Invia Richiesta</button>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="#" class="logo-container" style="margin-bottom: 16px;">
-                        <div class="logo-icon-wrap">
-                            <i class="ph-fill ph-broadcast" style="font-size: 22px; color: var(--primary);"></i>
-                        </div>
-                        <span class="logo-text">ORI<span>ON</span></span>
-                    </a>
-                    <p>Orion è la divisione FWA & Satellitare di <strong>S.B. Global Horizon</strong>, parte del gruppo <strong>S.Brotto Holding</strong>. Connettiamo le persone dove gli altri non arrivano.</p>
-                </div>
-                <div class="footer-links">
-                    <h4>Servizi</h4>
-                    <ul>
-                        <li><a href="#copertura">Orion FWA Residenziale</a></li>
-                        <li><a href="#business">Soluzioni Enterprise</a></li>
-                        <li><a href="#business">Orion Maritime</a></li>
-                        <li><a href="#gta6">GTA 6 Ultra-Routing</a></li>
-                    </ul>
-                </div>
-                <div class="footer-links">
-                    <h4>Infrastruttura</h4>
-                    <ul>
-                        <li><a href="#tecnologia">Dorsale Radio-Ottica</a></li>
-                        <li><a href="#hardware">Terminale Stargaze</a></li>
-                        <li><a href="#hardware">Router Wi-Fi 7</a></li>
-                        <li><a href="#copertura">Mappa Copertura</a></li>
-                    </ul>
-                </div>
-                <div class="footer-links">
-                    <h4>Azienda & Legale</h4>
-                    <ul>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Termini e Condizioni</a></li>
-                        <li><a href="#">Trasparenza Tariffaria</a></li>
-                        <li><a href="#">Contatti & Assistenza</a></li>
-                    </ul>
+                    <span class="logo-text">ORI<span>ON</span></span>
+                    <p>Divisione FWA S.B. Global Horizon. P.IVA: 40306275892</p>
                 </div>
             </div>
-
-            <div class="footer-institutional">
-                <div class="inst-badge"><i class="ph-bold ph-shield-check"></i> EISMEA - European Innovation Council</div>
-                <div class="inst-badge"><i class="ph-bold ph-globe-hemisphere-west"></i> COMINT - Politiche Spazio e Aerospazio</div>
-                <div class="inst-badge"><i class="ph-bold ph-buildings"></i> MIMIT - Ministero delle Imprese e del Made in Italy</div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2026 S.B. Global Horizon | S.Brotto Holding. Tutti i diritti riservati.</p>
-                <p style="margin-top: 6px; font-weight: 600; color: var(--text-main);">P.IVA: 40306275892</p>
-            </div>
+            <div class="footer-bottom"><p>&copy; 2026 S.B. Global Horizon. Tutti i diritti riservati.</p></div>
         </div>
     </footer>
 
-    <!-- LOGICA SCRIPT E FIREBASE -->
+    <!-- SCRIPT 1: LOGICA INTERFACCIA E ANIMAZIONI (NON BLOCCANTE) -->
+    <script>
+        // Animazioni di scroll eseguite indipendentemente dal database
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                reveals.forEach(el => observer.observe(el));
+            } else {
+                // Fallback di sicurezza se il browser è obsoleto
+                reveals.forEach(el => el.classList.add('active'));
+            }
+        });
+
+        // Logica Frontend Copertura (Isolata da Firebase)
+        const regioniNordCentro = ["lombardia", "piemonte", "liguria", "veneto", "emilia", "toscana", "lazio", "milano", "roma", "torino", "bologna"];
+        const sudItaliaKeywords = ["napoli", "bari", "palermo", "catania", "campania", "puglia", "sicilia", "calabria"];
+
+        window.verificaCopertura = function() {
+            const inputAddr = document.getElementById('check-indirizzo').value.trim();
+            const addrLower = inputAddr.toLowerCase();
+            const resultDiv = document.getElementById('coverage-result');
+            const formArea = document.getElementById('dati-personali');
+            const btnCheck = document.querySelector('.btn-check');
+
+            if(inputAddr.length < 4) {
+                alert("Inserisci un indirizzo valido.");
+                return;
+            }
+
+            btnCheck.innerHTML = 'Verifico...';
+            
+            setTimeout(() => {
+                let isNordCentro = regioniNordCentro.some(r => addrLower.includes(r));
+                let isSud = sudItaliaKeywords.some(s => addrLower.includes(s));
+
+                if (isNordCentro || (!isSud && (addrLower.includes("via") || addrLower.includes("piazza")))) {
+                    resultDiv.style.display = 'block';
+                    resultDiv.style.background = 'rgba(0, 229, 255, 0.1)';
+                    resultDiv.style.border = '1px solid var(--primary)';
+                    resultDiv.innerHTML = '<strong style="color:#fff;">Servizio Attivo!</strong> Hardware incluso: Terminale Orion + Router Wi-Fi 7.';
+                    document.getElementById('velocita-assegnata').value = "Fino a 1 Gbps";
+                    formArea.style.display = 'block';
+                } else {
+                    resultDiv.style.display = 'block';
+                    resultDiv.style.background = 'rgba(245, 158, 11, 0.1)';
+                    resultDiv.style.border = '1px solid #f59e0b';
+                    resultDiv.innerHTML = '<strong style="color:#fff;">Servizio In Lavorazione.</strong> L\'infrastruttura nella tua area è in fase di completamento (Avanzamento 90%).';
+                    formArea.style.display = 'none';
+                }
+                btnCheck.innerHTML = 'Verifica Ora';
+            }, 800);
+        };
+    </script>
+
+    <!-- SCRIPT 2: DATABASE FIREBASE (MODULO SEPARATO) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
         import { getDatabase, ref, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
@@ -870,168 +551,15 @@
             authDomain: "horizongls.firebaseapp.com",
             databaseURL: "https://horizongls-default-rtdb.europe-west1.firebasedatabase.app",
             projectId: "horizongls",
-            storageBucket: "horizongls.firebasestorage.app",
-            messagingSenderId: "611544552805",
-            appId: "1:611544552805:web:88fb0e35e59fb5bf543d8c"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        const regioniNordCentro = [
-            "lombardia", "piemonte", "valle d'aosta", "liguria", "veneto", 
-            "trentino", "friuli", "emilia", "toscana", "umbria", "marche", "lazio"
-        ];
-        
-        const cittaNordCentro = [
-            "milano", "roma", "torino", "bologna", "firenze", "venezia", "verona", "genova", 
-            "padova", "brescia", "parma", "modena", "trieste", "perugia", "ancona", "trento", 
-            "aosta", "bergamo", "monza", "treviso", "udine", "la spezia", "pisa", "livorno"
-        ];
-
-        const sudItaliaKeywords = [
-            "napoli", "bari", "palermo", "catania", "messina", "reggio calabria", "cagliari", 
-            "taranto", "foggia", "salerno", "potenza", "campobasso", "pescara", "lecce",
-            "campania", "puglia", "basilicata", "calabria", "sicilia", "sardegna", "abruzzo", "molise"
-        ];
-
-        window.verificaCopertura = function() {
-            const inputAddr = document.getElementById('check-indirizzo').value.trim();
-            const addrLower = inputAddr.toLowerCase();
-            const resultDiv = document.getElementById('coverage-result');
-            const hiddenSpeed = document.getElementById('velocita-assegnata');
-            const formArea = document.getElementById('dati-personali');
-            const btnCheck = document.querySelector('.btn-check');
-
-            if(inputAddr.length < 5 || !/[a-zA-Z]/.test(inputAddr) || !/\d/.test(inputAddr) && !cittaNordCentro.some(c => addrLower.includes(c))) {
-                resultDiv.style.display = 'block';
-                resultDiv.style.background = 'rgba(239, 68, 68, 0.1)';
-                resultDiv.style.border = '1px solid #ef4444';
-                resultDiv.style.color = '#ef4444';
-                resultDiv.innerHTML = '<i class="ph-bold ph-warning-circle"></i> <strong>Indirizzo Inesistente o Incompleto</strong>. Inserisci una via regolare con numero civico e comune per effettuare la scansione.';
-                formArea.style.display = 'none';
-                return;
-            }
-
-            btnCheck.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Verifico Mappa...';
-            
-            setTimeout(() => {
-                let isNordCentro = regioniNordCentro.some(r => addrLower.includes(r)) || cittaNordCentro.some(c => addrLower.includes(c));
-                let isSud = sudItaliaKeywords.some(s => addrLower.includes(s));
-                let isRomania = addrLower.includes("romania") || addrLower.includes("bucarest") || addrLower.includes("cluj");
-                let isEstero = addrLower.includes("francia") || addrLower.includes("germania") || addrLower.includes("spagna") || addrLower.includes("uk") || addrLower.includes("london") || addrLower.includes("paris") || addrLower.includes("berlin");
-
-                if (isNordCentro || (!isSud && !isRomania && !isEstero && (addrLower.includes("via") || addrLower.includes("corso") || addrLower.includes("piazza")))) {
-                    let isGrandiCitta = ["milano", "roma", "torino", "bologna", "firenze", "venezia", "verona", "genova"].some(c => addrLower.includes(c));
-                    let velocita = isGrandiCitta ? "Fino a 10 Gbps (Area Urbana)" : "Fino a 1 Gbps (Area Remota/FWA)";
-
-                    resultDiv.style.display = 'block';
-                    resultDiv.style.background = 'rgba(0, 229, 255, 0.08)';
-                    resultDiv.style.border = '1px solid var(--primary)';
-                    resultDiv.style.color = '#fff';
-                    
-                    resultDiv.innerHTML = `
-                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
-                            <i class="ph-fill ph-check-circle" style="color:var(--primary); font-size:28px;"></i> 
-                            <div>
-                                <strong style="font-size:18px; color:#fff;">Servizio Attivo e Disponibile!</strong>
-                                <div style="font-size:13px; color:var(--text-muted);">Indirizzo verificato nelle mappe di rete Orion.</div>
-                            </div>
-                        </div>
-                        <div style="margin-left: 40px; font-size:14px;">
-                            Profilo di Velocità Riservato: <strong style="color:var(--primary);">${velocita}</strong><br>
-                            Hardware: <strong>Terminale Orion Stargaze + Router Wi-Fi 7 Incluso</strong>
-                        </div>
-                    `;
-                    hiddenSpeed.value = velocita;
-
-                    document.getElementById('req-indirizzo').value = inputAddr;
-                    formArea.style.display = 'block';
-                    setTimeout(() => { formArea.style.opacity = '1'; }, 50);
-
-                } else if (isSud) {
-                    resultDiv.style.display = 'block';
-                    resultDiv.style.background = 'rgba(245, 158, 11, 0.1)';
-                    resultDiv.style.border = '1px solid #f59e0b';
-                    resultDiv.style.color = '#fff';
-                    
-                    resultDiv.innerHTML = `
-                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
-                            <i class="ph-bold ph-clock" style="color:#f59e0b; font-size:26px;"></i> 
-                            <div>
-                                <strong style="font-size:16px;">Servizio Non Ancora Attivo nel Sud Italia</strong>
-                                <div style="font-size:13px; color:var(--text-muted);">Infrastruttura in fase finale di completamento.</div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted);">
-                                <span>Stato di Avanzamento Lavori:</span>
-                                <strong style="color:#f59e0b;">90%</strong>
-                            </div>
-                            <div class="progress-bar-wrap">
-                                <div class="progress-bar-fill" style="width: 90%;"></div>
-                            </div>
-                        </div>
-                    `;
-                    formArea.style.display = 'none';
-
-                } else if (isRomania) {
-                    resultDiv.style.display = 'block';
-                    resultDiv.style.background = 'rgba(245, 158, 11, 0.1)';
-                    resultDiv.style.border = '1px solid #f59e0b';
-                    resultDiv.style.color = '#fff';
-                    
-                    resultDiv.innerHTML = `
-                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
-                            <i class="ph-bold ph-clock" style="color:#f59e0b; font-size:26px;"></i> 
-                            <div>
-                                <strong style="font-size:16px;">Servizio Non Ancora Attivo in Romania</strong>
-                                <div style="font-size:13px; color:var(--text-muted);">Istanziamento dorsale europea in corso.</div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted);">
-                                <span>Stato di Avanzamento Lavori:</span>
-                                <strong style="color:#f59e0b;">70%</strong>
-                            </div>
-                            <div class="progress-bar-wrap">
-                                <div class="progress-bar-fill" style="width: 70%;"></div>
-                            </div>
-                        </div>
-                    `;
-                    formArea.style.display = 'none';
-
-                } else {
-                    let randPerc = Math.floor(Math.random() * (65 - 35 + 1)) + 35;
-                    resultDiv.style.display = 'block';
-                    resultDiv.style.background = 'rgba(239, 68, 68, 0.1)';
-                    resultDiv.style.border = '1px solid #ef4444';
-                    resultDiv.style.color = '#fff';
-                    
-                    resultDiv.innerHTML = `
-                        <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
-                            <i class="ph-bold ph-x-circle" style="color:#ef4444; font-size:26px;"></i> 
-                            <div>
-                                <strong style="font-size:16px;">Area Estera Attualmente Non Coperta</strong>
-                                <div style="font-size:13px; color:var(--text-muted);">Infrastruttura pianificata per le prossime fasi.</div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 10px;">
-                            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted);">
-                                <span>Avanzamento Programmazione:</span>
-                                <strong style="color:#ef4444;">${randPerc}%</strong>
-                            </div>
-                            <div class="progress-bar-wrap">
-                                <div class="progress-bar-fill" style="width: ${randPerc}%; background:#ef4444;"></div>
-                            </div>
-                        </div>
-                    `;
-                    formArea.style.display = 'none';
-                }
-
-                btnCheck.innerHTML = 'Ricalibra Posizione';
-            }, 1200);
-        };
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+        } catch(e) {
+            console.warn("Database temporaneamente non disponibile per restrizioni locali del browser.");
+        }
 
         window.inviaRichiestaGestionale = async function() {
             const nome = document.getElementById('req-nome').value.trim();
@@ -1039,64 +567,41 @@
             const cf = document.getElementById('req-cf').value.trim();
             
             if(!nome || !cognome || !cf) {
-                alert("Completa i campi obbligatori (Nome, Cognome e Codice Fiscale/P.IVA) per proseguire.");
+                alert("Compila Nome, Cognome e Codice Fiscale.");
+                return;
+            }
+            if(!db) {
+                alert("Impossibile contattare il server. Se stai aprendo il file direttamente dal PC, usa un server locale per testare il form.");
                 return;
             }
 
             const btn = document.querySelector('.btn-submit');
-            btn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Invio in corso...';
+            btn.innerHTML = 'Invio...';
             btn.style.pointerEvents = "none";
 
-            const richiestaData = {
-                data: new Date().toLocaleDateString('it-IT') + " " + new Date().toLocaleTimeString('it-IT'),
-                richiedente: `${nome} ${cognome}`,
+            const dataObj = {
+                cliente: `${nome} ${cognome}`,
                 ragioneSociale: cf,
-                servizio: `Orion FWA - ${document.getElementById('velocita-assegnata').value}`,
-                stato: "Nuova",
-                timestamp: serverTimestamp(),
-                dettagli_completi: {
-                    carta_identita: document.getElementById('req-ci').value || "N/D",
-                    indirizzo_installazione: document.getElementById('req-indirizzo').value,
-                    citta: document.getElementById('req-citta').value,
-                    provincia: document.getElementById('req-prov').value,
-                    cap: document.getElementById('req-cap').value,
-                    email: document.getElementById('req-email').value,
-                    telefono: document.getElementById('req-tel').value
-                }
+                servizio: "Orion FWA",
+                importo: "29,90 €/mese",
+                stato: "Nuovo",
+                timestamp: serverTimestamp()
             };
 
             try {
-                await push(ref(db, 'richieste-servizi'), richiestaData);
-                
+                await push(ref(db, 'ordini'), dataObj);
+                await push(ref(db, 'richieste-servizi'), dataObj);
                 document.getElementById('dati-personali').innerHTML = `
-                    <div style="text-align:center; padding: 40px 20px; background: rgba(0,229,255,0.05); border: 1px dashed var(--primary); border-radius: 16px;">
-                        <i class="ph-fill ph-check-circle" style="font-size:70px; color:var(--primary); margin-bottom:16px;"></i>
-                        <h3 style="color:#fff; font-size:24px; margin-bottom:10px;">Richiesta Presa in Carico!</h3>
-                        <p style="color:var(--text-muted); font-size:15px; max-width: 550px; margin: 0 auto;">
-                            Il team S.B. Global Horizon ha ricevuto la tua richiesta di attivazione. Un operatore ti contatterà nelle prossime ore per la spedizione del kit Orion Stargaze.
-                        </p>
-                    </div>
-                `;
+                    <div style="text-align:center; padding: 20px; border: 1px dashed var(--primary); border-radius: 12px;">
+                        <h3 style="color:#fff;">Richiesta Inviata!</h3>
+                        <p style="color:var(--text-muted);">Sarai contattato a breve dal nostro team.</p>
+                    </div>`;
             } catch (error) {
-                console.error("Errore Invio: ", error);
-                alert("Errore durante l'invio della richiesta. Riprova più tardi.");
-                btn.innerHTML = 'Invia Richiesta di Attivazione';
+                alert("Errore di connessione al database.");
+                btn.innerHTML = 'Invia Richiesta';
                 btn.style.pointerEvents = "auto";
             }
         };
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const reveals = document.querySelectorAll('.reveal');
-            const observer = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        obs.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            reveals.forEach(el => observer.observe(el));
-        });
     </script>
 </body>
 </html>
